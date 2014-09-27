@@ -1,0 +1,1 @@
+The login for Totem stack is pretty much exactly the same as viking dodge (VD), so you can just refer to the mocks from VD.
