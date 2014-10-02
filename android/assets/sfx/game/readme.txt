@@ -1,0 +1,1 @@
+when the wind changes direction, play wind.wav

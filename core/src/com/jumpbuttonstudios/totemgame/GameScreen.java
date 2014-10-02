@@ -1,19 +1,28 @@
 package com.jumpbuttonstudios.totemgame;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
 public class GameScreen extends AbstractScreen {
 	Background background;
-	Array<Totem> totems;
-	Totem currentTotem;
+	TotemSpawner spawner;
+	PointChecker pointChecker;
 	GameContactListener contactListener;
-	float spawnY = Constants.SCLHEIGHT;
-	boolean newTotem;
+	ShapeRenderer sr;
+	HudTable hudTable;
+	Stage hudStage;
+	InputMultiplexer multiplexer;
+	int score = 0;
 
 	public GameScreen(TotemGame game) {
 		super(game);
@@ -21,15 +30,26 @@ public class GameScreen extends AbstractScreen {
 		contactListener = new GameContactListener(this);
 		world.setContactListener(contactListener);
 
-		FitViewport viewport = new FitViewport(Constants.SCLWIDTH, Constants.SCLWIDTH, camera);
+		FitViewport viewport = new FitViewport(Constants.SCLWIDTH, Constants.SCLHEIGHT, camera);
 		stage.setViewport(viewport);
 		viewport.update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
 
+		hudStage = new Stage();
+		hudTable = new HudTable(getSkin(), this);
+		hudTable.setTransform(true);
+		hudTable.setFillParent(true);
+		hudStage.addActor(hudTable);
+
+		multiplexer = new InputMultiplexer(stage, hudStage);
+		Gdx.input.setInputProcessor(multiplexer);
+
 		background = new Background(stage, world);
 
-		totems = new Array<Totem>();
+		spawner = new TotemSpawner(this);
+		stage.addActor(spawner);
 
-		newTotem();
+		sr = new ShapeRenderer();
+		spawner.newTotem();
 	}
 
 	@Override
@@ -37,34 +57,38 @@ public class GameScreen extends AbstractScreen {
 		super.show();
 	}
 
-	public void newTotem() {
-		newTotem = true;
-	}
-
-	//kevintheman: I didn't include this in the GDD but every 3 stacks, the screen moves up one totem so that you only see 2 totems
+	/**
+	 * not sure if I wrote this in the gdd, but when the totem tower falls, the screen will pan down so that you see it hit the ground
+	 */
+	
 	
 	@Override
 	public void render(float delta) {
 		super.render(delta);
+		
+//		if (currentTotem != null) {
+//			sr.setProjectionMatrix(camera.combined);
+//			sr.begin(ShapeType.Line);
+//			sr.box(pointChecker.onePointLeft.x, pointChecker.onePointLeft.y, 0,
+//					pointChecker.onePointLeft.width, pointChecker.onePointLeft.height, 0);
+//			sr.box(pointChecker.onePointRight.x, pointChecker.onePointRight.y, 0,
+//					pointChecker.onePointRight.width, pointChecker.onePointRight.height, 0);
+//			sr.box(pointChecker.twoPointLeft.x, pointChecker.twoPointLeft.y, 0,
+//					pointChecker.twoPointLeft.width, pointChecker.twoPointLeft.height, 0);
+//			sr.box(pointChecker.twoPointRight.x, pointChecker.twoPointRight.y, 0,
+//					pointChecker.twoPointRight.width, pointChecker.twoPointRight.height, 0);
+//			sr.box(pointChecker.threePoint.x, pointChecker.threePoint.y, 0,
+//					pointChecker.threePoint.width, pointChecker.threePoint.height, 0);
+//			sr.box(pointChecker.totemRect.x, pointChecker.totemRect.y, 0,
+//					pointChecker.totemRect.width, pointChecker.totemRect.height, 0);
+//			sr.end();
+//		}
+		
 
-		if (newTotem) {
-			Totem t = new Totem("totem/00.png", spawnY, world);
-			totems.add(t);
-			stage.addActor(t);
-			currentTotem = t;
-			newTotem = false;
-		}
-
-		if (Gdx.input.isKeyPressed(Keys.A)) {
-			currentTotem.body.setLinearVelocity(-10, currentTotem.body.getLinearVelocity().y);
-		}
-		if (Gdx.input.isKeyPressed(Keys.D)) {
-			currentTotem.body.setLinearVelocity(10, currentTotem.body.getLinearVelocity().y);
-		}
-		if (!Gdx.input.isKeyPressed(Keys.A) && !Gdx.input.isKeyPressed(Keys.D)) {
-			currentTotem.body.setLinearVelocity(0, currentTotem.body.getLinearVelocity().y);
-		}
-
+		hudStage.act(delta);
+		hudStage.draw();
+		Table.drawDebug(hudStage);
+		hudTable.debug();
 	}
 
 }
