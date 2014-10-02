@@ -6,27 +6,36 @@ import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.utils.Array;
 
 public class GameContactListener implements ContactListener {
 	GameScreen game;
+	Array<Totem> groundTotems;
 
 	public GameContactListener(GameScreen game) {
 		this.game = game;
+		groundTotems = new Array<Totem>();
 	}
 
 	@Override
 	public void beginContact(Contact contact) {
 		Object a = contact.getFixtureA().getBody().getUserData();
 		Object b = contact.getFixtureB().getBody().getUserData();
-
+		
 		if (a instanceof Ground && b instanceof Totem) {
 			if (((Totem) b).equals(game.spawner.currentTotem)) {
 				createTotem();
+				if(!groundTotems.contains((Totem) b, false)){
+					groundTotems.add((Totem) b);
+				}
 			}
 		}
 		if (b instanceof Ground && a instanceof Totem) {
 			if (((Totem) a).equals(game.spawner.currentTotem)) {
 				createTotem();
+				if(!groundTotems.contains((Totem) a, false)){
+					groundTotems.add((Totem) a);
+				}
 			}
 		}
 		if (a instanceof Totem && b instanceof Totem) {
@@ -48,6 +57,10 @@ public class GameContactListener implements ContactListener {
 			}
 
 		}
+	}
+	
+	public Array<Totem> getGroundTotems(){
+		return groundTotems;
 	}
 
 	public void checkPoints(Object a, Object b, Totem lastTotem) {
@@ -112,7 +125,6 @@ public class GameContactListener implements ContactListener {
 
 	@Override
 	public void endContact(Contact contact) {
-		// TODO Auto-generated method stub
 
 	}
 

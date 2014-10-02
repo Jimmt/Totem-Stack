@@ -33,17 +33,18 @@ public class TotemSpawner extends Actor {
 
 	@Override
 	public void act(float delta) {
-		
-		if(lastIncreaseTime > magIncreaseCap){
+
+		if (lastIncreaseTime > magIncreaseCap) {
 			randomMagnitude += 0.1f;
 			lastIncreaseTime = 0;
 		} else {
 			lastIncreaseTime += delta;
 		}
-		
+
 		if (newTotem) {
-			Totem t = new Totem(MathUtils.random(Constants.SCLWIDTH / 2 - randomMagnitude, Constants.SCLWIDTH / 2 + randomMagnitude), spawnY, game.world);
-//			Totem t = new Totem(0.5f * Constants.SCLWIDTH, spawnY, game.world);
+			Totem t = new Totem(MathUtils.random(Constants.SCLWIDTH / 2 - randomMagnitude,
+					Constants.SCLWIDTH / 2 + randomMagnitude), spawnY, game.world);
+// Totem t = new Totem(0.5f * Constants.SCLWIDTH, spawnY, game.world);
 			totems.add(t);
 			game.stage.addActor(t);
 			currentTotem = t;
@@ -55,18 +56,22 @@ public class TotemSpawner extends Actor {
 		}
 
 		for (int i = 9; i < totems.size; i += 10) {
-			
+
 			if (totems.get(i).getFlag() == null) {
 				totems.get(i).createFlag();
 			}
 		}
 
-		if (totems.size > 3) {
-			game.camera.position.y += (totems.get(totems.size - 1 - 3).getY() + 5f - game.camera.position.y)
+		if (!game.gameOver) {
+			if (totems.size > 3) {
+				game.camera.position.y += (totems.get(totems.size - 1 - 3).getY() + 5f - game.camera.position.y)
+						* lerp;
+			}
+		} else {
+			game.camera.position.y -= (game.camera.position.y - 1)
 					* lerp;
 		}
 
-		System.out.println(currentTotem.getX());
 		if (currentTotem != null) {
 			if (Gdx.input.isKeyPressed(Keys.A)) {
 				currentTotem.body.setLinearVelocity(-5, currentTotem.body.getLinearVelocity().y);
