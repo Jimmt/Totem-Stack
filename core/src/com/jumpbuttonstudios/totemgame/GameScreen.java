@@ -1,16 +1,11 @@
 package com.jumpbuttonstudios.totemgame;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputMultiplexer;
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
@@ -25,12 +20,14 @@ public class GameScreen extends AbstractScreen {
 	InputMultiplexer multiplexer;
 	int score = 0;
 	boolean gameOver;
+	Array<ParticleEffect> particles;
 
 	public GameScreen(TotemGame game) {
 		super(game);
+		
+		Icons.loadIcons();
 
-		contactListener = new GameContactListener(this);
-		world.setContactListener(contactListener);
+		particles = new Array<ParticleEffect>();
 
 		FitViewport viewport = new FitViewport(Constants.SCLWIDTH, Constants.SCLHEIGHT, camera);
 		stage.setViewport(viewport);
@@ -46,6 +43,9 @@ public class GameScreen extends AbstractScreen {
 		Gdx.input.setInputProcessor(multiplexer);
 
 		background = new Background(stage, world);
+		
+		contactListener = new GameContactListener(this);
+		world.setContactListener(contactListener);
 
 		spawner = new TotemSpawner(this);
 		stage.addActor(spawner);
@@ -73,6 +73,8 @@ public class GameScreen extends AbstractScreen {
 	@Override
 	public void render(float delta) {
 		super.render(delta);
+		
+		contactListener.update();
 
 // if (currentTotem != null) {
 // sr.setProjectionMatrix(camera.combined);
@@ -112,6 +114,8 @@ public class GameScreen extends AbstractScreen {
 		hudStage.draw();
 		Table.drawDebug(hudStage);
 		hudTable.debug();
+		
+		
 	}
 
 }

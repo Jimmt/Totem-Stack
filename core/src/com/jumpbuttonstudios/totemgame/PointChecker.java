@@ -26,7 +26,6 @@ public class PointChecker extends Actor {
 		this.stage = stage;
 		this.game = game;
 		
-		Icons.loadIcons();
 
 		onePointLeft = new Rectangle(219 * Constants.SCALE, 94 * Constants.SCALE,
 				85 * Constants.SCALE, 20 * Constants.SCALE);

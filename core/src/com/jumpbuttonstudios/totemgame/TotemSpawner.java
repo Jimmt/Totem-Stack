@@ -1,5 +1,6 @@
 package com.jumpbuttonstudios.totemgame;
 
+import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.math.MathUtils;
@@ -42,9 +43,9 @@ public class TotemSpawner extends Actor {
 		}
 
 		if (newTotem) {
-			Totem t = new Totem(MathUtils.random(Constants.SCLWIDTH / 2 - randomMagnitude,
-					Constants.SCLWIDTH / 2 + randomMagnitude), spawnY, game.world);
-// Totem t = new Totem(0.5f * Constants.SCLWIDTH, spawnY, game.world);
+//			Totem t = new Totem(MathUtils.random(Constants.SCLWIDTH / 2 - randomMagnitude,
+//					Constants.SCLWIDTH / 2 + randomMagnitude), spawnY, game.world);
+ Totem t = new Totem(0.5f * Constants.SCLWIDTH, spawnY, game.world);
 			totems.add(t);
 			game.stage.addActor(t);
 			currentTotem = t;
@@ -68,22 +69,35 @@ public class TotemSpawner extends Actor {
 						* lerp;
 			}
 		} else {
-			game.camera.position.y -= (game.camera.position.y - 1)
-					* lerp;
+			game.camera.position.y -= (game.camera.position.y - 1) * lerp;
 		}
 
-		if (currentTotem != null) {
-			if (Gdx.input.isKeyPressed(Keys.A)) {
-				currentTotem.body.setLinearVelocity(-5, currentTotem.body.getLinearVelocity().y);
-			}
-			if (Gdx.input.isKeyPressed(Keys.D)) {
-				currentTotem.body.setLinearVelocity(5, currentTotem.body.getLinearVelocity().y);
-			}
-			if (!Gdx.input.isKeyPressed(Keys.A) && !Gdx.input.isKeyPressed(Keys.D)) {
-				currentTotem.body.setLinearVelocity(0, currentTotem.body.getLinearVelocity().y);
+		if (Gdx.app.getType() == ApplicationType.Desktop) {
+			if (currentTotem != null) {
+				if (Gdx.input.isKeyPressed(Keys.A)) {
+					moveLeft();
+				}
+				if (Gdx.input.isKeyPressed(Keys.D)) {
+					moveRight();
+				}
+				if (!Gdx.input.isKeyPressed(Keys.A) && !Gdx.input.isKeyPressed(Keys.D)) {
+					stop();
+				}
 			}
 		}
 
 		pointChecker.setTotem(currentTotem);
+	}
+
+	public void moveLeft() {
+		currentTotem.body.setLinearVelocity(-5, currentTotem.body.getLinearVelocity().y);
+	}
+
+	public void moveRight() {
+		currentTotem.body.setLinearVelocity(5, currentTotem.body.getLinearVelocity().y);
+	}
+
+	public void stop() {
+		currentTotem.body.setLinearVelocity(0, currentTotem.body.getLinearVelocity().y);
 	}
 }

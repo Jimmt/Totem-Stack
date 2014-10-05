@@ -1,5 +1,6 @@
 package com.jumpbuttonstudios.totemgame;
 
+import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -20,7 +21,7 @@ public class HudTable extends Table {
 	String[] paths = { "pause", "soundon", "setting", "shop", "home" };
 	ImageButton[] buttons = { pause, sound, options, shop, home };
 
-	public HudTable(Skin skin, GameScreen game) {
+	public HudTable(Skin skin, final GameScreen game) {
 		super(skin);
 
 		setFillParent(true);
@@ -59,6 +60,66 @@ public class HudTable extends Table {
 
 		add(left).expand().left().top();
 		add(right).expand().right().top();
+
+		Table bottom = new Table();
+		ImageButtonStyle ibs = new ImageButtonStyle();
+		ibs.imageUp = Icons.left.getDrawable();
+		ibs.imageDown = Icons.leftP.getDrawable();
+		ImageButton leftButton = new ImageButton(ibs);
+		if (Gdx.app.getType() == ApplicationType.Android) {
+			leftButton.addListener(new ClickListener() {
+				@Override
+				public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+					if (game.spawner.currentTotem != null) {
+						game.spawner.moveLeft();
+
+					}
+					return true;
+
+				}
+
+				@Override
+				public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+					super.touchUp(event, x, y, pointer, button);
+
+					game.spawner.stop();
+
+				}
+
+			});
+		}
+		
+		leftButton.setPosition(0, 0);
+
+		ImageButtonStyle ibs2 = new ImageButtonStyle();
+		ibs2.imageUp = Icons.right.getDrawable();
+		ibs2.imageDown = Icons.rightP.getDrawable();
+		ImageButton rightButton = new ImageButton(ibs2);
+		if (Gdx.app.getType() == ApplicationType.Android) {
+			rightButton.addListener(new ClickListener() {
+				@Override
+				public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+
+					if (game.spawner.currentTotem != null) {
+						game.spawner.moveRight();
+					}
+					return true;
+				}
+
+				@Override
+				public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+					super.touchUp(event, x, y, pointer, button);
+
+					game.spawner.stop();
+
+				}
+
+			});
+		}
+		rightButton.setPosition(Constants.WIDTH - rightButton.getWidth(), 0);
+
+		game.hudStage.addActor(leftButton);
+		game.hudStage.addActor(rightButton);
 
 		score = new Label("", style);
 

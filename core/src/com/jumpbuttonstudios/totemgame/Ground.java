@@ -15,6 +15,7 @@ public class Ground extends Box2DActor {
 		shape.setAsBox(width / 2, boxHeight / 2);
 
 		fixtureDef = new FixtureDef();
+		fixtureDef.friction = 1.0f;
 		fixtureDef.shape = shape;
 		createBody();
 		body.setUserData(this);
