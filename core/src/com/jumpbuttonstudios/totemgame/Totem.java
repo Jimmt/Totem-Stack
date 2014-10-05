@@ -11,14 +11,14 @@ public class Totem extends Box2DActor {
 	private Flag flag;
 	private Rectangle rect;
 	private int random;
-	private Image parachute;
+	protected Image parachute;
 
 	public Totem(float x, float y, World world) {
 		super("totem/00.png", world);
 		
 		random = MathUtils.random(3);
 		
-		parachute = Icons.parachute;
+		parachute = Icons.getImage("totem/parachute.png");
 		
 		
 		bodyDef.type = BodyType.DynamicBody;

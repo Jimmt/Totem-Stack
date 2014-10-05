@@ -6,6 +6,7 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.TimeUtils;
 
 public class TotemSpawner extends Actor {
 	PointChecker pointChecker;
@@ -18,6 +19,7 @@ public class TotemSpawner extends Actor {
 	float lerp = 0.1f;
 	float randomMagnitude = 0.3f;
 	float lastIncreaseTime = 999f, magIncreaseCap = 3f;
+	long nextGoldSpawn;
 
 	public TotemSpawner(GameScreen game) {
 		this.game = game;
@@ -26,6 +28,8 @@ public class TotemSpawner extends Actor {
 
 		pointChecker = new PointChecker(currentTotem, game.stage, game);
 		game.stage.addActor(pointChecker);
+
+		nextGoldSpawn = TimeUtils.millis() + 30000 + MathUtils.random(90000);
 	}
 
 	public void newTotem() {
@@ -43,9 +47,19 @@ public class TotemSpawner extends Actor {
 		}
 
 		if (newTotem) {
-//			Totem t = new Totem(MathUtils.random(Constants.SCLWIDTH / 2 - randomMagnitude,
-//					Constants.SCLWIDTH / 2 + randomMagnitude), spawnY, game.world);
- Totem t = new Totem(0.5f * Constants.SCLWIDTH, spawnY, game.world);
+
+// Totem t = new Totem(MathUtils.random(Constants.SCLWIDTH / 2 -
+// randomMagnitude,
+// Constants.SCLWIDTH / 2 + randomMagnitude), spawnY, game.world);
+
+			Totem t;
+			if (TimeUtils.millis() > nextGoldSpawn && totems.size > 3) {
+				nextGoldSpawn += 30000 + MathUtils.random(90000);
+				System.out.println(TimeUtils.millis() + " " + nextGoldSpawn);
+				t = new GoldTotem(0.5f * Constants.SCLWIDTH, spawnY, game.world);
+			} else {
+				t = new Totem(0.5f * Constants.SCLWIDTH, spawnY, game.world);
+			}
 			totems.add(t);
 			game.stage.addActor(t);
 			currentTotem = t;

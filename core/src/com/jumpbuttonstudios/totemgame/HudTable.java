@@ -63,8 +63,8 @@ public class HudTable extends Table {
 
 		Table bottom = new Table();
 		ImageButtonStyle ibs = new ImageButtonStyle();
-		ibs.imageUp = Icons.left.getDrawable();
-		ibs.imageDown = Icons.leftP.getDrawable();
+		ibs.imageUp = Icons.getImage("ui/gameplay/left.png").getDrawable();
+		ibs.imageDown = Icons.getImage("ui/gameplay/leftclicked.png").getDrawable();
 		ImageButton leftButton = new ImageButton(ibs);
 		if (Gdx.app.getType() == ApplicationType.Android) {
 			leftButton.addListener(new ClickListener() {
@@ -92,8 +92,8 @@ public class HudTable extends Table {
 		leftButton.setPosition(0, 0);
 
 		ImageButtonStyle ibs2 = new ImageButtonStyle();
-		ibs2.imageUp = Icons.right.getDrawable();
-		ibs2.imageDown = Icons.rightP.getDrawable();
+		ibs2.imageUp = Icons.getImage("ui/gameplay/right.png").getDrawable();
+		ibs2.imageDown = Icons.getImage("ui/gameplay/rightclicked.png").getDrawable();
 		ImageButton rightButton = new ImageButton(ibs2);
 		if (Gdx.app.getType() == ApplicationType.Android) {
 			rightButton.addListener(new ClickListener() {

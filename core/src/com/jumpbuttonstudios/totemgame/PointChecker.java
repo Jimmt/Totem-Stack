@@ -56,23 +56,23 @@ public class PointChecker extends Actor {
 			scoreY = totem.getY() - totem.getHeight() / 2;
 
 			if (onePointLeft.overlaps(totemRect) || onePointRight.overlaps(totemRect)) {
-				stage.addActor(Icons.one);
-				Icons.one.setPosition(scoreX, scoreY);
-				Icons.one.addAction(Actions.alpha(0, 0.5f));
+				stage.addActor(Icons.getImage("ui/gameplay/+1.png"));
+				Icons.getImage("ui/gameplay/+1.png").setPosition(scoreX, scoreY);
+				Icons.getImage("ui/gameplay/+1.png").addAction(Actions.alpha(0, 0.5f));
 				checkingFirst = false;
 				game.score += 1;
 			} 
 			if (twoPointLeft.overlaps(totemRect) || twoPointRight.overlaps(totemRect)) {
-				stage.addActor(Icons.two);
-				Icons.two.setPosition(scoreX, scoreY);
-				Icons.two.addAction(Actions.alpha(0, 0.5f));
+				stage.addActor(Icons.getImage("ui/gameplay/+2.png"));
+				Icons.getImage("ui/gameplay/+2.png").setPosition(scoreX, scoreY);
+				Icons.getImage("ui/gameplay/+2.png").addAction(Actions.alpha(0, 0.5f));
 				checkingFirst = false;
 				game.score += 2;
 			}
 			if (threePoint.overlaps(totemRect)) {
-				stage.addActor(Icons.three);
-				Icons.three.setPosition(scoreX, scoreY);
-				Icons.three.addAction(Actions.alpha(0, 0.5f));
+				stage.addActor(Icons.getImage("ui/gameplay/+3.png"));
+				Icons.getImage("ui/gameplay/+3.png").setPosition(scoreX, scoreY);
+				Icons.getImage("ui/gameplay/+3.png").addAction(Actions.alpha(0, 0.5f));
 				checkingFirst = false;
 				game.score += 3;
 			}
