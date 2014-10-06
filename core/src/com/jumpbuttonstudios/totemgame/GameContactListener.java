@@ -155,9 +155,11 @@ public class GameContactListener implements ContactListener {
 
 	public void checkPoints(Object a, Object b, Totem lastTotem) {
 		int i = getPlacePoints((Totem) a, (Totem) b);
-		game.score += i + 1;
+		
 
 		if (lastTotem instanceof GoldTotem) {
+			game.score += (i + 1) * 2;
+			
 			if (game.stage.getActors().contains(Icons.doublePoints[i], false)) {
 				Icons.doublePoints[i].addAction(Actions.alpha(1.0f));
 			} else {
@@ -174,6 +176,8 @@ public class GameContactListener implements ContactListener {
 			green = false;
 
 		} else {
+			game.score += i + 1;
+			
 			if (game.stage.getActors().contains(Icons.normalPoints[i], false)) {
 				Icons.normalPoints[i].addAction(Actions.alpha(1.0f));
 			} else {

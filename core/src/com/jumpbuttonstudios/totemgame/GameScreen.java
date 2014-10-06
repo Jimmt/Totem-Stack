@@ -61,7 +61,7 @@ public class GameScreen extends AbstractScreen {
 
 	public void gameOver() {
 		gameOver = true;
-		System.out.println("GAME OVER");
+		game.setScreen(new GameOverScreen(game));
 
 	}
 

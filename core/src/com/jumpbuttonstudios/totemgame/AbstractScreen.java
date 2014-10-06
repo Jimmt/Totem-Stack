@@ -15,8 +15,8 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 public class AbstractScreen implements Screen {
 	private Table table;
-	protected World world;
-	protected Stage stage;
+	public World world;
+	public Stage stage;
 	protected TotemGame game;
 	protected Box2DDebugRenderer debugRenderer;
 	protected OrthographicCamera camera;

@@ -13,7 +13,8 @@ public class Icons {
 	public static String[] paths = { "ui/gameplay/left.png", "ui/gameplay/leftclicked.png",
 			"ui/gameplay/right.png", "ui/gameplay/rightclicked.png", "ui/gameplay/+1.png",
 			"ui/gameplay/+2.png", "ui/gameplay/+2double.png", "ui/gameplay/+3.png",
-			"ui/gameplay/+4double.png", "ui/gameplay/+6double.png", "perfect.png", "good.png", "totem/parachute.png", "totem/special/specialshine.png" };
+			"ui/gameplay/+4double.png", "ui/gameplay/+6double.png", "perfect.png", "good.png",
+			"totem/parachute.png", "totem/special/specialshine.png", "ui/gameover/gowindow.png" };
 	public static ObjectMap<String, Image> images;
 
 	public static Image returnImage(String path) {
@@ -28,7 +29,7 @@ public class Icons {
 
 	public static void loadIcons() {
 		images = new ObjectMap<String, Image>();
-		
+
 		for (int i = 0; i < paths.length; i++) {
 			images.put(paths[i], returnImage(paths[i]));
 		}
