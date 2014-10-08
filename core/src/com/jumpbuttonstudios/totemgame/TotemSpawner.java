@@ -56,9 +56,10 @@ public class TotemSpawner extends Actor {
 			if (TimeUtils.millis() > nextGoldSpawn && totems.size > 3) {
 				nextGoldSpawn += 30000 + MathUtils.random(90000);
 				System.out.println(TimeUtils.millis() + " " + nextGoldSpawn);
-				t = new GoldTotem(0.5f * Constants.SCLWIDTH, spawnY, game.world);
+				t = new GoldTotem(0.5f * Constants.SCLWIDTH, spawnY, game.world, game.particleStage);
 			} else {
-				t = new Totem(0.5f * Constants.SCLWIDTH, spawnY, game.world);
+				t = new GoldTotem(0.5f * Constants.SCLWIDTH, spawnY, game.world, game.particleStage);
+//				t = new Totem(0.5f * Constants.SCLWIDTH, spawnY, game.world);
 			}
 			totems.add(t);
 			game.stage.addActor(t);

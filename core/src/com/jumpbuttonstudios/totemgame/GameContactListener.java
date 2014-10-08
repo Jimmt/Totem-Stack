@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.Animation.PlayMode;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
@@ -21,8 +22,9 @@ public class GameContactListener implements ContactListener {
 	GameScreen game;
 	Array<Totem> groundTotems;
 	AnimatedImage perfectLandImage;
-	ParticleEffectActor stars;
+	ParticleEffectActor stars, goldStars;
 	Image perfect, good;
+	Totem lastCheck;
 	float[] values = { 0.0f, 0.0f, 0.0f };
 	boolean green = true, yellow;
 
@@ -36,12 +38,11 @@ public class GameContactListener implements ContactListener {
 		game.stage.addActor(perfectLandImage);
 		perfectLandImage.animatedSprite.setAlpha(0.0f);
 		perfectLandImage.animatedSprite.getAnimation().setPlayMode(PlayMode.LOOP);
+
 		stars = new ParticleEffectActor("effects/stars.p", "effects");
 
-		stars.effect.setPosition(Constants.SCLWIDTH / 2, Constants.SCLHEIGHT / 2);
-		stars.effect.getEmitters().get(0).getScale().setHigh(1.28f, 1.28f);
-		stars.effect.getEmitters().get(0).getVelocity().setHigh(0.0f, .7f);
-		stars.effect.start();
+		goldStars = new ParticleEffectActor("totem/special/stars.p", "totem/special");
+		game.particleStage.addActor(goldStars);
 
 		perfect = Icons.getImage("perfect.png");
 		good = Icons.getImage("good.png");
@@ -62,6 +63,19 @@ public class GameContactListener implements ContactListener {
 			values[2] = 0;
 
 			stars.effect.getEmitters().get(0).getTint().setColors(values);
+		}
+
+		if (game.spawner.totems.get(game.spawner.totems.size - 1) instanceof GoldTotem) {
+			GoldTotem lastTotem = (GoldTotem) (game.spawner.totems.get(game.spawner.totems.size - 1));
+			goldStars.effect.setPosition(lastTotem.getX() / Constants.SCALE,
+					(lastTotem.getY() + lastTotem.getHeight() / 2) / Constants.SCALE);
+			
+			if(lastCheck != lastTotem){
+				goldStars.effect.start();
+				lastCheck = lastTotem;
+			}
+			
+			
 		}
 
 	}
@@ -114,6 +128,7 @@ public class GameContactListener implements ContactListener {
 						&& ((Totem) b) instanceof GoldTotem) {
 
 				}
+
 				createTotem();
 
 				resetParticles();
@@ -140,13 +155,15 @@ public class GameContactListener implements ContactListener {
 
 	public void resetParticles() {
 
-		if (game.stage.getActors().contains(stars, false)) {
-			game.stage.getActors().removeValue(stars, false);
+		if (game.particleStage.getActors().contains(stars, false)) {
+			game.particleStage.getActors().removeValue(stars, false);
 		}
-		game.stage.addActor(stars);
+		game.particleStage.addActor(stars);
 
 		stars.effect.allowCompletion();
 		stars.effect.start();
+		goldStars.effect.allowCompletion();
+		goldStars.effect.start();
 	}
 
 	public Array<Totem> getGroundTotems() {
@@ -155,11 +172,10 @@ public class GameContactListener implements ContactListener {
 
 	public void checkPoints(Object a, Object b, Totem lastTotem) {
 		int i = getPlacePoints((Totem) a, (Totem) b);
-		
 
 		if (lastTotem instanceof GoldTotem) {
 			game.score += (i + 1) * 2;
-			
+
 			if (game.stage.getActors().contains(Icons.doublePoints[i], false)) {
 				Icons.doublePoints[i].addAction(Actions.alpha(1.0f));
 			} else {
@@ -177,7 +193,7 @@ public class GameContactListener implements ContactListener {
 
 		} else {
 			game.score += i + 1;
-			
+
 			if (game.stage.getActors().contains(Icons.normalPoints[i], false)) {
 				Icons.normalPoints[i].addAction(Actions.alpha(1.0f));
 			} else {
@@ -199,16 +215,15 @@ public class GameContactListener implements ContactListener {
 		good.setPosition(lastTotem.getX() - Constants.SCALE * good.getWidth(), lastTotem.getY()
 				+ lastTotem.getHeight() / 2 - Constants.SCALE * good.getHeight() / 2);
 
-		stars.setPosition(lastTotem.getX(), lastTotem.getY());
-
 		perfectLandImage.animatedSprite.setPosition(
 				lastTotem.getX() + lastTotem.getWidth() / 2
 						- perfectLandImage.animatedSprite.getWidth() / 2,
 				lastTotem.getY() + lastTotem.getHeight() / 2
 						- perfectLandImage.animatedSprite.getHeight() / 2);
 
-		stars.effect.setPosition(lastTotem.getX() + lastTotem.getWidth() / 2, lastTotem.getY()
-				+ lastTotem.getHeight() / 2);
+		stars.effect.setPosition((lastTotem.getX() + lastTotem.getWidth() / 2) / Constants.SCALE,
+				(lastTotem.getY() + lastTotem.getHeight() / 2) / Constants.SCALE);
+
 	}
 
 	public int getPlacePoints(Totem current, Totem bottom) {

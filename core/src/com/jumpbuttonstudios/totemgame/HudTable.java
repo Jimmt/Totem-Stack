@@ -34,7 +34,7 @@ public class HudTable extends Table {
 		Image header = new Image(new Texture(Gdx.files.internal("ui/top/header.png")));
 		header.setY(Constants.HEIGHT - header.getHeight());
 
-		game.hudStage.addActor(header);
+		game.hudStage.addActor(header);	
 
 		for (int i = 0; i < buttons.length; i++) {
 			ImageButtonStyle ibstyle = new ImageButtonStyle();
@@ -124,7 +124,9 @@ public class HudTable extends Table {
 		score = new Label("", style);
 
 		score.setPosition(Constants.WIDTH / 2 - 18, Constants.HEIGHT - 44);
+		
 		game.hudStage.addActor(score);
+		
 
 	}
 

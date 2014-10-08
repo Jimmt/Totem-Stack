@@ -21,9 +21,12 @@ public class GameScreen extends AbstractScreen {
 	int score = 0;
 	boolean gameOver;
 	Array<ParticleEffect> particles;
+	Stage particleStage;
 
 	public GameScreen(TotemGame game) {
 		super(game);
+		
+		particleStage = new Stage();
 		
 		Icons.loadIcons();
 
@@ -52,6 +55,8 @@ public class GameScreen extends AbstractScreen {
 
 		sr = new ShapeRenderer();
 		spawner.newTotem();
+		
+		
 	}
 
 	@Override
@@ -61,7 +66,7 @@ public class GameScreen extends AbstractScreen {
 
 	public void gameOver() {
 		gameOver = true;
-		game.setScreen(new GameOverScreen(game));
+		game.setScreen(new GameOverScreen(game, score));
 
 	}
 
@@ -93,7 +98,8 @@ public class GameScreen extends AbstractScreen {
 // pointChecker.totemRect.width, pointChecker.totemRect.height, 0);
 // sr.end();
 // }
-
+		
+		
 		if (spawner.totems.size > 1) {
 			if (spawner.totems.get(spawner.totems.size - 1).getY() < spawner.totems.get(
 					spawner.totems.size - 2).getY()
@@ -109,11 +115,15 @@ public class GameScreen extends AbstractScreen {
 		if (contactListener.getGroundTotems().size > 1) {
 			gameOver();
 		}
+		
+		particleStage.act(delta);
+		particleStage.draw();
+		particleStage.getCamera().position.set(stage.getCamera().position.x / Constants.SCALE, stage.getCamera().position.y / Constants.SCALE, 0);
 
-		hudStage.act(delta);
-		hudStage.draw();
-		Table.drawDebug(hudStage);
 		hudTable.debug();
+		hudTable.act(delta);
+		hudStage.draw();
+		
 		
 		
 	}

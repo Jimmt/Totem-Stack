@@ -8,7 +8,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
 public class Totem extends Box2DActor {
-	private Flag flag;
+	protected Flag flag;
 	private Rectangle rect;
 	private int random;
 	protected Image parachute;

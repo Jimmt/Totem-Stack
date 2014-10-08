@@ -11,6 +11,7 @@ public class TotemGame extends Game {
 	
 	@Override
 	public void create() {
+//		setScreen(new GameOverScreen(this, 0));
 		setScreen(new MenuScreen(this));
 	}
 	
