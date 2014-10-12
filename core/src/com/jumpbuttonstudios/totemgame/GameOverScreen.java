@@ -37,9 +37,9 @@ public class GameOverScreen extends AbstractScreen {
 		hudStage.addActor(scoreLabel);
 
 		Label bestScoreLabel = new Label("0123456789", style);
-		bestScoreLabel.setY(panel.getY() + panel.getHeight() * 0.125f + scoreLabel.getHeight() / 4);
-		bestScoreLabel.setX(Constants.WIDTH / 2 - scoreLabel.getWidth() / 2);
-		System.out.println(scoreLabel.getWidth() / Constants.SCALE);
+		bestScoreLabel.setY(panel.getY() + panel.getHeight() * 0.125f + bestScoreLabel.getHeight() / 4);
+		bestScoreLabel.setX(Constants.WIDTH / 2 - bestScoreLabel.getWidth() / 2);
+		
 		hudStage.addActor(bestScoreLabel);
 		
 		

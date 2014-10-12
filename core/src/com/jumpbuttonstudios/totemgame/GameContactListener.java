@@ -6,6 +6,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.Animation.PlayMode;
 import com.badlogic.gdx.math.MathUtils;
@@ -22,11 +23,13 @@ public class GameContactListener implements ContactListener {
 	GameScreen game;
 	Array<Totem> groundTotems;
 	AnimatedImage perfectLandImage;
-	ParticleEffectActor stars, goldStars;
+	ParticleEffectActor stars, goldStars, ice;
 	Image perfect, good;
 	Totem lastCheck;
 	float[] values = { 0.0f, 0.0f, 0.0f };
 	boolean green = true, yellow;
+	Sprite iceSprite1, iceSprite2;
+	float lastChangeTime = 999f, changeCap = .5f;
 
 	public GameContactListener(GameScreen game) {
 		this.game = game;
@@ -42,14 +45,36 @@ public class GameContactListener implements ContactListener {
 		stars = new ParticleEffectActor("effects/stars.p", "effects");
 
 		goldStars = new ParticleEffectActor("totem/special/stars.p", "totem/special");
-		game.particleStage.addActor(goldStars);
+
+		ice = new ParticleEffectActor("totem/ice/ice.p", "totem/ice");
+		iceSprite1 = new Sprite(Icons.iceImages.get(MathUtils.random(3)));
+		iceSprite2 = new Sprite(Icons.iceImages.get(MathUtils.random(3)));
+
+		ice.effect.getEmitters().get(0).setSprite(iceSprite1);
+		ice.effect.getEmitters().get(1).setSprite(iceSprite2);
+		
+		game.particleStage.addActor(ice);
 
 		perfect = Icons.getImage("perfect.png");
 		good = Icons.getImage("good.png");
 
 	}
 
-	public void update() {
+	public void update(float delta) {
+
+		if (lastChangeTime > changeCap) {
+			lastChangeTime = 0;
+   
+			iceSprite1.setRegion(Icons.iceImages.get(MathUtils.random(3)));
+			iceSprite2.setRegion(Icons.iceImages.get(MathUtils.random(3)));
+
+			ice.effect.getEmitters().get(0).setSprite(iceSprite1);
+			ice.effect.getEmitters().get(1).setSprite(iceSprite2);
+
+		} else {
+			lastChangeTime += delta;
+		}
+
 		if (green) {
 			values[0] = 0.07f;
 			values[1] = MathUtils.random();
@@ -66,16 +91,37 @@ public class GameContactListener implements ContactListener {
 		}
 
 		if (game.spawner.totems.get(game.spawner.totems.size - 1) instanceof GoldTotem) {
-			GoldTotem lastTotem = (GoldTotem) (game.spawner.totems.get(game.spawner.totems.size - 1));
+			GoldTotem lastTotem = (GoldTotem) (game.spawner.totems
+					.get(game.spawner.totems.size - 1));
 			goldStars.effect.setPosition(lastTotem.getX() / Constants.SCALE,
 					(lastTotem.getY() + lastTotem.getHeight() / 2) / Constants.SCALE);
-			
-			if(lastCheck != lastTotem){
+
+			if (lastCheck != lastTotem) {
+				if (!game.particleStage.getActors().contains(goldStars, false)) {
+					game.particleStage.addActor(goldStars);
+				}
+
+				goldStars.effect.reset();
 				goldStars.effect.start();
 				lastCheck = lastTotem;
 			}
-			
-			
+
+		} else if (game.spawner.totems.get(game.spawner.totems.size - 1) instanceof IceTotem) {
+			IceTotem lastTotem = (IceTotem) (game.spawner.totems.get(game.spawner.totems.size - 1));
+
+			ice.effect.setPosition(lastTotem.getX() / Constants.SCALE,
+					(lastTotem.getY() + lastTotem.getHeight() / 2) / Constants.SCALE);
+
+			if (lastCheck != lastTotem) {
+				if (!game.particleStage.getActors().contains(ice, false)) {
+					game.particleStage.addActor(ice);
+				}
+
+				ice.effect.reset();
+				ice.effect.start();
+				lastCheck = lastTotem;
+			}
+
 		}
 
 	}
@@ -85,6 +131,12 @@ public class GameContactListener implements ContactListener {
 		Object a = contact.getFixtureA().getBody().getUserData();
 		Object b = contact.getFixtureB().getBody().getUserData();
 
+		if (a instanceof GoldTotem) {
+			((GoldTotem) a).removeAura();
+		}
+		if (b instanceof GoldTotem) {
+			((GoldTotem) b).removeAura();
+		}
 		if (a instanceof Totem || b instanceof Totem) {
 			if (a instanceof Totem) {
 				((Totem) a).removeParachute();
@@ -162,6 +214,7 @@ public class GameContactListener implements ContactListener {
 
 		stars.effect.allowCompletion();
 		stars.effect.start();
+
 		goldStars.effect.allowCompletion();
 		goldStars.effect.start();
 	}
@@ -171,41 +224,55 @@ public class GameContactListener implements ContactListener {
 	}
 
 	public void checkPoints(Object a, Object b, Totem lastTotem) {
-		int i = getPlacePoints((Totem) a, (Totem) b);
+		int points = getPlacePoints((Totem) a, (Totem) b);
 
 		if (lastTotem instanceof GoldTotem) {
-			game.score += (i + 1) * 2;
 
-			if (game.stage.getActors().contains(Icons.doublePoints[i], false)) {
-				Icons.doublePoints[i].addAction(Actions.alpha(1.0f));
+			game.score += (points + 1) * 2;
+
+			if (game.stage.getActors().contains(Icons.doublePoints[points], false)) {
+				Icons.doublePoints[points].addAction(Actions.alpha(1.0f));
 			} else {
-				game.stage.addActor(Icons.doublePoints[i]);
+				game.stage.addActor(Icons.doublePoints[points]);
 			}
-			Icons.doublePoints[i].addAction(Actions.sequence(Actions.alpha(0, 0.5f)));
+			Icons.doublePoints[points].addAction(Actions.sequence(Actions.alpha(0, 0.5f)));
 
-			Icons.doublePoints[i].setPosition(
-					lastTotem.getX() + lastTotem.getWidth(),
+			Icons.doublePoints[points].setPosition(
+					lastTotem.body.getPosition().x + lastTotem.width / 2,
 					lastTotem.getY() + lastTotem.getHeight() / 2
-							- Icons.doublePoints[i].getHeight() * Constants.SCALE / 2);
+							- Icons.doublePoints[points].getHeight() * Constants.SCALE / 2);
 
 			yellow = true;
 			green = false;
 
 		} else {
-			game.score += i + 1;
+			game.score += points + 1;
 
-			if (game.stage.getActors().contains(Icons.normalPoints[i], false)) {
-				Icons.normalPoints[i].addAction(Actions.alpha(1.0f));
+			if (game.stage.getActors().contains(Icons.normalPoints[points], false)) {
+				Icons.normalPoints[points].addAction(Actions.alpha(1.0f));
 			} else {
-				game.stage.addActor(Icons.normalPoints[i]);
+				game.stage.addActor(Icons.normalPoints[points]);
 			}
-			Icons.normalPoints[i].addAction(Actions.sequence(Actions.alpha(0, 0.5f)));
+			Icons.normalPoints[points].addAction(Actions.sequence(Actions.alpha(0, 0.5f)));
 
-			Icons.normalPoints[i].setPosition(lastTotem.getX() + lastTotem.getWidth(),
-					lastTotem.getY());
+			Icons.normalPoints[points].setPosition(lastTotem.getX() + lastTotem.getWidth(),
+					lastTotem.getY() + lastTotem.getHeight() / 4);
 
 			green = true;
 			yellow = false;
+
+			if (lastTotem instanceof IceTotem) {
+				ice.effect.allowCompletion();
+				ice.effect.start();
+				
+				for (int i = 0; i < 3; i++) {
+					if (game.spawner.totems.size > i + 1) {
+						game.spawner.totems.get(game.spawner.totems.size - 2 - i).freeze();
+					}
+
+				}
+
+			}
 		}
 
 		perfect.setPosition(
@@ -224,12 +291,16 @@ public class GameContactListener implements ContactListener {
 		stars.effect.setPosition((lastTotem.getX() + lastTotem.getWidth() / 2) / Constants.SCALE,
 				(lastTotem.getY() + lastTotem.getHeight() / 2) / Constants.SCALE);
 
+		ice.effect.setPosition((lastTotem.getX() + lastTotem.getWidth() / 2) / Constants.SCALE,
+				(lastTotem.getY() + lastTotem.getHeight() / 2) / Constants.SCALE);
+
 	}
 
 	public int getPlacePoints(Totem current, Totem bottom) {
-		float distance = Math.abs(current.getX() - bottom.getX());
+		float distance = Math.abs(current.body.getPosition().x - bottom.body.getPosition().x);
 
 		if (distance <= 10f * Constants.SCALE) {
+
 			if (distance < 3f * Constants.SCALE) {
 
 				if (game.stage.getActors().contains(perfect, false)) {

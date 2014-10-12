@@ -3,6 +3,9 @@ package com.jumpbuttonstudios.totemgame;
 import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.Array;
@@ -20,6 +23,9 @@ public class TotemSpawner extends Actor {
 	float randomMagnitude = 0.3f;
 	float lastIncreaseTime = 999f, magIncreaseCap = 3f;
 	long nextGoldSpawn;
+	Array<Cloud> clouds = new Array<Cloud>();
+
+	int count;
 
 	public TotemSpawner(GameScreen game) {
 		this.game = game;
@@ -30,15 +36,26 @@ public class TotemSpawner extends Actor {
 		game.stage.addActor(pointChecker);
 
 		nextGoldSpawn = TimeUtils.millis() + 30000 + MathUtils.random(90000);
+		
+		clouds.add(new Cloud("bg/fog.png"));
+		
+		game.stage.addActor(clouds.get(0));
 	}
 
 	public void newTotem() {
 		newTotem = true;
 	}
+	
+	@Override
+	public void draw(Batch batch, float parentAlpha){
+		super.draw(batch, parentAlpha);
+		
+		
+	}
 
 	@Override
 	public void act(float delta) {
-
+		game.stage.addActor(clouds.get(0));
 		if (lastIncreaseTime > magIncreaseCap) {
 			randomMagnitude += 0.1f;
 			lastIncreaseTime = 0;
@@ -58,8 +75,13 @@ public class TotemSpawner extends Actor {
 				System.out.println(TimeUtils.millis() + " " + nextGoldSpawn);
 				t = new GoldTotem(0.5f * Constants.SCLWIDTH, spawnY, game.world, game.particleStage);
 			} else {
-				t = new GoldTotem(0.5f * Constants.SCLWIDTH, spawnY, game.world, game.particleStage);
-//				t = new Totem(0.5f * Constants.SCLWIDTH, spawnY, game.world);
+// t = new GoldTotem(0.5f * Constants.SCLWIDTH, spawnY, game.world,
+// game.particleStage);
+//					t = new IceTotem(0.5f * Constants.SCLWIDTH, spawnY, game.world,
+//							game.particleStage);
+				
+					t = new Totem(0.5f * Constants.SCLWIDTH, spawnY, game.world);
+
 			}
 			totems.add(t);
 			game.stage.addActor(t);

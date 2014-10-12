@@ -5,6 +5,7 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -79,7 +80,7 @@ public class GameScreen extends AbstractScreen {
 	public void render(float delta) {
 		super.render(delta);
 		
-		contactListener.update();
+		contactListener.update(delta);
 
 // if (currentTotem != null) {
 // sr.setProjectionMatrix(camera.combined);
@@ -120,10 +121,10 @@ public class GameScreen extends AbstractScreen {
 		particleStage.draw();
 		particleStage.getCamera().position.set(stage.getCamera().position.x / Constants.SCALE, stage.getCamera().position.y / Constants.SCALE, 0);
 
+		
 		hudTable.debug();
 		hudTable.act(delta);
 		hudStage.draw();
-		
 		
 		
 	}

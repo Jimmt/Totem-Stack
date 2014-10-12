@@ -12,70 +12,94 @@ public class Totem extends Box2DActor {
 	private Rectangle rect;
 	private int random;
 	protected Image parachute;
+	protected Image freeze;
+	boolean isFrozen = false, enableParachute = true;
 
 	public Totem(float x, float y, World world) {
 		super("totem/00.png", world);
-		
+
 		random = MathUtils.random(3);
-		
+
 		parachute = Icons.getImage("totem/parachute.png");
-		
-		
+		freeze = Icons.returnImage("totem/ice/freeze.png");
+
 		bodyDef.type = BodyType.DynamicBody;
 		bodyDef.angularDamping = 1.0f;
-		
+
 		fixtureDef.restitution = 0.0f;
 		fixtureDef.density = 1.0f;
 		fixtureDef.friction = 1.0f;
-		
+
 		createBody();
-		body.setUserData(this);   
+		body.setUserData(this);
 		body.setTransform(x, y, 0);
 		setY(y);
 		setX(x);
 
 		rect = new Rectangle(x, y, getWidth(), getHeight());
 	}
-	
-	public Flag getFlag(){
-		return flag;
-	}
-	
-	public void removeParachute(){
+
+	public void freeze() {
+		isFrozen = true;
+		freeze.setPosition(getX() + getWidth() / 2 - freeze.getWidth() / 2 * Constants.SCALE,
+				getY());
+		
 		
 	}
-	
-	public void createFlag(){
+
+	public Flag getFlag() {
+		return flag;
+	}
+
+	public void removeParachute() {
+		enableParachute = false;
+	}
+
+	public void createFlag() {
 		flag = new Flag(getX(), getY());
 		getStage().addActor(flag);
 	}
-	
-	public Rectangle getRectangle(){
+
+	public Rectangle getRectangle() {
 		return rect;
 	}
-	
+
 	@Override
-	public void draw(Batch batch, float parentAlpha){
+	public void draw(Batch batch, float parentAlpha) {
 		super.draw(batch, parentAlpha);
-		
-		parachute.draw(batch, parentAlpha);
-		
+
+		if (isFrozen) {
+			freeze.draw(batch, parentAlpha);
+		}
+		if (enableParachute) {
+			parachute.draw(batch, parentAlpha);
+		}
+
 	}
-	
+
 	@Override
-	public void act(float delta){
+	public void act(float delta) {
 		super.act(delta);
 		
-		rect.set(getX(), getY(), getWidth(), getHeight());
-		
-		if(flag != null){
-		flag.animatedSprite.setPosition(getX() + getWidth() - 20f * Constants.SCALE, getY() + getHeight() - 52f * Constants.SCALE);
+		if(isFrozen){
+			body.setType(BodyType.StaticBody);
 		}
-		
-		parachute.setPosition(getX() - 25f * Constants.SCALE, getY() + getHeight() + 3f * Constants.SCALE);
-		
+
+		rect.set(getX(), getY(), getWidth(), getHeight());
+
+		freeze.setPosition(getX() + getWidth() / 2 - freeze.getWidth() / 2 * Constants.SCALE,
+				getY());
+
+		if (flag != null) {
+			flag.animatedSprite.setPosition(getX() + getWidth() - 20f * Constants.SCALE, getY()
+					+ getHeight() - 52f * Constants.SCALE);
+		}
+
+		parachute.setPosition(getX() - 25f * Constants.SCALE, getY() + getHeight() + 3f
+				* Constants.SCALE);
+
 		setOrigin(width / 2, height / 2);
-		
+
 		setRotation(body.getTransform().getRotation() * MathUtils.radDeg);
 	}
 
