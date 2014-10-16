@@ -215,8 +215,7 @@ public class GameContactListener implements ContactListener {
 		stars.effect.allowCompletion();
 		stars.effect.start();
 
-		goldStars.effect.allowCompletion();
-		goldStars.effect.start();
+		
 	}
 
 	public Array<Totem> getGroundTotems() {
@@ -244,6 +243,9 @@ public class GameContactListener implements ContactListener {
 
 			yellow = true;
 			green = false;
+			
+			goldStars.effect.allowCompletion();
+			
 
 		} else {
 			game.score += points + 1;

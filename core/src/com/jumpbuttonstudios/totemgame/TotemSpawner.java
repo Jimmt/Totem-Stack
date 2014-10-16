@@ -20,10 +20,13 @@ public class TotemSpawner extends Actor {
 	boolean newTotem;
 	GameScreen game;
 	float lerp = 0.1f;
-	float randomMagnitude = 0.3f;
+	float randomMagnitude = 0.3f, windSpeed;
 	float lastIncreaseTime = 999f, magIncreaseCap = 3f;
+	float windChangeTime = 999f, windChangeCap = 15f;
 	long nextGoldSpawn;
+	float cloudSpawnTime = 999f, cloudSpawnCap;
 	Array<Cloud> clouds = new Array<Cloud>();
+	Zone zone = Zone.LOWER;
 
 	int count;
 
@@ -36,26 +39,73 @@ public class TotemSpawner extends Actor {
 		game.stage.addActor(pointChecker);
 
 		nextGoldSpawn = TimeUtils.millis() + 30000 + MathUtils.random(90000);
-		
-		clouds.add(new Cloud("bg/fog.png"));
-		
-		game.stage.addActor(clouds.get(0));
+		cloudSpawnCap = MathUtils.random(zone.getCloudFrequency() * 1000);
+
+	}
+
+	public void setZone(Zone zone) {
+		this.zone = zone;
 	}
 
 	public void newTotem() {
 		newTotem = true;
 	}
-	
+
 	@Override
-	public void draw(Batch batch, float parentAlpha){
+	public void draw(Batch batch, float parentAlpha) {
 		super.draw(batch, parentAlpha);
-		
-		
+
 	}
 
 	@Override
 	public void act(float delta) {
-		game.stage.addActor(clouds.get(0));
+
+		for (int i = 0; i < Zone.getArray().length; i++) {
+			if (game.camera.position.y + Constants.SCLHEIGHT / 2 > Zone.getArray()[i].getY()) {
+				zone = Zone.getArray()[i];
+				cloudSpawnCap = (long) zone.getCloudFrequency();
+
+			}
+		}
+
+		if (windChangeTime > windChangeCap) {
+			windChangeTime = 0;
+			windSpeed = MathUtils.random(-0.01f, 0.01f);
+		} else {
+			windChangeTime += delta;
+		}
+
+		for (int i = 0; i < clouds.size; i++) {
+			clouds.get(i).influence = windSpeed;
+		}
+
+		System.out.println(cloudSpawnTime + " " + cloudSpawnCap);
+
+		if (cloudSpawnTime > cloudSpawnCap && totems.size > 0) {
+			if (cloudSpawnCap != -1) {
+				Cloud cloud = new Cloud(game.camera.position.y + Constants.SCLHEIGHT / 2, windSpeed);
+				clouds.add(cloud);
+				game.stage.addActor(cloud);
+				cloudSpawnCap = MathUtils.random(zone.getCloudFrequency());
+				cloudSpawnTime = 0;
+				System.out.println("cloud");
+			}
+		} else {
+			cloudSpawnTime += delta;
+			
+		}
+
+		if (totems.size > 0) {
+			for (int i = 0; i < clouds.size; i++) {
+				if (clouds.get(i).hitbox.overlaps(totems.get(totems.size - 1).getRectangle())) {
+
+					totems.get(totems.size - 1).body.applyForceToCenter(
+							clouds.get(i).influence * 3000f, 0, true);
+
+				}
+			}
+		}
+
 		if (lastIncreaseTime > magIncreaseCap) {
 			randomMagnitude += 0.1f;
 			lastIncreaseTime = 0;
@@ -72,15 +122,15 @@ public class TotemSpawner extends Actor {
 			Totem t;
 			if (TimeUtils.millis() > nextGoldSpawn && totems.size > 3) {
 				nextGoldSpawn += 30000 + MathUtils.random(90000);
-				System.out.println(TimeUtils.millis() + " " + nextGoldSpawn);
+
 				t = new GoldTotem(0.5f * Constants.SCLWIDTH, spawnY, game.world, game.particleStage);
 			} else {
 // t = new GoldTotem(0.5f * Constants.SCLWIDTH, spawnY, game.world,
 // game.particleStage);
-//					t = new IceTotem(0.5f * Constants.SCLWIDTH, spawnY, game.world,
-//							game.particleStage);
-				
-					t = new Totem(0.5f * Constants.SCLWIDTH, spawnY, game.world);
+// t = new IceTotem(0.5f * Constants.SCLWIDTH, spawnY, game.world,
+// game.particleStage);
+
+				t = new Totem(0.5f * Constants.SCLWIDTH, spawnY, game.world);
 
 			}
 			totems.add(t);
