@@ -60,120 +60,122 @@ public class TotemSpawner extends Actor {
 	@Override
 	public void act(float delta) {
 
-		for (int i = 0; i < Zone.getArray().length; i++) {
-			if (game.camera.position.y + Constants.SCLHEIGHT / 2 > Zone.getArray()[i].getY()) {
-				zone = Zone.getArray()[i];
-				cloudSpawnCap = (long) zone.getCloudFrequency();
-
-			}
-		}
-
-		if (windChangeTime > windChangeCap) {
-			windChangeTime = 0;
-			windSpeed = MathUtils.random(-0.01f, 0.01f);
-		} else {
-			windChangeTime += delta;
-		}
-
-		for (int i = 0; i < clouds.size; i++) {
-			clouds.get(i).influence = windSpeed;
-		}
-
-		System.out.println(cloudSpawnTime + " " + cloudSpawnCap);
-
-		if (cloudSpawnTime > cloudSpawnCap && totems.size > 0) {
-			if (cloudSpawnCap != -1) {
-				Cloud cloud = new Cloud(game.camera.position.y + Constants.SCLHEIGHT / 2, windSpeed);
-				clouds.add(cloud);
-				game.stage.addActor(cloud);
-				cloudSpawnCap = MathUtils.random(zone.getCloudFrequency());
-				cloudSpawnTime = 0;
-				System.out.println("cloud");
-			}
-		} else {
-			cloudSpawnTime += delta;
-			
-		}
-
-		if (totems.size > 0) {
-			for (int i = 0; i < clouds.size; i++) {
-				if (clouds.get(i).hitbox.overlaps(totems.get(totems.size - 1).getRectangle())) {
-
-					totems.get(totems.size - 1).body.applyForceToCenter(
-							clouds.get(i).influence * 3000f, 0, true);
+		if (!game.gameOver) {
+			for (int i = 0; i < Zone.getArray().length; i++) {
+				if (game.camera.position.y + Constants.SCLHEIGHT / 2 > Zone.getArray()[i].getY()) {
+					zone = Zone.getArray()[i];
+					cloudSpawnCap = (long) zone.getCloudFrequency();
 
 				}
 			}
-		}
 
-		if (lastIncreaseTime > magIncreaseCap) {
-			randomMagnitude += 0.1f;
-			lastIncreaseTime = 0;
-		} else {
-			lastIncreaseTime += delta;
-		}
+			if (windChangeTime > windChangeCap) {
+				windChangeTime = 0;
+				windSpeed = MathUtils.random(-0.01f, 0.01f);
+			} else {
+				windChangeTime += delta;
+			}
 
-		if (newTotem) {
+			for (int i = 0; i < clouds.size; i++) {
+				clouds.get(i).influence = windSpeed;
+			}
+
+			if (cloudSpawnTime > cloudSpawnCap && totems.size > 0) {
+				if (cloudSpawnCap != -1) {
+					Cloud cloud = new Cloud(game.camera.position.y + Constants.SCLHEIGHT * 2,
+							windSpeed);
+					clouds.add(cloud);
+					game.stage.addActor(cloud);
+					cloudSpawnCap = MathUtils.random(zone.getCloudFrequency());
+					cloudSpawnTime = 0;
+
+				}
+			} else {
+				cloudSpawnTime += delta;
+
+			}
+
+			if (totems.size > 0) {
+				for (int i = 0; i < clouds.size; i++) {
+					if (clouds.get(i).hitbox.overlaps(totems.get(totems.size - 1).getRectangle())) {
+
+						totems.get(totems.size - 1).body.applyForceToCenter(
+								clouds.get(i).influence * 1000f, 0, true);
+
+					}
+				}
+			}
+
+			if (lastIncreaseTime > magIncreaseCap) {
+				randomMagnitude += 0.1f;
+				lastIncreaseTime = 0;
+			} else {
+				lastIncreaseTime += delta;
+			}
+
+			if (newTotem) {
 
 // Totem t = new Totem(MathUtils.random(Constants.SCLWIDTH / 2 -
 // randomMagnitude,
 // Constants.SCLWIDTH / 2 + randomMagnitude), spawnY, game.world);
 
-			Totem t;
-			if (TimeUtils.millis() > nextGoldSpawn && totems.size > 3) {
-				nextGoldSpawn += 30000 + MathUtils.random(90000);
+				Totem t;
+				if (TimeUtils.millis() > nextGoldSpawn && totems.size > 3) {
+					nextGoldSpawn += 30000 + MathUtils.random(90000);
 
-				t = new GoldTotem(0.5f * Constants.SCLWIDTH, spawnY, game.world, game.particleStage);
-			} else {
+					t = new GoldTotem(0.5f * Constants.SCLWIDTH, spawnY, game.world,
+							game.particleStage);
+				} else {
 // t = new GoldTotem(0.5f * Constants.SCLWIDTH, spawnY, game.world,
 // game.particleStage);
 // t = new IceTotem(0.5f * Constants.SCLWIDTH, spawnY, game.world,
 // game.particleStage);
 
-				t = new Totem(0.5f * Constants.SCLWIDTH, spawnY, game.world);
+					t = new Totem(0.5f * Constants.SCLWIDTH, spawnY, game.world);
 
-			}
-			totems.add(t);
-			game.stage.addActor(t);
-			currentTotem = t;
-			newTotem = false;
-
-			if (totems.size >= 3) {
-				spawnY += currentTotem.getHeight();
-			}
-		}
-
-		for (int i = 9; i < totems.size; i += 10) {
-
-			if (totems.get(i).getFlag() == null) {
-				totems.get(i).createFlag();
-			}
-		}
-
-		if (!game.gameOver) {
-			if (totems.size > 3) {
-				game.camera.position.y += (totems.get(totems.size - 1 - 3).getY() + 5f - game.camera.position.y)
-						* lerp;
-			}
-		} else {
-			game.camera.position.y -= (game.camera.position.y - 1) * lerp;
-		}
-
-		if (Gdx.app.getType() == ApplicationType.Desktop) {
-			if (currentTotem != null) {
-				if (Gdx.input.isKeyPressed(Keys.A)) {
-					moveLeft();
 				}
-				if (Gdx.input.isKeyPressed(Keys.D)) {
-					moveRight();
-				}
-				if (!Gdx.input.isKeyPressed(Keys.A) && !Gdx.input.isKeyPressed(Keys.D)) {
-					stop();
+				totems.add(t);
+				game.stage.addActor(t);
+				currentTotem = t;
+				newTotem = false;
+
+				if (totems.size >= 3) {
+					spawnY += currentTotem.getHeight();
 				}
 			}
-		}
 
-		pointChecker.setTotem(currentTotem);
+			for (int i = 9; i < totems.size; i += 10) {
+
+				if (totems.get(i).getFlag() == null) {
+					totems.get(i).createFlag();
+				}
+			}
+
+			if (!game.gameOver) {
+				if (totems.size > 3) {
+					game.camera.position.y += (totems.get(totems.size - 1 - 3).getY() + 5f - game.camera.position.y)
+							* lerp;
+				}
+			} else {
+				game.camera.position.y -= (game.camera.position.y - 1) * lerp;
+			}
+
+			if (Gdx.app.getType() == ApplicationType.Desktop) {
+				if (currentTotem != null) {
+					if (Gdx.input.isKeyPressed(Keys.A)) {
+						moveLeft();
+					}
+					if (Gdx.input.isKeyPressed(Keys.D)) {
+						moveRight();
+					}
+					if (!Gdx.input.isKeyPressed(Keys.A) && !Gdx.input.isKeyPressed(Keys.D)) {
+						stop();
+					}
+				}
+			}
+
+			pointChecker.setTotem(currentTotem);
+		}
 	}
 
 	public void moveLeft() {

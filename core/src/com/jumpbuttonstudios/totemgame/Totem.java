@@ -27,7 +27,7 @@ public class Totem extends Box2DActor {
 		bodyDef.angularDamping = 1.0f;
 
 		fixtureDef.restitution = 0.0f;
-		fixtureDef.density = 0.5f;
+		fixtureDef.density = 0.25f;
 		fixtureDef.friction = 1.0f;
 
 		createBody();

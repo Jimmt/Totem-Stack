@@ -18,6 +18,7 @@ public class HudTable extends Table {
 	GameScreen game;
 	Label score;
 	ImageButton pause, sound, options, shop, home;
+	Image header;
 	String[] paths = { "pause", "soundon", "setting", "shop", "home" };
 	ImageButton[] buttons = { pause, sound, options, shop, home };
 
@@ -31,7 +32,7 @@ public class HudTable extends Table {
 		LabelStyle style = new LabelStyle();
 		style.font = new BitmapFont(Gdx.files.internal("ui/top/scoreFont.fnt"));
 
-		Image header = new Image(new Texture(Gdx.files.internal("ui/top/header.png")));
+		header = new Image(new Texture(Gdx.files.internal("ui/top/header.png")));
 		header.setY(Constants.HEIGHT - header.getHeight());
 
 		game.hudStage.addActor(header);	
@@ -51,7 +52,7 @@ public class HudTable extends Table {
 		Table right = new Table();
 
 		for (int i = 0; i < buttons.length; i++) {
-			left.add(buttons[i]).padLeft(4f).padTop(4f);
+			left.add(buttons[i]).padLeft(4f).padTop(4f).width(buttons[i].getWidth()).height(buttons[i].getHeight());
 		}
 
 		for (int i = 0; i < 4; i++) {

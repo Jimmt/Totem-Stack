@@ -2,11 +2,17 @@ package com.jumpbuttonstudios.totemgame;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton.ImageButtonStyle;
+import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
@@ -23,6 +29,7 @@ public class GameScreen extends AbstractScreen {
 	boolean gameOver;
 	Array<ParticleEffect> particles;
 	Stage particleStage;
+	Image black;
 
 	public GameScreen(TotemGame game) {
 		super(game);
@@ -57,7 +64,9 @@ public class GameScreen extends AbstractScreen {
 		sr = new ShapeRenderer();
 		spawner.newTotem();
 		
-		
+		black = new Image(new Texture(Gdx.files.internal("black.png")));
+		black.setSize(Constants.SCLWIDTH, Constants.SCLHEIGHT);
+		black.setColor(black.getColor().r, black.getColor().g, black.getColor().b, 0.75f);
 	}
 
 	@Override
@@ -67,7 +76,8 @@ public class GameScreen extends AbstractScreen {
 
 	public void gameOver() {
 		gameOver = true;
-		game.setScreen(new GameOverScreen(game, score));
+		game.setScreen(new GameOverScreen(game, this, score));
+		
 
 	}
 
@@ -103,7 +113,7 @@ public class GameScreen extends AbstractScreen {
 // }
 		
 		
-		if (spawner.totems.size > 1) {
+		if (spawner.totems.size > 1 && !gameOver) {
 			if (spawner.totems.get(spawner.totems.size - 1).getY() < spawner.totems.get(
 					spawner.totems.size - 2).getY()
 					+ 10f * Constants.SCALE) {
@@ -115,8 +125,12 @@ public class GameScreen extends AbstractScreen {
 			}
 		}
 
-		if (contactListener.getGroundTotems().size > 1) {
+		if (contactListener.getGroundTotems().size > 1 && !gameOver) {
 			gameOver();
+		}
+		
+		if(gameOver){
+			stage.addActor(black);
 		}
 		
 		particleStage.act(delta);
