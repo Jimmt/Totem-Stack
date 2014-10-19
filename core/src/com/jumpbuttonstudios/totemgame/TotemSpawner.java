@@ -5,9 +5,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
 
@@ -27,8 +27,9 @@ public class TotemSpawner extends Actor {
 	float cloudSpawnTime = 999f, cloudSpawnCap;
 	Array<Cloud> clouds = new Array<Cloud>();
 	Zone zone = Zone.LOWER;
-
+	Array<Image> stars;
 	int count;
+	ParticleEffectActor rain;
 
 	public TotemSpawner(GameScreen game) {
 		this.game = game;
@@ -41,6 +42,19 @@ public class TotemSpawner extends Actor {
 		nextGoldSpawn = TimeUtils.millis() + 30000 + MathUtils.random(90000);
 		cloudSpawnCap = MathUtils.random(zone.getCloudFrequency() * 1000);
 
+		stars = new Array<Image>();
+		Image star = Icons.getImage("bg/stars.png");
+		star.setSize(Constants.WIDTH, Constants.HEIGHT);
+		star.setPosition(0, Zone.STARS.getY());
+		stars.add(star);
+		game.stage.addActor(star);
+
+		rain = new ParticleEffectActor("effects/rain.p", "effects");
+		game.particleStage.addActor(rain);
+		rain.effect.setPosition(0, Constants.HEIGHT);
+		rain.effect.getEmitters().get(0).getXOffsetValue()
+				.setLow(-Constants.WIDTH * 2, Constants.WIDTH * 2);
+		rain.effect.start();
 	}
 
 	public void setZone(Zone zone) {
@@ -59,6 +73,19 @@ public class TotemSpawner extends Actor {
 
 	@Override
 	public void act(float delta) {
+		rain.effect.setPosition(0, game.camera.position.y / Constants.SCALE + Constants.HEIGHT / 2);
+		if (stars.size > 0) {
+
+			if ((stars.get(stars.size - 1).getY() + 8.00f) < game.camera.position.y
+					+ Constants.SCLHEIGHT / 2) {
+
+				Image star = new Image(new Texture(Gdx.files.internal("bg/stars.png")));
+				star.setSize(Constants.SCLWIDTH, Constants.SCLHEIGHT);
+				star.setPosition(0, (stars.get(stars.size - 1).getY()) + 8.00f);
+				stars.add(star);
+				game.stage.addActor(star);
+			}
+		}
 
 		if (!game.gameOver) {
 			for (int i = 0; i < Zone.getArray().length; i++) {
@@ -156,8 +183,6 @@ public class TotemSpawner extends Actor {
 					game.camera.position.y += (totems.get(totems.size - 1 - 3).getY() + 5f - game.camera.position.y)
 							* lerp;
 				}
-			} else {
-				game.camera.position.y -= (game.camera.position.y - 1) * lerp;
 			}
 
 			if (Gdx.app.getType() == ApplicationType.Desktop) {
@@ -175,6 +200,7 @@ public class TotemSpawner extends Actor {
 			}
 
 			pointChecker.setTotem(currentTotem);
+
 		}
 	}
 

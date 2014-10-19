@@ -21,6 +21,8 @@ public class GameOverScreen extends AbstractScreen {
 
 	public GameOverScreen(TotemGame game, GameScreen gameScreen, int score) {
 		super(game);
+		
+		
 
 		this.gameScreen = gameScreen;
 
@@ -82,6 +84,8 @@ public class GameOverScreen extends AbstractScreen {
 		gameScreen.hudTable.header.setVisible(false);
 		Gdx.input.setInputProcessor(hudStage);
 		//DIFFERENT HUD STAGES
+		
+		
 	}
 
 	@Override
@@ -92,6 +96,10 @@ public class GameOverScreen extends AbstractScreen {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 		
 		gameScreen.render(1 / 60f);
+		
+		if(gameScreen.camera.position.y > 0){
+			gameScreen.camera.position.y -= (gameScreen.camera.position.y - 1) * 0.1f;
+		}
 	
 		
 		hudStage.draw();

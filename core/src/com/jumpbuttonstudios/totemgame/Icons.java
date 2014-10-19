@@ -18,7 +18,8 @@ public class Icons {
 			"ui/gameplay/+4double.png", "ui/gameplay/+6double.png", "perfect.png", "good.png",
 			"totem/parachute.png", "totem/special/specialshine.png", "totem/special/special.png",
 			"ui/gameover/gowindow.png", "totem/ice/ice.png", "totem/ice/icenormal.png",
-			"totem/ice/freeze.png", "totem/ice/Trail_Packed.png", "totem/ice/freeze.png" };
+			"totem/ice/freeze.png", "totem/ice/Trail_Packed.png", "totem/ice/freeze.png",
+			"bg/stars.png" };
 	public static TextureRegion[][] iceImagesArr;
 	public static Array<TextureRegion> iceImages;
 
@@ -37,21 +38,19 @@ public class Icons {
 	public static void loadIcons() {
 		images = new ObjectMap<String, Image>();
 
-		
 		iceImages = new Array<TextureRegion>();
-		
+
 		for (int i = 0; i < paths.length; i++) {
 			images.put(paths[i], returnImage(paths[i]));
 		}
 
 		iceImagesArr = new TextureRegion(new Texture("totem/ice/Trail_Packed.png")).split(63, 62);
-		
+
 		for (int i = 0; i < iceImagesArr[0].length; i++) {
 			TextureRegion tex = iceImagesArr[0][i];
 			iceImages.add(tex);
 		}
-		
-		
+
 		normalPoints[0] = images.get("ui/gameplay/+1.png");
 		normalPoints[1] = images.get("ui/gameplay/+2.png");
 		normalPoints[2] = images.get("ui/gameplay/+3.png");
