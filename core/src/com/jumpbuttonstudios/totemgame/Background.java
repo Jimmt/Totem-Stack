@@ -16,7 +16,7 @@ public class Background {
 		sky = new Image(new Texture(Gdx.files.internal("bg/skygradient.png")));
 		sky.setScale(Constants.SCALE);
 		stage.addActor(sky);
-		sky.setHeight(Constants.HEIGHT * 10);
+		sky.setHeight(Constants.HEIGHT * 2);
 		sky.setWidth(Constants.WIDTH);	
 		
 		mountains = new Image(new Texture(Gdx.files.internal("bg/mountain.png")));

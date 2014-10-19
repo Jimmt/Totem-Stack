@@ -50,11 +50,8 @@ public class TotemSpawner extends Actor {
 		game.stage.addActor(star);
 
 		rain = new ParticleEffectActor("effects/rain.p", "effects");
-		game.particleStage.addActor(rain);
+
 		rain.effect.setPosition(0, Constants.HEIGHT);
-		rain.effect.getEmitters().get(0).getXOffsetValue()
-				.setLow(-Constants.WIDTH * 2, Constants.WIDTH * 2);
-		rain.effect.start();
 	}
 
 	public void setZone(Zone zone) {
@@ -73,7 +70,16 @@ public class TotemSpawner extends Actor {
 
 	@Override
 	public void act(float delta) {
-		rain.effect.setPosition(0, game.camera.position.y / Constants.SCALE + Constants.HEIGHT / 2);
+
+		
+
+		if (zone == Zone.RAIN) {
+			if (!game.particleStage.getActors().contains(rain, false)) {
+				game.particleStage.addActor(rain);
+			}
+			rain.effect.setPosition(0, game.camera.position.y / Constants.SCALE + Constants.HEIGHT / 2);
+		}
+
 		if (stars.size > 0) {
 
 			if ((stars.get(stars.size - 1).getY() + 8.00f) < game.camera.position.y
@@ -99,6 +105,31 @@ public class TotemSpawner extends Actor {
 			if (windChangeTime > windChangeCap) {
 				windChangeTime = 0;
 				windSpeed = MathUtils.random(-0.01f, 0.01f);
+
+				rain.effect.getEmitters().get(0).getAngle()
+						.setHigh(270 + (windSpeed * 100f) * 45, 270 + (windSpeed * 100f) * 45);
+
+				float angle = rain.effect.getEmitters().get(0).getAngle().getHighMin();
+
+				rain.effect.getEmitters().get(0).getRotation().setHigh(angle + 90);
+
+				if (angle > 270) {
+
+					rain.effect.getEmitters().get(0).getXOffsetValue()
+							.setLow(-Constants.HEIGHT * MathUtils.cosDeg(angle), Constants.WIDTH);
+
+				} else if (angle < 270) {
+
+					rain.effect
+							.getEmitters()
+							.get(0)
+							.getXOffsetValue()
+							.setLow(0, Constants.WIDTH - Constants.HEIGHT * MathUtils.cosDeg(angle));
+				} else {
+
+					rain.effect.getEmitters().get(0).getXOffsetValue().setLow(0, Constants.WIDTH);
+				}
+
 			} else {
 				windChangeTime += delta;
 			}

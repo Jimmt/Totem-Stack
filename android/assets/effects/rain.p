@@ -23,14 +23,12 @@ lowMax: 0.0
 highMin: 3000.0
 highMax: 3000.0
 relative: false
-scalingCount: 3
+scalingCount: 2
 scaling0: 1.0
 scaling1: 1.0
-scaling2: 1.0
-timelineCount: 3
+timelineCount: 2
 timeline0: 0.0
-timeline1: 0.66
-timeline2: 1.0
+timeline1: 1.0
 - Life Offset - 
 active: false
 - X Offset - 
@@ -82,8 +80,8 @@ timeline0: 0.0
 active: true
 lowMin: 0.0
 lowMax: 0.0
-highMin: 1000.0
-highMax: 1000.0
+highMin: 500.0
+highMax: 1500.0
 relative: false
 scalingCount: 1
 scaling0: 1.0
@@ -108,8 +106,8 @@ timeline2: 1.0
 active: true
 lowMin: 1.0
 lowMax: 360.0
-highMin: 335.0
-highMax: 335.0
+highMin: 325.0
+highMax: 325.0
 relative: false
 scalingCount: 2
 scaling0: 1.0
