@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -23,13 +24,14 @@ public class TotemSpawner extends Actor {
 	float randomMagnitude = 0.3f, windSpeed;
 	float lastIncreaseTime = 999f, magIncreaseCap = 3f;
 	float windChangeTime = 999f, windChangeCap = 15f;
+	float nextLightningTime = 999f, lightningCap = 3f;
 	long nextGoldSpawn;
 	float cloudSpawnTime = 999f, cloudSpawnCap;
 	Array<Cloud> clouds = new Array<Cloud>();
-	Zone zone = Zone.LOWER;
+	Zone zone = Zone.RAIN;
 	Array<Image> stars;
 	int count;
-	ParticleEffectActor rain;
+	ParticleEffectActor rain, lightning;
 
 	public TotemSpawner(GameScreen game) {
 		this.game = game;
@@ -52,6 +54,12 @@ public class TotemSpawner extends Actor {
 		rain = new ParticleEffectActor("effects/rain.p", "effects");
 
 		rain.effect.setPosition(0, Constants.HEIGHT);
+
+		lightning = new ParticleEffectActor("effects/lightning.p", "");
+
+		lightning.effect.setPosition(Constants.WIDTH / 2, Constants.HEIGHT / 2);
+		lightning.effect.getEmitters().get(0).getScale().setHigh(1000.0f);
+		game.particleStage.addActor(lightning);
 	}
 
 	public void setZone(Zone zone) {
@@ -71,13 +79,23 @@ public class TotemSpawner extends Actor {
 	@Override
 	public void act(float delta) {
 
-		
+		rain.effect.setPosition(0, game.camera.position.y / Constants.SCALE + Constants.HEIGHT / 2);
+		lightning.effect.setPosition(game.camera.position.x / Constants.SCALE,
+				game.camera.position.y / Constants.SCALE);
 
 		if (zone == Zone.RAIN) {
 			if (!game.particleStage.getActors().contains(rain, false)) {
 				game.particleStage.addActor(rain);
 			}
-			rain.effect.setPosition(0, game.camera.position.y / Constants.SCALE + Constants.HEIGHT / 2);
+
+			if (nextLightningTime > lightningCap) {
+				lightning.effect.start();
+
+				nextLightningTime = 0;
+				lightningCap = MathUtils.random(3) + 5f;
+			} else {
+				nextLightningTime += delta;
+			}
 		}
 
 		if (stars.size > 0) {
