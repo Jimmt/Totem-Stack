@@ -33,9 +33,9 @@ public class GameScreen extends AbstractScreen {
 
 	public GameScreen(TotemGame game) {
 		super(game);
-		
+
 		particleStage = new Stage();
-		
+
 		Icons.loadIcons();
 
 		particles = new Array<ParticleEffect>();
@@ -54,7 +54,7 @@ public class GameScreen extends AbstractScreen {
 		Gdx.input.setInputProcessor(multiplexer);
 
 		background = new Background(stage, world);
-		
+
 		contactListener = new GameContactListener(this);
 		world.setContactListener(contactListener);
 
@@ -63,7 +63,7 @@ public class GameScreen extends AbstractScreen {
 
 		sr = new ShapeRenderer();
 		spawner.newTotem();
-		
+
 		black = new Image(new Texture(Gdx.files.internal("black.png")));
 		black.setSize(Constants.SCLWIDTH, Constants.SCLHEIGHT);
 		black.setColor(black.getColor().r, black.getColor().g, black.getColor().b, 0.75f);
@@ -77,7 +77,6 @@ public class GameScreen extends AbstractScreen {
 	public void gameOver() {
 		gameOver = true;
 		game.setScreen(new GameOverScreen(game, this, score));
-		
 
 	}
 
@@ -89,9 +88,7 @@ public class GameScreen extends AbstractScreen {
 	@Override
 	public void render(float delta) {
 		super.render(delta);
-		
-		
-		
+
 		contactListener.update(delta);
 
 // if (currentTotem != null) {
@@ -111,8 +108,7 @@ public class GameScreen extends AbstractScreen {
 // pointChecker.totemRect.width, pointChecker.totemRect.height, 0);
 // sr.end();
 // }
-		
-		
+
 		if (spawner.totems.size > 1 && !gameOver) {
 			if (spawner.totems.get(spawner.totems.size - 1).getY() < spawner.totems.get(
 					spawner.totems.size - 2).getY()
@@ -127,22 +123,24 @@ public class GameScreen extends AbstractScreen {
 
 		if (contactListener.getGroundTotems().size > 1 && !gameOver) {
 			gameOver();
+			TotemGame.soundManager.play("lose");
 		}
-		
-		if(gameOver){
-			stage.addActor(black);
+
+		if (gameOver) {
+			if (!stage.getActors().contains(black, false)) {
+				stage.addActor(black);
+			}
 		}
-		
+
 		particleStage.act(delta);
 		particleStage.draw();
-		particleStage.getCamera().position.set(stage.getCamera().position.x / Constants.SCALE, stage.getCamera().position.y / Constants.SCALE, 0);
+		particleStage.getCamera().position.set(stage.getCamera().position.x / Constants.SCALE,
+				stage.getCamera().position.y / Constants.SCALE, 0);
 
-		
 		hudTable.debug();
 		hudTable.act(delta);
 		hudStage.draw();
-		
-		
+
 	}
 
 }

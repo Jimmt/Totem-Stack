@@ -35,7 +35,7 @@ public class HudTable extends Table {
 		header = new Image(new Texture(Gdx.files.internal("ui/top/header.png")));
 		header.setY(Constants.HEIGHT - header.getHeight());
 
-		game.hudStage.addActor(header);	
+		game.hudStage.addActor(header);
 
 		for (int i = 0; i < buttons.length; i++) {
 			ImageButtonStyle ibstyle = new ImageButtonStyle();
@@ -44,6 +44,14 @@ public class HudTable extends Table {
 			ibstyle.imageDown = new Image(new Texture(Gdx.files.internal("ui/top/" + paths[i]
 					+ "_pressed.png"))).getDrawable();
 			buttons[i] = new ImageButton(ibstyle);
+			buttons[i].addListener(new ClickListener() {
+				@Override
+				public void clicked(InputEvent event, float x, float y) {
+					super.clicked(event, x, y);
+
+					TotemGame.soundManager.play("button");
+				}
+			});
 		}
 
 		setupListeners();
@@ -52,7 +60,8 @@ public class HudTable extends Table {
 		Table right = new Table();
 
 		for (int i = 0; i < buttons.length; i++) {
-			left.add(buttons[i]).padLeft(4f).padTop(4f).width(buttons[i].getWidth()).height(buttons[i].getHeight());
+			left.add(buttons[i]).padLeft(4f).padTop(4f).width(buttons[i].getWidth())
+					.height(buttons[i].getHeight());
 		}
 
 		for (int i = 0; i < 4; i++) {
@@ -89,7 +98,7 @@ public class HudTable extends Table {
 
 			});
 		}
-		
+
 		leftButton.setPosition(0, 0);
 
 		ImageButtonStyle ibs2 = new ImageButtonStyle();
@@ -125,9 +134,8 @@ public class HudTable extends Table {
 		score = new Label("", style);
 
 		score.setPosition(Constants.WIDTH / 2 - 18, Constants.HEIGHT - 44);
-		
+
 		game.hudStage.addActor(score);
-		
 
 	}
 

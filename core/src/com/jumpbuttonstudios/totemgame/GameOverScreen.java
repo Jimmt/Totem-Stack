@@ -1,16 +1,17 @@
 package com.jumpbuttonstudios.totemgame;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton.ImageButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 
 public class GameOverScreen extends AbstractScreen {
@@ -21,8 +22,6 @@ public class GameOverScreen extends AbstractScreen {
 
 	public GameOverScreen(TotemGame game, GameScreen gameScreen, int score) {
 		super(game);
-		
-		
 
 		this.gameScreen = gameScreen;
 
@@ -50,6 +49,15 @@ public class GameOverScreen extends AbstractScreen {
 			style.imageDown = Icons.returnImage(pressed).getDrawable();
 			ImageButton imageButton = new ImageButton(style);
 			imageButtons.add(imageButton);
+
+			imageButton.addListener(new ClickListener() {
+				@Override
+				public void clicked(InputEvent event, float x, float y) {
+					super.clicked(event, x, y);
+
+					TotemGame.soundManager.play("button");
+				}
+			});
 		}
 
 		Image panel = new Image(new Texture(Gdx.files.internal("ui/gameover/gowindow.png")));
@@ -83,9 +91,8 @@ public class GameOverScreen extends AbstractScreen {
 		gameScreen.hudTable.score.setVisible(false);
 		gameScreen.hudTable.header.setVisible(false);
 		Gdx.input.setInputProcessor(hudStage);
-		//DIFFERENT HUD STAGES
-		
-		
+		// DIFFERENT HUD STAGES
+
 	}
 
 	@Override
@@ -94,17 +101,15 @@ public class GameOverScreen extends AbstractScreen {
 
 		Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
-		
+
 		gameScreen.render(1 / 60f);
-		
-		if(gameScreen.camera.position.y > 0){
+
+		if (gameScreen.camera.position.y > 0) {
 			gameScreen.camera.position.y -= (gameScreen.camera.position.y - 1) * 0.1f;
 		}
-	
-		
+
 		hudStage.draw();
 		hudStage.act(delta);
-		
 
 	}
 

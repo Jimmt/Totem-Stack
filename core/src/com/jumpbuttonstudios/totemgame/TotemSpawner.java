@@ -28,7 +28,7 @@ public class TotemSpawner extends Actor {
 	long nextGoldSpawn;
 	float cloudSpawnTime = 999f, cloudSpawnCap;
 	Array<Cloud> clouds = new Array<Cloud>();
-	Zone zone = Zone.RAIN;
+	Zone zone = Zone.LOWER;
 	Array<Image> stars;
 	int count;
 	ParticleEffectActor rain, lightning;
@@ -84,19 +84,22 @@ public class TotemSpawner extends Actor {
 				game.camera.position.y / Constants.SCALE);
 
 		if (zone == Zone.RAIN) {
+			TotemGame.soundManager.loop("rain");
+			
 			if (!game.particleStage.getActors().contains(rain, false)) {
 				game.particleStage.addActor(rain);
 			}
 
 			if (nextLightningTime > lightningCap) {
 				lightning.effect.start();
-
-				nextLightningTime = 0;
+				TotemGame.soundManager.play("thunder0" + MathUtils.random(2));
+				nextLightningTime = 0;	
 				lightningCap = MathUtils.random(3) + 5f;
 			} else {
 				nextLightningTime += delta;
 			}
 		}
+
 
 		if (stars.size > 0) {
 
@@ -122,6 +125,9 @@ public class TotemSpawner extends Actor {
 
 			if (windChangeTime > windChangeCap) {
 				windChangeTime = 0;
+				
+				TotemGame.soundManager.play("wind");
+				
 				windSpeed = MathUtils.random(-0.01f, 0.01f);
 
 				rain.effect.getEmitters().get(0).getAngle()

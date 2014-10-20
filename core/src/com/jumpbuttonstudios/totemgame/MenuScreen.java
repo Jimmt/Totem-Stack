@@ -52,7 +52,25 @@ public class MenuScreen extends AbstractScreen {
 		startButton.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
+				TotemGame.soundManager.play("button");
 				game.setScreen(new GameScreen(game));
+				
+			}
+
+		});
+		highscoresButton.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				game.setScreen(new GameScreen(game));
+				TotemGame.soundManager.play("button");
+			}
+
+		});
+		loginButton.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				game.setScreen(new GameScreen(game));
+				TotemGame.soundManager.play("button");
 			}
 
 		});

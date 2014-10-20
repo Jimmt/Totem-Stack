@@ -52,7 +52,7 @@ public class GameContactListener implements ContactListener {
 
 		ice.effect.getEmitters().get(0).setSprite(iceSprite1);
 		ice.effect.getEmitters().get(1).setSprite(iceSprite2);
-		
+
 		game.particleStage.addActor(ice);
 
 		perfect = Icons.getImage("perfect.png");
@@ -64,7 +64,7 @@ public class GameContactListener implements ContactListener {
 
 		if (lastChangeTime > changeCap) {
 			lastChangeTime = 0;
-   
+
 			iceSprite1.setRegion(Icons.iceImages.get(MathUtils.random(3)));
 			iceSprite2.setRegion(Icons.iceImages.get(MathUtils.random(3)));
 
@@ -147,7 +147,9 @@ public class GameContactListener implements ContactListener {
 		}
 
 		if (a instanceof Ground && b instanceof Totem) {
-
+			
+			TotemGame.soundManager.play("hitground");
+			
 			if (((Totem) b).equals(game.spawner.currentTotem)) {
 				createTotem();
 				if (!groundTotems.contains((Totem) b, false)) {
@@ -155,9 +157,12 @@ public class GameContactListener implements ContactListener {
 				}
 			} else {
 				game.gameOver();
+				TotemGame.soundManager.play("lose");
 			}
 		}
 		if (b instanceof Ground && a instanceof Totem) {
+			
+			TotemGame.soundManager.play("hitground");
 
 			if (((Totem) a).equals(game.spawner.currentTotem)) {
 				createTotem();
@@ -166,6 +171,7 @@ public class GameContactListener implements ContactListener {
 				}
 			} else {
 				game.gameOver();
+				TotemGame.soundManager.play("lose");
 			}
 		}
 		if (a instanceof Totem && b instanceof Totem) {
@@ -215,7 +221,6 @@ public class GameContactListener implements ContactListener {
 		stars.effect.allowCompletion();
 		stars.effect.start();
 
-		
 	}
 
 	public Array<Totem> getGroundTotems() {
@@ -224,9 +229,11 @@ public class GameContactListener implements ContactListener {
 
 	public void checkPoints(Object a, Object b, Totem lastTotem) {
 		int points = getPlacePoints((Totem) a, (Totem) b);
-
+		TotemGame.soundManager.play("normalland");
 		if (lastTotem instanceof GoldTotem) {
 
+			
+			
 			game.score += (points + 1) * 2;
 
 			if (game.stage.getActors().contains(Icons.doublePoints[points], false)) {
@@ -243,11 +250,12 @@ public class GameContactListener implements ContactListener {
 
 			yellow = true;
 			green = false;
-			
+
 			goldStars.effect.allowCompletion();
-			
 
 		} else {
+			
+			
 			game.score += points + 1;
 
 			if (game.stage.getActors().contains(Icons.normalPoints[points], false)) {
@@ -266,7 +274,7 @@ public class GameContactListener implements ContactListener {
 			if (lastTotem instanceof IceTotem) {
 				ice.effect.allowCompletion();
 				ice.effect.start();
-				
+
 				for (int i = 0; i < 3; i++) {
 					if (game.spawner.totems.size > i + 1) {
 						game.spawner.totems.get(game.spawner.totems.size - 2 - i).freeze();
@@ -304,7 +312,9 @@ public class GameContactListener implements ContactListener {
 		if (distance <= 10f * Constants.SCALE) {
 
 			if (distance < 3f * Constants.SCALE) {
-
+				
+				TotemGame.soundManager.play("perfectland");
+				
 				if (game.stage.getActors().contains(perfect, false)) {
 					game.stage.getActors().removeValue(perfect, false);
 					game.stage.addActor(perfect);
