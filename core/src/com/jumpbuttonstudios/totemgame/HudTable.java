@@ -4,6 +4,7 @@ import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
@@ -21,6 +22,7 @@ public class HudTable extends Table {
 	Image header;
 	String[] paths = { "pause", "soundon", "setting", "shop", "home" };
 	ImageButton[] buttons = { pause, sound, options, shop, home };
+	OptionsDialog optionsDialog;
 
 	public HudTable(Skin skin, final GameScreen game) {
 		super(skin);
@@ -44,14 +46,7 @@ public class HudTable extends Table {
 			ibstyle.imageDown = new Image(new Texture(Gdx.files.internal("ui/top/" + paths[i]
 					+ "_pressed.png"))).getDrawable();
 			buttons[i] = new ImageButton(ibstyle);
-			buttons[i].addListener(new ClickListener() {
-				@Override
-				public void clicked(InputEvent event, float x, float y) {
-					super.clicked(event, x, y);
-
-					TotemGame.soundManager.play("button");
-				}
-			});
+			
 		}
 
 		setupListeners();
@@ -136,27 +131,40 @@ public class HudTable extends Table {
 		score.setPosition(Constants.WIDTH / 2 - 18, Constants.HEIGHT - 44);
 
 		game.hudStage.addActor(score);
+		
+		optionsDialog = new OptionsDialog("", game.getSkin());
 
+		game.hudStage.addActor(optionsDialog);
+		optionsDialog.setPosition(Constants.WIDTH / 2 - optionsDialog.getWidth() / 2, Constants.HEIGHT / 2 - optionsDialog.getHeight() / 2);
+		optionsDialog.setVisible(false);
 	}
 
+	
+	
+	
+	
+	
 	public void setupListeners() {
 		buttons[0].addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-
+				TotemGame.soundManager.play("button");
 			}
 
 		});
 		buttons[1].addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-
+				TotemGame.soundManager.play("button");
 			}
 
 		});
 		buttons[2].addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
+				TotemGame.soundManager.play("button");
+				
+				optionsDialog.setVisible(true);
 
 			}
 
@@ -164,14 +172,14 @@ public class HudTable extends Table {
 		buttons[3].addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-
+				TotemGame.soundManager.play("button");
 			}
 
 		});
 		buttons[4].addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-
+				TotemGame.soundManager.play("button");
 			}
 
 		});
@@ -186,6 +194,8 @@ public class HudTable extends Table {
 		if (score.getText().length() > 1) {
 			score.setX(Constants.WIDTH / 2 - score.getPrefWidth() / 2);
 		}
+		
+		
 
 	}
 }

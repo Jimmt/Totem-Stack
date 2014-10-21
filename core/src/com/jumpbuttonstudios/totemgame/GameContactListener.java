@@ -147,9 +147,11 @@ public class GameContactListener implements ContactListener {
 		}
 
 		if (a instanceof Ground && b instanceof Totem) {
-			
-			TotemGame.soundManager.play("hitground");
-			
+
+			if (!game.gameOver) {
+				TotemGame.soundManager.play("hitground");
+			}
+
 			if (((Totem) b).equals(game.spawner.currentTotem)) {
 				createTotem();
 				if (!groundTotems.contains((Totem) b, false)) {
@@ -157,13 +159,14 @@ public class GameContactListener implements ContactListener {
 				}
 			} else {
 				game.gameOver();
-				TotemGame.soundManager.play("lose");
 			}
 		}
 		if (b instanceof Ground && a instanceof Totem) {
-			
-			TotemGame.soundManager.play("hitground");
 
+			if (!game.gameOver) {
+				TotemGame.soundManager.play("hitground");
+			}
+			
 			if (((Totem) a).equals(game.spawner.currentTotem)) {
 				createTotem();
 				if (!groundTotems.contains((Totem) a, false)) {
@@ -171,7 +174,6 @@ public class GameContactListener implements ContactListener {
 				}
 			} else {
 				game.gameOver();
-				TotemGame.soundManager.play("lose");
 			}
 		}
 		if (a instanceof Totem && b instanceof Totem) {
@@ -232,8 +234,6 @@ public class GameContactListener implements ContactListener {
 		TotemGame.soundManager.play("normalland");
 		if (lastTotem instanceof GoldTotem) {
 
-			
-			
 			game.score += (points + 1) * 2;
 
 			if (game.stage.getActors().contains(Icons.doublePoints[points], false)) {
@@ -254,8 +254,7 @@ public class GameContactListener implements ContactListener {
 			goldStars.effect.allowCompletion();
 
 		} else {
-			
-			
+
 			game.score += points + 1;
 
 			if (game.stage.getActors().contains(Icons.normalPoints[points], false)) {
@@ -311,10 +310,10 @@ public class GameContactListener implements ContactListener {
 
 		if (distance <= 10f * Constants.SCALE) {
 
-			if (distance < 3f * Constants.SCALE) {
-				
+			if (distance < 5f * Constants.SCALE) {
+
 				TotemGame.soundManager.play("perfectland");
-				
+
 				if (game.stage.getActors().contains(perfect, false)) {
 					game.stage.getActors().removeValue(perfect, false);
 					game.stage.addActor(perfect);

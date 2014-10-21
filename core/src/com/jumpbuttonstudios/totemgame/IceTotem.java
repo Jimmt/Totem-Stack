@@ -1,22 +1,20 @@
 package com.jumpbuttonstudios.totemgame;
 
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
 public class IceTotem extends Totem {
 	Stage particleStage;
 	Image noAura;
-	
-	
+	boolean unfreeze;
 
 	public IceTotem(float x, float y, World world, Stage particleStage) {
 		super(x, y, world);
 
 		this.particleStage = particleStage;
 
-		
-		
 		Image img = Icons.getImage("totem/ice/ice.png");
 		setDrawable(img.getDrawable());
 		width = img.getWidth() * Constants.SCALE;
@@ -24,7 +22,9 @@ public class IceTotem extends Totem {
 		setSize(width, height);
 	}
 
-	
+	public void unfreeze() {
+		unfreeze = true;
+	}
 
 	public void removeAura() {
 		noAura = Icons.getImage("totem/ice/icenormal.png");
@@ -37,8 +37,10 @@ public class IceTotem extends Totem {
 	@Override
 	public void act(float delta) {
 		super.act(delta);
-		
-		
+
+		if (unfreeze && body.getType() != BodyType.DynamicBody) {
+			body.setType(BodyType.DynamicBody);
+		}
 
 		if (flag != null) {
 			flag.animatedSprite.setPosition(getX() + getWidth() - 20f * Constants.SCALE, getY()
@@ -46,7 +48,6 @@ public class IceTotem extends Totem {
 		}
 
 		parachute.setPosition(getX(), getY() + getHeight() - 20f * Constants.SCALE);
-		
 
 	}
 

@@ -122,14 +122,14 @@ active: false
 - Tint - 
 colorsCount: 9
 colors0: 0.0
-colors1: 0.1254902
-colors2: 0.15686275
-colors3: 0.0
-colors4: 0.14117648
-colors5: 0.1764706
+colors1: 0.10980392
+colors2: 0.16078432
+colors3: 0.007843138
+colors4: 0.043137256
+colors5: 0.050980393
 colors6: 0.0
-colors7: 0.08627451
-colors8: 0.1254902
+colors7: 0.02745098
+colors8: 0.043137256
 timelineCount: 3
 timeline0: 0.0
 timeline1: 0.50086355

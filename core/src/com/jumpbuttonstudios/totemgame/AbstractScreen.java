@@ -52,12 +52,12 @@ public class AbstractScreen implements Screen {
 		
 //		stage.getActors().sort(comparator);
 
-		Table.drawDebug(hudStage);
+//		Table.drawDebug(hudStage);
 		
 
 		world.step(1f / 60f, 5, 8);
 
-		debugRenderer.render(world, stage.getCamera().combined);
+//		debugRenderer.render(world, stage.getCamera().combined);
 
 	}
 

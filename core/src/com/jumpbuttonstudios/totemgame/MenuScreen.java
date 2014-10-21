@@ -48,7 +48,9 @@ public class MenuScreen extends AbstractScreen {
 		startButton = new ImageButton(startStyle);
 		highscoresButton = new ImageButton(highscoresStyle);
 		loginButton = new ImageButton(loginStyle);
-
+		
+		
+		
 		startButton.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {

@@ -92,7 +92,7 @@ public class GameOverScreen extends AbstractScreen {
 		gameScreen.hudTable.header.setVisible(false);
 		Gdx.input.setInputProcessor(hudStage);
 		// DIFFERENT HUD STAGES
-
+		
 	}
 
 	@Override

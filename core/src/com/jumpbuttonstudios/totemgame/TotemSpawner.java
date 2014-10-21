@@ -32,6 +32,7 @@ public class TotemSpawner extends Actor {
 	Array<Image> stars;
 	int count;
 	ParticleEffectActor rain, lightning;
+	boolean rainPlaying;
 
 	public TotemSpawner(GameScreen game) {
 		this.game = game;
@@ -84,8 +85,12 @@ public class TotemSpawner extends Actor {
 				game.camera.position.y / Constants.SCALE);
 
 		if (zone == Zone.RAIN) {
-			TotemGame.soundManager.loop("rain");
-			
+
+			if (!rainPlaying) {
+				TotemGame.soundManager.loop("rain");
+				rainPlaying = true;
+			}
+
 			if (!game.particleStage.getActors().contains(rain, false)) {
 				game.particleStage.addActor(rain);
 			}
@@ -93,13 +98,12 @@ public class TotemSpawner extends Actor {
 			if (nextLightningTime > lightningCap) {
 				lightning.effect.start();
 				TotemGame.soundManager.play("thunder0" + MathUtils.random(2));
-				nextLightningTime = 0;	
+				nextLightningTime = 0;
 				lightningCap = MathUtils.random(3) + 5f;
 			} else {
 				nextLightningTime += delta;
 			}
 		}
-
 
 		if (stars.size > 0) {
 
@@ -125,33 +129,42 @@ public class TotemSpawner extends Actor {
 
 			if (windChangeTime > windChangeCap) {
 				windChangeTime = 0;
-				
-				TotemGame.soundManager.play("wind");
-				
+
 				windSpeed = MathUtils.random(-0.01f, 0.01f);
 
-				rain.effect.getEmitters().get(0).getAngle()
-						.setHigh(270 + (windSpeed * 100f) * 45, 270 + (windSpeed * 100f) * 45);
+				if (zone == Zone.RAIN) {
+					TotemGame.soundManager.play("wind");
 
-				float angle = rain.effect.getEmitters().get(0).getAngle().getHighMin();
+					rain.effect.getEmitters().get(0).getAngle()
+							.setHigh(270 + (windSpeed * 100f) * 45, 270 + (windSpeed * 100f) * 45);
 
-				rain.effect.getEmitters().get(0).getRotation().setHigh(angle + 90);
+					float angle = rain.effect.getEmitters().get(0).getAngle().getHighMin();
 
-				if (angle > 270) {
+					rain.effect.getEmitters().get(0).getRotation().setHigh(angle + 90);
 
-					rain.effect.getEmitters().get(0).getXOffsetValue()
-							.setLow(-Constants.HEIGHT * MathUtils.cosDeg(angle), Constants.WIDTH);
+					if (angle > 270) {
 
-				} else if (angle < 270) {
+						rain.effect
+								.getEmitters()
+								.get(0)
+								.getXOffsetValue()
+								.setLow(-Constants.HEIGHT * MathUtils.cosDeg(angle),
+										Constants.WIDTH);
 
-					rain.effect
-							.getEmitters()
-							.get(0)
-							.getXOffsetValue()
-							.setLow(0, Constants.WIDTH - Constants.HEIGHT * MathUtils.cosDeg(angle));
-				} else {
+					} else if (angle < 270) {
 
-					rain.effect.getEmitters().get(0).getXOffsetValue().setLow(0, Constants.WIDTH);
+						rain.effect
+								.getEmitters()
+								.get(0)
+								.getXOffsetValue()
+								.setLow(0,
+										Constants.WIDTH - Constants.HEIGHT
+												* MathUtils.cosDeg(angle));
+					} else {
+
+						rain.effect.getEmitters().get(0).getXOffsetValue()
+								.setLow(0, Constants.WIDTH);
+					}
 				}
 
 			} else {
@@ -205,15 +218,26 @@ public class TotemSpawner extends Actor {
 				if (TimeUtils.millis() > nextGoldSpawn && totems.size > 3) {
 					nextGoldSpawn += 30000 + MathUtils.random(90000);
 
-					t = new GoldTotem(0.5f * Constants.SCLWIDTH, spawnY, game.world,
+					t = new GoldTotem(0.5f * Constants.SCLWIDTH, spawnY + 0.5f, game.world,
 							game.particleStage);
 				} else {
 // t = new GoldTotem(0.5f * Constants.SCLWIDTH, spawnY, game.world,
 // game.particleStage);
 // t = new IceTotem(0.5f * Constants.SCLWIDTH, spawnY, game.world,
 // game.particleStage);
+// if (totems.size == 16) {
+// t = new IceTotem(0.5f * Constants.SCLWIDTH, spawnY, game.world,
+// game.particleStage);
+// } else if (totems.size == 18) {
+// t = new GoldTotem(0.5f * Constants.SCLWIDTH, spawnY, game.world,
+// game.particleStage);
+// } else {
+//
+// t = new Totem(0.5f * Constants.SCLWIDTH, spawnY, game.world);
+// }
 
-					t = new Totem(0.5f * Constants.SCLWIDTH, spawnY, game.world);
+					t = new Totem(MathUtils.random(Constants.SCLWIDTH / 2 - randomMagnitude,
+							Constants.SCLWIDTH / 2 + randomMagnitude), spawnY + 0.5f, game.world);
 
 				}
 				totems.add(t);

@@ -27,7 +27,7 @@ public class Totem extends Box2DActor {
 		bodyDef.angularDamping = 1.0f;
 
 		fixtureDef.restitution = 0.0f;
-		fixtureDef.density = 0.0f;
+		fixtureDef.density = 0.5f;
 		fixtureDef.friction = 1.0f;
 
 		createBody();
@@ -81,7 +81,7 @@ public class Totem extends Box2DActor {
 	public void act(float delta) {
 		super.act(delta);
 		
-		if(isFrozen){
+		if(isFrozen && body.getType() != BodyType.StaticBody){
 			body.setType(BodyType.StaticBody);
 		}
 

@@ -67,6 +67,7 @@ public class GameScreen extends AbstractScreen {
 		black = new Image(new Texture(Gdx.files.internal("black.png")));
 		black.setSize(Constants.SCLWIDTH, Constants.SCLHEIGHT);
 		black.setColor(black.getColor().r, black.getColor().g, black.getColor().b, 0.75f);
+
 	}
 
 	@Override
@@ -75,9 +76,17 @@ public class GameScreen extends AbstractScreen {
 	}
 
 	public void gameOver() {
-		gameOver = true;
-		game.setScreen(new GameOverScreen(game, this, score));
+		if (!gameOver) {
+			for (int i = 0; i < spawner.totems.size; i++) {
+				if (spawner.totems.get(i) instanceof IceTotem) {
+					((IceTotem) spawner.totems.get(i)).unfreeze();
+				}
+			}
 
+			gameOver = true;
+			game.setScreen(new GameOverScreen(game, this, score));
+			TotemGame.soundManager.play("lose");
+		}
 	}
 
 	/**
@@ -123,7 +132,6 @@ public class GameScreen extends AbstractScreen {
 
 		if (contactListener.getGroundTotems().size > 1 && !gameOver) {
 			gameOver();
-			TotemGame.soundManager.play("lose");
 		}
 
 		if (gameOver) {
@@ -137,8 +145,10 @@ public class GameScreen extends AbstractScreen {
 		particleStage.getCamera().position.set(stage.getCamera().position.x / Constants.SCALE,
 				stage.getCamera().position.y / Constants.SCALE, 0);
 
+// Table.drawDebug(hudStage);
 		hudTable.debug();
 		hudTable.act(delta);
+
 		hudStage.draw();
 
 	}

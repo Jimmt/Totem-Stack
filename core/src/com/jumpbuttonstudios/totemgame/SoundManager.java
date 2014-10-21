@@ -19,6 +19,11 @@ public class SoundManager {
 			((Sound) sounds.get(name)).play();
 	}
 	
+	public void play(String name, float volume) {
+		if (playEffects)
+			((Sound) sounds.get(name)).play(volume);
+	}
+	
 	public void loop(String name) {
 		if (playEffects)
 			((Sound) sounds.get(name)).loop();
