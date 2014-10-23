@@ -44,9 +44,9 @@ public class GameOverScreen extends AbstractScreen {
 
 		for (int i = 0; i < paths.length; i++) {
 			ImageButtonStyle style = new ImageButtonStyle();
-			style.imageUp = Icons.returnImage(paths[i]).getDrawable();
+			style.imageUp = Icons.getImage(paths[i]).getDrawable();
 			String pressed = paths[i].substring(0, paths[i].length() - 4) + "_pressed.png";
-			style.imageDown = Icons.returnImage(pressed).getDrawable();
+			style.imageDown = Icons.getImage(pressed).getDrawable();
 			ImageButton imageButton = new ImageButton(style);
 			imageButtons.add(imageButton);
 
@@ -70,6 +70,14 @@ public class GameOverScreen extends AbstractScreen {
 					.width(imageButtons.get(i).getWidth()).height(imageButtons.get(i).getHeight());
 		}
 
+		table.row();
+
+		ImageButtonStyle removeAdStyle = new ImageButtonStyle();
+		removeAdStyle.up = Icons.getImage("ui/paused/removead.png").getDrawable();
+		removeAdStyle.down = Icons.getImage("ui/paused/removead.png").getDrawable();
+		ImageButton removeAds = new ImageButton(removeAdStyle);
+		table.add(removeAds).colspan(5);
+
 		float widgetY = panel.getY();
 
 		LabelStyle style = new LabelStyle();
@@ -92,7 +100,7 @@ public class GameOverScreen extends AbstractScreen {
 		gameScreen.hudTable.header.setVisible(false);
 		Gdx.input.setInputProcessor(hudStage);
 		// DIFFERENT HUD STAGES
-		
+		table.debug();
 	}
 
 	@Override
@@ -110,7 +118,7 @@ public class GameOverScreen extends AbstractScreen {
 
 		hudStage.draw();
 		hudStage.act(delta);
-
+		Table.drawDebug(hudStage);
 	}
 
 }

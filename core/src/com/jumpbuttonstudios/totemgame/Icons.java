@@ -19,7 +19,12 @@ public class Icons {
 			"totem/parachute.png", "totem/special/specialshine.png", "totem/special/special.png",
 			"ui/gameover/gowindow.png", "totem/ice/ice.png", "totem/ice/icenormal.png",
 			"totem/ice/freeze.png", "totem/ice/Trail_Packed.png", "totem/ice/freeze.png",
-			"bg/stars.png", "ui/options/checkbg.png", "ui/options/xbg.png" };
+			"bg/stars.png", "ui/options/checkbg.png", "ui/options/xbg.png",
+			"ui/gameover/replay.png", "ui/gameover/highscores.png", "ui/gameover/achievements.png",
+			"ui/gameover/twitter.png", "ui/gameover/facebook.png",
+			"ui/gameover/replay_pressed.png", "ui/gameover/highscores_pressed.png",
+			"ui/gameover/achievements_pressed.png", "ui/gameover/twitter_pressed.png",
+			"ui/gameover/facebook_pressed.png", "ui/paused/removead.png" };
 	public static TextureRegion[][] iceImagesArr;
 	public static Array<TextureRegion> iceImages;
 
