@@ -16,7 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 public class HudTable extends Table {
-	GameScreen game;
+	AbstractScreen game;
 	Label score;
 	ImageButton pause, sound, options, shop, home;
 	Image header;
@@ -24,9 +24,10 @@ public class HudTable extends Table {
 	ImageButton[] buttons = { pause, sound, options, shop, home };
 	OptionsDialog optionsDialog;
 
-	public HudTable(Skin skin, final GameScreen game) {
+	public HudTable(Skin skin, final AbstractScreen game) {
 		super(skin);
 
+		setTransform(true);
 		setFillParent(true);
 
 		this.game = game;
@@ -46,7 +47,7 @@ public class HudTable extends Table {
 			ibstyle.imageDown = new Image(new Texture(Gdx.files.internal("ui/top/" + paths[i]
 					+ "_pressed.png"))).getDrawable();
 			buttons[i] = new ImageButton(ibstyle);
-			
+
 		}
 
 		setupListeners();
@@ -65,85 +66,97 @@ public class HudTable extends Table {
 
 		add(left).expand().left().top();
 		add(right).expand().right().top();
+		debug();
 
-		Table bottom = new Table();
-		ImageButtonStyle ibs = new ImageButtonStyle();
-		ibs.imageUp = Icons.getImage("ui/gameplay/left.png").getDrawable();
-		ibs.imageDown = Icons.getImage("ui/gameplay/leftclicked.png").getDrawable();
-		ImageButton leftButton = new ImageButton(ibs);
-		if (Gdx.app.getType() == ApplicationType.Android) {
-			leftButton.addListener(new ClickListener() {
-				@Override
-				public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-					if (game.spawner.currentTotem != null) {
-						game.spawner.moveLeft();
+		if (game instanceof GameScreen) {
+			Table bottom = new Table();
+			ImageButtonStyle ibs = new ImageButtonStyle();
+			ibs.imageUp = Icons.getImage("ui/gameplay/left.png").getDrawable();
+			ibs.imageDown = Icons.getImage("ui/gameplay/leftclicked.png").getDrawable();
+			ImageButton leftButton = new ImageButton(ibs);
+			if (Gdx.app.getType() == ApplicationType.Android) {
+				leftButton.addListener(new ClickListener() {
+					@Override
+					public boolean touchDown(InputEvent event, float x, float y, int pointer,
+							int button) {
+						if (((GameScreen) game).spawner.currentTotem != null) {
+							((GameScreen) game).spawner.moveLeft();
+
+						}
+						return true;
 
 					}
-					return true;
 
-				}
+					@Override
+					public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+						super.touchUp(event, x, y, pointer, button);
 
-				@Override
-				public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-					super.touchUp(event, x, y, pointer, button);
+						((GameScreen) game).spawner.stop();
 
-					game.spawner.stop();
-
-				}
-
-			});
-		}
-
-		leftButton.setPosition(0, 0);
-
-		ImageButtonStyle ibs2 = new ImageButtonStyle();
-		ibs2.imageUp = Icons.getImage("ui/gameplay/right.png").getDrawable();
-		ibs2.imageDown = Icons.getImage("ui/gameplay/rightclicked.png").getDrawable();
-		ImageButton rightButton = new ImageButton(ibs2);
-		if (Gdx.app.getType() == ApplicationType.Android) {
-			rightButton.addListener(new ClickListener() {
-				@Override
-				public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-
-					if (game.spawner.currentTotem != null) {
-						game.spawner.moveRight();
 					}
-					return true;
-				}
 
-				@Override
-				public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-					super.touchUp(event, x, y, pointer, button);
+				});
+			}
 
-					game.spawner.stop();
+			leftButton.setPosition(0, 0);
 
-				}
+			ImageButtonStyle ibs2 = new ImageButtonStyle();
+			ibs2.imageUp = Icons.getImage("ui/gameplay/right.png").getDrawable();
+			ibs2.imageDown = Icons.getImage("ui/gameplay/rightclicked.png").getDrawable();
+			ImageButton rightButton = new ImageButton(ibs2);
+			if (Gdx.app.getType() == ApplicationType.Android) {
+				rightButton.addListener(new ClickListener() {
+					@Override
+					public boolean touchDown(InputEvent event, float x, float y, int pointer,
+							int button) {
 
-			});
+						if (((GameScreen) game).spawner.currentTotem != null) {
+							((GameScreen) game).spawner.moveRight();
+						}
+						return true;
+					}
+
+					@Override
+					public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+						super.touchUp(event, x, y, pointer, button);
+
+						((GameScreen) game).spawner.stop();
+
+					}
+
+				});
+			}
+			rightButton.setPosition(Constants.WIDTH - rightButton.getWidth(), 0);
+
+			game.hudStage.addActor(leftButton);
+			game.hudStage.addActor(rightButton);
 		}
-		rightButton.setPosition(Constants.WIDTH - rightButton.getWidth(), 0);
-
-		game.hudStage.addActor(leftButton);
-		game.hudStage.addActor(rightButton);
 
 		score = new Label("", style);
 
 		score.setPosition(Constants.WIDTH / 2 - 18, Constants.HEIGHT - 44);
 
 		game.hudStage.addActor(score);
-		
+
 		optionsDialog = new OptionsDialog("", game.getSkin());
 
 		game.hudStage.addActor(optionsDialog);
-		optionsDialog.setPosition(Constants.WIDTH / 2 - optionsDialog.getWidth() / 2, Constants.HEIGHT / 2 - optionsDialog.getHeight() / 2);
+		optionsDialog.setPosition(Constants.WIDTH / 2 - optionsDialog.getWidth() / 2,
+				Constants.HEIGHT / 2 - optionsDialog.getHeight() / 2);
 		optionsDialog.setVisible(false);
+
 	}
 
-	
-	
-	
-	
-	
+	@Override
+	public void setVisible(boolean vis) {
+		super.setVisible(vis);
+		if (vis) {
+			Gdx.input.setInputProcessor(getStage());
+		} else {
+			Gdx.input.setInputProcessor(game.multiplexer);
+		}
+	}
+
 	public void setupListeners() {
 		buttons[0].addListener(new ClickListener() {
 			@Override
@@ -163,9 +176,8 @@ public class HudTable extends Table {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 				TotemGame.soundManager.play("button");
-				
-				optionsDialog.setVisible(true);
 
+				optionsDialog.setVisible(true);
 			}
 
 		});
@@ -189,13 +201,13 @@ public class HudTable extends Table {
 	public void act(float delta) {
 		super.act(delta);
 
-		score.setText(String.valueOf(game.score));
+		if (game instanceof GameScreen) {
+			score.setText(String.valueOf(((GameScreen) game).score));
+		}
 
 		if (score.getText().length() > 1) {
 			score.setX(Constants.WIDTH / 2 - score.getPrefWidth() / 2);
 		}
-		
-		
 
 	}
 }

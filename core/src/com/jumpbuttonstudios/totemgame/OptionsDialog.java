@@ -2,19 +2,24 @@ package com.jumpbuttonstudios.totemgame;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox.CheckBoxStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton.ImageButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 public class OptionsDialog extends Dialog {
 	Image panel;
+	ImageButton x;
 	CheckBox bgMusic, soundEffects, tapControl, tiltControl;
 
 	public OptionsDialog(String title, Skin skin) {
@@ -49,11 +54,16 @@ public class OptionsDialog extends Dialog {
 		tiltControl = new CheckBox("", checkBoxStyle);
 		Label tiltControlLabel = new Label("Tilt Controls", labelStyle);
 
+		ImageButtonStyle buttonStyle = new ImageButtonStyle();
+		buttonStyle.up = Icons.getImage("ui/options/close.png").getDrawable();
+		x = new ImageButton(buttonStyle);
+		getContentTable().add(x).expandX().right().colspan(2).padBottom(x.getHeight() / 2);
+		getContentTable().row();
+		
 		setupListeners();
 
-		getContentTable().add(bgMusic).padTop(30f);
-		getContentTable().add(bgMusicLabel).padTop(30f).padBottom(9).left()
-				.height(font.getCapHeight());
+		getContentTable().add(bgMusic);
+		getContentTable().add(bgMusicLabel).padBottom(9).left().height(font.getCapHeight());
 		getContentTable().row();
 		getContentTable().add(soundEffects);
 		getContentTable().add(soundEffectsLabel).padBottom(9).left().height(font.getCapHeight());
@@ -67,6 +77,16 @@ public class OptionsDialog extends Dialog {
 
 		pack();
 
+	}
+
+	@Override
+	public void draw(Batch batch, float parentAlpha) {
+		super.draw(batch, parentAlpha);
+	}
+
+	@Override
+	public void act(float delta) {
+		super.act(delta);
 	}
 
 	public void setupListeners() {
@@ -99,6 +119,14 @@ public class OptionsDialog extends Dialog {
 			public void clicked(InputEvent event, float x, float y) {
 				TotemGame.soundManager.play("check");
 
+			}
+
+		});
+		x.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				TotemGame.soundManager.play("button");
+				setVisible(false);
 			}
 
 		});

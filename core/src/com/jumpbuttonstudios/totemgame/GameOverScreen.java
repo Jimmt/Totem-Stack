@@ -76,6 +76,13 @@ public class GameOverScreen extends AbstractScreen {
 		removeAdStyle.up = Icons.getImage("ui/paused/removead.png").getDrawable();
 		removeAdStyle.down = Icons.getImage("ui/paused/removead.png").getDrawable();
 		ImageButton removeAds = new ImageButton(removeAdStyle);
+		removeAds.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				super.clicked(event, x, y);
+				TotemGame.soundManager.play("button");
+			}
+		});
 		table.add(removeAds).colspan(5);
 
 		float widgetY = panel.getY();

@@ -24,13 +24,16 @@ public class MenuScreen extends AbstractScreen {
 	public void show() {
 		super.show();
 
-		Table table = super.getTable();       
+		Icons.loadIcons();
+
+		Table table = super.getTable();
 		table.setFillParent(true);
 
 		ImageButtonStyle startStyle = new ImageButtonStyle();
 		tmp = new Image(tex = new Texture(Gdx.files.internal("login/start.png")));
 		startStyle.imageUp = tmp.getDrawable();
 		tmp = new Image(tex = new Texture(Gdx.files.internal("login/start_clicked.png")));
+		tmp.setSize(tmp.getWidth() * 2, tmp.getHeight() * 2);
 		startStyle.imageDown = tmp.getDrawable();
 
 		ImageButtonStyle highscoresStyle = new ImageButtonStyle();
@@ -48,15 +51,13 @@ public class MenuScreen extends AbstractScreen {
 		startButton = new ImageButton(startStyle);
 		highscoresButton = new ImageButton(highscoresStyle);
 		loginButton = new ImageButton(loginStyle);
-		
-		
-		
+
 		startButton.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 				TotemGame.soundManager.play("button");
 				game.setScreen(new GameScreen(game));
-				
+
 			}
 
 		});
@@ -77,16 +78,30 @@ public class MenuScreen extends AbstractScreen {
 
 		});
 
+		Image background = new Image(new Texture(Gdx.files.internal("bg/net.png")));
+		stage.addActor(background);
+
+		stage.getActors().removeValue(table, false);
+		stage.addActor(table);
+
+		HudTable hudTable = new HudTable(getSkin(), this);
+		hudStage.addActor(hudTable);
+
 		table.add(highscoresButton).width(highscoresButton.getWidth())
-				.height(highscoresButton.getHeight());
-		table.add(startButton).width(startButton.getWidth()).height(highscoresButton.getHeight());
-		table.add(loginButton).width(loginButton.getWidth()).height(highscoresButton.getHeight());
+				.height(highscoresButton.getHeight()).padTop(startButton.getHeight() / 2);
+		table.add(startButton).width(startButton.getWidth()).height(startButton.getHeight());
+		table.add(loginButton).width(loginButton.getWidth()).height(loginButton.getHeight())
+				.padTop(startButton.getHeight() / 2);
+
 	}
 
 	@Override
 	public void render(float delta) {
 		super.render(delta);
 
+		hudStage.draw();
+		hudStage.act(delta);
+		Table.drawDebug(stage);
 	}
 
 }

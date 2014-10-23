@@ -23,8 +23,6 @@ public class GameScreen extends AbstractScreen {
 	GameContactListener contactListener;
 	ShapeRenderer sr;
 	HudTable hudTable;
-	Stage hudStage;
-	InputMultiplexer multiplexer;
 	int score = 0;
 	boolean gameOver;
 	Array<ParticleEffect> particles;
@@ -36,7 +34,7 @@ public class GameScreen extends AbstractScreen {
 
 		particleStage = new Stage();
 
-		Icons.loadIcons();
+		
 
 		particles = new Array<ParticleEffect>();
 
@@ -50,8 +48,6 @@ public class GameScreen extends AbstractScreen {
 		hudTable.setFillParent(true);
 		hudStage.addActor(hudTable);
 
-		multiplexer = new InputMultiplexer(stage, hudStage);
-		Gdx.input.setInputProcessor(multiplexer);
 
 		background = new Background(stage, world);
 
@@ -67,6 +63,10 @@ public class GameScreen extends AbstractScreen {
 		black = new Image(new Texture(Gdx.files.internal("black.png")));
 		black.setSize(Constants.SCLWIDTH, Constants.SCLHEIGHT);
 		black.setColor(black.getColor().r, black.getColor().g, black.getColor().b, 0.75f);
+		
+		multiplexer = new InputMultiplexer(stage, hudStage);
+	
+		Gdx.input.setInputProcessor(multiplexer);
 
 	}
 
@@ -144,6 +144,8 @@ public class GameScreen extends AbstractScreen {
 		particleStage.draw();
 		particleStage.getCamera().position.set(stage.getCamera().position.x / Constants.SCALE,
 				stage.getCamera().position.y / Constants.SCALE, 0);
+		
+		
 
 // Table.drawDebug(hudStage);
 		hudTable.debug();

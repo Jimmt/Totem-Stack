@@ -1,6 +1,7 @@
 package com.jumpbuttonstudios.totemgame;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
@@ -23,6 +24,7 @@ public class AbstractScreen implements Screen {
 	protected Skin skin;
 	protected Stage hudStage;
 	protected TotemGameComparator comparator;
+	protected static InputMultiplexer multiplexer;
 
 	public AbstractScreen(TotemGame game) {
 		this.game = game;
@@ -35,7 +37,8 @@ public class AbstractScreen implements Screen {
 		hudStage = new Stage();
 		
 		camera = (OrthographicCamera) stage.getCamera();
-		Gdx.input.setInputProcessor(stage);
+		multiplexer = new InputMultiplexer(stage, hudStage);
+		Gdx.input.setInputProcessor(multiplexer);
 	}
 
 	@Override
