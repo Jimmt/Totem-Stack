@@ -162,6 +162,7 @@ public class HudTable extends Table {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 				TotemGame.soundManager.play("button");
+				game.pause();
 			}
 
 		});

@@ -88,6 +88,16 @@ public class GameScreen extends AbstractScreen {
 			TotemGame.soundManager.play("lose");
 		}
 	}
+	
+	public void pause(){
+		paused = !paused;
+		black.setVisible(paused);
+		black.setPosition(camera.position.x - Constants.SCLWIDTH / 2, camera.position.y - Constants.SCLHEIGHT / 2);
+		if (!stage.getActors().contains(black, false)) {
+			stage.getActors().removeValue(black, false);
+		}
+		stage.addActor(black);
+	}
 
 	/**
 	 * not sure if I wrote this in the gdd, but when the totem tower falls, the
@@ -129,7 +139,7 @@ public class GameScreen extends AbstractScreen {
 
 			}
 		}
-
+		
 		if (contactListener.getGroundTotems().size > 1 && !gameOver) {
 			gameOver();
 		}
@@ -138,6 +148,8 @@ public class GameScreen extends AbstractScreen {
 			if (!stage.getActors().contains(black, false)) {
 				stage.addActor(black);
 			}
+			black.setVisible(true);
+			black.setPosition(camera.position.x - Constants.SCLWIDTH / 2, camera.position.y - Constants.SCLHEIGHT / 2);
 		}
 
 		particleStage.act(delta);

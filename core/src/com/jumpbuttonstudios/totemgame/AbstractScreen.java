@@ -25,17 +25,18 @@ public class AbstractScreen implements Screen {
 	protected Stage hudStage;
 	protected TotemGameComparator comparator;
 	protected static InputMultiplexer multiplexer;
+	protected boolean paused;
 
 	public AbstractScreen(TotemGame game) {
 		this.game = game;
-		
+
 		comparator = new TotemGameComparator();
 
 		debugRenderer = new Box2DDebugRenderer();
 		world = new World(new Vector2(0, -4f), false);
 		stage = new Stage();
 		hudStage = new Stage();
-		
+
 		camera = (OrthographicCamera) stage.getCamera();
 		multiplexer = new InputMultiplexer(stage, hudStage);
 		Gdx.input.setInputProcessor(multiplexer);
@@ -44,23 +45,23 @@ public class AbstractScreen implements Screen {
 	@Override
 	public void render(float delta) {
 
-		stage.act(delta);
-		hudStage.act(delta);
-
 		Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
-		
+
+		stage.act(delta);
+		hudStage.act(delta);
 		stage.draw();
 		hudStage.draw();
-		
-//		stage.getActors().sort(comparator);
 
-//		Table.drawDebug(hudStage);
-		
+// stage.getActors().sort(comparator);
 
-		world.step(1f / 60f, 5, 8);
+// Table.drawDebug(hudStage);
 
-//		debugRenderer.render(world, stage.getCamera().combined);
+		if (!paused) {
+			world.step(1f / 60f, 5, 8);
+		}
+
+// debugRenderer.render(world, stage.getCamera().combined);
 
 	}
 
