@@ -82,6 +82,8 @@ public class OptionsDialog extends Dialog {
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
 		super.draw(batch, parentAlpha);
+		
+		
 	}
 
 	@Override

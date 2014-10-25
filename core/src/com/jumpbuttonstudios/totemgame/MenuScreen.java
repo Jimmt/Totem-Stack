@@ -14,10 +14,11 @@ public class MenuScreen extends AbstractScreen {
 	ImageButton startButton, highscoresButton, loginButton;
 	Texture tex;
 	Image tmp;
+	LoginDialog loginDialog;
 
 	public MenuScreen(TotemGame game) {
 		super(game);
-
+		
 	}
 
 	@Override
@@ -25,6 +26,8 @@ public class MenuScreen extends AbstractScreen {
 		super.show();
 
 		Icons.loadIcons();
+		
+		loginDialog = new LoginDialog("", getSkin());
 
 		Table table = super.getTable();
 		table.setFillParent(true);
@@ -72,7 +75,8 @@ public class MenuScreen extends AbstractScreen {
 		loginButton.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				game.setScreen(new GameScreen(game));
+				loginDialog.setVisible(true);
+				Gdx.input.setInputProcessor(loginDialog.getStage());
 				TotemGame.soundManager.play("button");
 			}
 
@@ -92,6 +96,11 @@ public class MenuScreen extends AbstractScreen {
 		table.add(startButton).width(startButton.getWidth()).height(startButton.getHeight());
 		table.add(loginButton).width(loginButton.getWidth()).height(loginButton.getHeight())
 				.padTop(startButton.getHeight() / 2);
+		
+		hudStage.addActor(loginDialog);
+		loginDialog.setPosition(Constants.WIDTH / 2 - loginDialog.getWidth() / 2,
+				Constants.HEIGHT / 2 - loginDialog.getHeight() / 2);
+		loginDialog.setVisible(false);
 
 	}
 
