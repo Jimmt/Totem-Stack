@@ -71,8 +71,8 @@ public class OptionsDialog extends Dialog {
 		getContentTable().add(tapControl);
 		getContentTable().add(tapControlLabel).padBottom(9).left().height(font.getCapHeight());
 		getContentTable().row();
-		getContentTable().add(tiltControl);
-		getContentTable().add(tiltControlLabel).padBottom(9).left().height(font.getCapHeight());
+		getContentTable().add(tiltControl).padBottom(54);
+		getContentTable().add(tiltControlLabel).padBottom(54).left().height(font.getCapHeight());
 		getContentTable().row();
 
 		pack();

@@ -1,6 +1,7 @@
 package com.jumpbuttonstudios.totemgame;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -18,7 +19,7 @@ public class MenuScreen extends AbstractScreen {
 
 	public MenuScreen(TotemGame game) {
 		super(game);
-		
+
 	}
 
 	@Override
@@ -26,7 +27,8 @@ public class MenuScreen extends AbstractScreen {
 		super.show();
 
 		Icons.loadIcons();
-		
+		JBSApi.initialize();
+
 		loginDialog = new LoginDialog("", getSkin());
 
 		Table table = super.getTable();
@@ -76,7 +78,7 @@ public class MenuScreen extends AbstractScreen {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 				loginDialog.setVisible(true);
-				Gdx.input.setInputProcessor(loginDialog.getStage());
+				
 				TotemGame.soundManager.play("button");
 			}
 
@@ -96,11 +98,15 @@ public class MenuScreen extends AbstractScreen {
 		table.add(startButton).width(startButton.getWidth()).height(startButton.getHeight());
 		table.add(loginButton).width(loginButton.getWidth()).height(loginButton.getHeight())
 				.padTop(startButton.getHeight() / 2);
-		
+
 		hudStage.addActor(loginDialog);
-		loginDialog.setPosition(Constants.WIDTH / 2 - loginDialog.getWidth() / 2,
-				Constants.HEIGHT / 2 - loginDialog.getHeight() / 2);
+		loginDialog.setPosition(Constants.WIDTH / 2 - loginDialog.getWidth() / 2, Constants.HEIGHT
+				/ 2 - loginDialog.getHeight() / 2);
 		loginDialog.setVisible(false);
+
+		InputMultiplexer multiplexer = new InputMultiplexer(hudStage, stage);
+
+		Gdx.input.setInputProcessor(multiplexer);
 
 	}
 

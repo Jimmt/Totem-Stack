@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
@@ -16,16 +17,15 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField.TextFieldStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.jumpbuttonstudio.api.API;
 
 public class LoginDialog extends Dialog {
 	ShapeRenderer sr;
 	TextField username, password;
+	ImageButton xb;
 
 	public LoginDialog(String title, final Skin skin) {
 		super(title, skin);
-		
-		
+
 		setTransform(true);
 
 		BitmapFont font = new BitmapFont(Gdx.files.internal("ui/highscore/font.fnt"));
@@ -53,14 +53,14 @@ public class LoginDialog extends Dialog {
 				boolean success = signIn(username.getText(), password.getText());
 
 				if (success) {
-//					getStage().addActor(errorDialog);
+// getStage().addActor(errorDialog);
 				} else {
 					ErrorDialog e = new ErrorDialog("", skin);
 					e.setPosition(Constants.WIDTH / 2 - e.getWidth() / 2,
 							Constants.HEIGHT / 2 - e.getHeight() / 2);
 					getStage().addActor(e);
 				}
-				
+
 			}
 		});
 
@@ -73,10 +73,24 @@ public class LoginDialog extends Dialog {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 				TotemGame.soundManager.play("button");
-				
+
 			}
 		});
 
+		ImageButtonStyle xStyle = new ImageButtonStyle();
+		xStyle.up = Icons.getImage("ui/options/close.png").getDrawable();
+		xb = new ImageButton(xStyle);
+		xb.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				TotemGame.soundManager.play("button");
+				setVisible(false);
+				
+			}
+
+		});
+		getContentTable().add(xb).expandX().right().colspan(2).padBottom(xb.getHeight() / 2);
+		getContentTable().row();
 		getContentTable().add(username).width(panel.getWidth() - 50).colspan(2).padBottom(27f);
 		getContentTable().row();
 		getContentTable().add(password).width(panel.getWidth() - 50).colspan(2).padTop(10f);
@@ -85,26 +99,24 @@ public class LoginDialog extends Dialog {
 		getContentTable().add(register).padTop(15);
 
 		pack();
-
+//		xb.setPosition(Constants.WIDTH / 2 - getWidth() / 2 + getWidth() - xb.getWidth() / 2 - 5,
+//				Constants.HEIGHT / 2 - getHeight() / 2 + getHeight() - xb.getHeight() / 2 - 5);
 		sr = new ShapeRenderer();
 
 	}
 
 	public boolean signIn(String username, String password) {
-		API api = new API();
-		api.connect();
-		api.authenticate("m72od5evppzDV4equwhq", "jimmt", 8);
-		return api.checkLogin(username, password);
 
+		return JBSApi.api.checkLogin(username, password);
 	}
 
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
 		super.draw(batch, parentAlpha);
-		
-		for(int i = 0; i < getStage().getActors().size; i++){
-			System.out.println(getStage().getActors().get(i));
-		}
+
+//		if (getStage() != null) {
+//			getStage().addActor(xb);
+//		}
 
 		sr.setProjectionMatrix(getStage().getCamera().combined);
 		sr.begin(ShapeType.Line);

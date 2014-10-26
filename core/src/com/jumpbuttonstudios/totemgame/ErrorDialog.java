@@ -29,9 +29,10 @@ public class ErrorDialog extends Dialog {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 				TotemGame.soundManager.play("button");
-//				setVisible(false);
+
 			}
 		});
+		
 		
 		button(ok).padBottom(30f);
 
