@@ -26,7 +26,8 @@ public class Icons {
 			"ui/gameover/achievements_pressed.png", "ui/gameover/twitter_pressed.png",
 			"ui/gameover/facebook_pressed.png", "ui/paused/removead.png", "ui/options/close.png",
 			"login/ok.png", "login/ok_pressed.png", "login/signin.png", "login/signin_pressed.png",
-			"login/register.png", "login/register_pressed.png", "login/wrong.png" };
+			"login/register.png", "login/register_pressed.png", "login/wrong.png",
+			"login/logoutwindow.png", "login/yes.png", "login/yes_pressed.png", "login/logout.png", "login/logout_clicked.png", "login/avatar.png", "login/welcomeback.png"};
 	public static TextureRegion[][] iceImagesArr;
 	public static Array<TextureRegion> iceImages;
 

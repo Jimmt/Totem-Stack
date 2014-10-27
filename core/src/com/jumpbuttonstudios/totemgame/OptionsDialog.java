@@ -57,7 +57,7 @@ public class OptionsDialog extends Dialog {
 		ImageButtonStyle buttonStyle = new ImageButtonStyle();
 		buttonStyle.up = Icons.getImage("ui/options/close.png").getDrawable();
 		x = new ImageButton(buttonStyle);
-		getContentTable().add(x).expandX().right().colspan(2).padBottom(x.getHeight() / 2);
+		getContentTable().add(x).expandX().right().colspan(2).padTop(x.getHeight() / 2);
 		getContentTable().row();
 		
 		setupListeners();

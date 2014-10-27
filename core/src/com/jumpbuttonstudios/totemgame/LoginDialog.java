@@ -50,10 +50,23 @@ public class LoginDialog extends Dialog {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 				TotemGame.soundManager.play("button");
+
+				if (JBSApi.api != null) {
+
+				} else {
+					JBSApi.initialize();
+				}
+				if(!JBSApi.api.isConnected()){
+					JBSApi.initialize();
+				}
+
 				boolean success = signIn(username.getText(), password.getText());
 
 				if (success) {
-// getStage().addActor(errorDialog);
+					setVisible(false);
+					JBSApi.loggedIn = true;
+					Header h = new Header(ImageDownloader.downloadImage(JBSApi.api.getUserAvatar()), username.getText());
+					getStage().addActor(h);
 				} else {
 					ErrorDialog e = new ErrorDialog("", skin);
 					e.setPosition(Constants.WIDTH / 2 - e.getWidth() / 2,
@@ -85,22 +98,21 @@ public class LoginDialog extends Dialog {
 			public void clicked(InputEvent event, float x, float y) {
 				TotemGame.soundManager.play("button");
 				setVisible(false);
-				
+
 			}
 
 		});
-		getContentTable().add(xb).expandX().right().colspan(2).padBottom(xb.getHeight() / 2);
+		getContentTable().add(xb).expandX().right().colspan(2);
 		getContentTable().row();
-		getContentTable().add(username).width(panel.getWidth() - 50).colspan(2).padBottom(27f);
+		getContentTable().add(username).width(panel.getWidth() - 50).colspan(2).padBottom(47);
 		getContentTable().row();
-		getContentTable().add(password).width(panel.getWidth() - 50).colspan(2).padTop(10f);
+		getContentTable().add(password).width(panel.getWidth() - 50).colspan(2).padBottom(47);
 		getContentTable().row();
-		getContentTable().add(signIn).padTop(15);
-		getContentTable().add(register).padTop(15);
+		getContentTable().add(signIn).padBottom(15f);
+		getContentTable().add(register).padBottom(15f);
 
 		pack();
-//		xb.setPosition(Constants.WIDTH / 2 - getWidth() / 2 + getWidth() - xb.getWidth() / 2 - 5,
-//				Constants.HEIGHT / 2 - getHeight() / 2 + getHeight() - xb.getHeight() / 2 - 5);
+
 		sr = new ShapeRenderer();
 
 	}
@@ -114,17 +126,17 @@ public class LoginDialog extends Dialog {
 	public void draw(Batch batch, float parentAlpha) {
 		super.draw(batch, parentAlpha);
 
-//		if (getStage() != null) {
-//			getStage().addActor(xb);
-//		}
+// if (getStage() != null) {
+// getStage().addActor(xb);
+// }
 
 		sr.setProjectionMatrix(getStage().getCamera().combined);
 		sr.begin(ShapeType.Line);
 		for (int i = 0; i < this.getContentTable().getCells().size; i++) {
-// sr.box(getX() + getContentTable().getCells().get(i).getActorX(), getY()
-// + getContentTable().getY() + getContentTable().getCells().get(i).getActorY(),
-// 0, getContentTable().getCells().get(i).getActorWidth(), getContentTable()
-// .getCells().get(i).getActorHeight(), 0);
+ sr.box(getX() + getContentTable().getCells().get(i).getActorX(), getY()
+ + getContentTable().getY() + getContentTable().getCells().get(i).getActorY(),
+ 0, getContentTable().getCells().get(i).getActorWidth(), getContentTable()
+ .getCells().get(i).getActorHeight(), 0);
 		}
 		sr.end();
 	}

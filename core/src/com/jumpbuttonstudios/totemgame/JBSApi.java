@@ -4,11 +4,12 @@ import com.jumpbuttonstudio.api.API;
 
 public class JBSApi {
 	static API api;
+	static boolean loggedIn;
 	
 	public static void initialize(){
 		api = new API();
 		api.connect();
-		api.authenticate("m72od5evppzDV4equwhq", "jimmt", 8);
+		api.authenticate("ZLkf5T0KdkSoxw4Q2CUh", "jimmt", 14);
 	}
 	
 	
