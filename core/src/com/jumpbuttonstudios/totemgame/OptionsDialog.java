@@ -53,13 +53,18 @@ public class OptionsDialog extends Dialog {
 
 		tiltControl = new CheckBox("", checkBoxStyle);
 		Label tiltControlLabel = new Label("Tilt Controls", labelStyle);
+		
+		bgMusic.setChecked(GamePreferences.prefs.getBoolean("bgMusic"));
+		soundEffects.setChecked(GamePreferences.prefs.getBoolean("soundEffects"));
+		tapControl.setChecked(GamePreferences.prefs.getBoolean("tap"));
+		tiltControl.setChecked(!GamePreferences.prefs.getBoolean("tap"));
 
 		ImageButtonStyle buttonStyle = new ImageButtonStyle();
 		buttonStyle.up = Icons.getImage("ui/options/close.png").getDrawable();
 		x = new ImageButton(buttonStyle);
 		getContentTable().add(x).expandX().right().colspan(2).padTop(x.getHeight() / 2);
 		getContentTable().row();
-		
+
 		setupListeners();
 
 		getContentTable().add(bgMusic);
@@ -82,8 +87,7 @@ public class OptionsDialog extends Dialog {
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
 		super.draw(batch, parentAlpha);
-		
-		
+
 	}
 
 	@Override
@@ -96,7 +100,7 @@ public class OptionsDialog extends Dialog {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 				TotemGame.soundManager.play("check");
-
+				GamePreferences.putBoolean("bgMusic", bgMusic.isChecked());
 			}
 
 		});
@@ -104,7 +108,7 @@ public class OptionsDialog extends Dialog {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 				TotemGame.soundManager.play("check");
-
+				GamePreferences.putBoolean("soundEffects", soundEffects.isChecked());
 			}
 
 		});
@@ -112,7 +116,8 @@ public class OptionsDialog extends Dialog {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 				TotemGame.soundManager.play("check");
-
+				GamePreferences.putBoolean("tap", tapControl.isChecked());
+				tiltControl.setChecked(!tapControl.isChecked());
 			}
 
 		});
@@ -120,7 +125,8 @@ public class OptionsDialog extends Dialog {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 				TotemGame.soundManager.play("check");
-
+				GamePreferences.putBoolean("tap", !tiltControl.isChecked());
+				tapControl.setChecked(!tiltControl.isChecked());
 			}
 
 		});
