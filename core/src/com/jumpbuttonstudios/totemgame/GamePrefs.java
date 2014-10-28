@@ -3,7 +3,7 @@ package com.jumpbuttonstudios.totemgame;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 
-public class GamePreferences {
+public class GamePrefs {
 	static Preferences prefs;
 
 	public static void initialize() {

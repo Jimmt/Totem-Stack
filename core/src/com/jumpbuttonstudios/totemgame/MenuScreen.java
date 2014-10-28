@@ -29,7 +29,7 @@ public class MenuScreen extends AbstractScreen {
 		super.show();
 
 		Icons.loadIcons();
-		GamePreferences.initialize();
+		GamePrefs.initialize();
 
 		loginDialog = new LoginDialog("", getSkin());
 		logoutDialog = new LogoutDialog("", getSkin());

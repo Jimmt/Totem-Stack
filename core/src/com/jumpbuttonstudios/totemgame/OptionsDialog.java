@@ -4,6 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox.CheckBoxStyle;
@@ -14,16 +16,18 @@ import com.badlogic.gdx.scenes.scene2d.ui.ImageButton.ImageButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 public class OptionsDialog extends Dialog {
 	Image panel;
 	ImageButton x;
 	CheckBox bgMusic, soundEffects, tapControl, tiltControl;
+	ShapeRenderer sr;
 
 	public OptionsDialog(String title, Skin skin) {
 		super(title, skin);
+
+		sr = new ShapeRenderer();
 
 		debug();
 
@@ -53,19 +57,24 @@ public class OptionsDialog extends Dialog {
 
 		tiltControl = new CheckBox("", checkBoxStyle);
 		Label tiltControlLabel = new Label("Tilt Controls", labelStyle);
-		
-		bgMusic.setChecked(GamePreferences.prefs.getBoolean("bgMusic"));
-		soundEffects.setChecked(GamePreferences.prefs.getBoolean("soundEffects"));
-		tapControl.setChecked(GamePreferences.prefs.getBoolean("tap"));
-		tiltControl.setChecked(!GamePreferences.prefs.getBoolean("tap"));
+
+		bgMusic.setChecked(GamePrefs.prefs.getBoolean("bgMusic"));
+		soundEffects.setChecked(GamePrefs.prefs.getBoolean("soundEffects"));
+		tapControl.setChecked(GamePrefs.prefs.getBoolean("tap"));
+		tiltControl.setChecked(!GamePrefs.prefs.getBoolean("tap"));
 
 		ImageButtonStyle buttonStyle = new ImageButtonStyle();
 		buttonStyle.up = Icons.getImage("ui/options/close.png").getDrawable();
 		x = new ImageButton(buttonStyle);
-		getContentTable().add(x).expandX().right().colspan(2).padTop(x.getHeight() / 2);
+		getContentTable().add(x).expandX().right().colspan(3).padTop(x.getHeight() / 2);
 		getContentTable().row();
 
 		setupListeners();
+
+		Image tap = Icons.getImage("ui/options/tap.png");
+		tap.setScale(1);
+		Image tilt = Icons.getImage("ui/options/tilt.png");
+		tilt.setScale(1);
 
 		getContentTable().add(bgMusic);
 		getContentTable().add(bgMusicLabel).padBottom(9).left().height(font.getCapHeight());
@@ -75,9 +84,11 @@ public class OptionsDialog extends Dialog {
 		getContentTable().row();
 		getContentTable().add(tapControl);
 		getContentTable().add(tapControlLabel).padBottom(9).left().height(font.getCapHeight());
+		getContentTable().add(tap).padBottom(9);
 		getContentTable().row();
 		getContentTable().add(tiltControl).padBottom(54);
 		getContentTable().add(tiltControlLabel).padBottom(54).left().height(font.getCapHeight());
+		getContentTable().add(tilt).padBottom(54);
 		getContentTable().row();
 
 		pack();
@@ -93,6 +104,16 @@ public class OptionsDialog extends Dialog {
 	@Override
 	public void act(float delta) {
 		super.act(delta);
+
+//		sr.setProjectionMatrix(getStage().getCamera().combined);
+//		sr.begin(ShapeType.Line);
+//		for (int i = 0; i < this.getContentTable().getCells().size; i++) {
+//			sr.box(getX() + getContentTable().getCells().get(i).getActorX(), getY()
+//					+ getContentTable().getY() + getContentTable().getCells().get(i).getActorY(),
+//					0, getContentTable().getCells().get(i).getActorWidth(), getContentTable()
+//							.getCells().get(i).getActorHeight(), 0);
+//		}
+//		sr.end();
 	}
 
 	public void setupListeners() {
@@ -100,7 +121,7 @@ public class OptionsDialog extends Dialog {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 				TotemGame.soundManager.play("check");
-				GamePreferences.putBoolean("bgMusic", bgMusic.isChecked());
+				GamePrefs.putBoolean("bgMusic", bgMusic.isChecked());
 			}
 
 		});
@@ -108,7 +129,7 @@ public class OptionsDialog extends Dialog {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 				TotemGame.soundManager.play("check");
-				GamePreferences.putBoolean("soundEffects", soundEffects.isChecked());
+				GamePrefs.putBoolean("soundEffects", soundEffects.isChecked());
 			}
 
 		});
@@ -116,7 +137,7 @@ public class OptionsDialog extends Dialog {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 				TotemGame.soundManager.play("check");
-				GamePreferences.putBoolean("tap", tapControl.isChecked());
+				GamePrefs.putBoolean("tap", tapControl.isChecked());
 				tiltControl.setChecked(!tapControl.isChecked());
 			}
 
@@ -125,7 +146,7 @@ public class OptionsDialog extends Dialog {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 				TotemGame.soundManager.play("check");
-				GamePreferences.putBoolean("tap", !tiltControl.isChecked());
+				GamePrefs.putBoolean("tap", !tiltControl.isChecked());
 				tapControl.setChecked(!tiltControl.isChecked());
 			}
 
