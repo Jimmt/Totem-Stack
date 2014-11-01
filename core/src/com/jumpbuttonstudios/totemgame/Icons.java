@@ -28,7 +28,12 @@ public class Icons {
 			"login/ok.png", "login/ok_pressed.png", "login/signin.png", "login/signin_pressed.png",
 			"login/register.png", "login/register_pressed.png", "login/wrong.png",
 			"login/logoutwindow.png", "login/yes.png", "login/yes_pressed.png", "login/logout.png",
-			"login/logout_clicked.png", "login/avatar.png", "login/welcomeback.png", "ui/options/tap.png", "ui/options/tilt.png" };
+			"login/logout_clicked.png", "login/avatar.png", "login/welcomeback.png",
+			"ui/options/tap.png", "ui/options/tilt.png", "ui/highscore/friends.png",
+			"ui/highscore/friendsdisable.png", "ui/highscore/global.png",
+			"ui/highscore/globaldisable.png", "ui/highscore/personal.png",
+			"ui/highscore/personaldisable.png", "ui/highscore/window.png", "ui/highscore/back.png",
+			"ui/highscore/back_pressed.png" };
 	public static TextureRegion[][] iceImagesArr;
 	public static Array<TextureRegion> iceImages;
 

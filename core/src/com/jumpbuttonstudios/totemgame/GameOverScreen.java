@@ -50,15 +50,10 @@ public class GameOverScreen extends AbstractScreen {
 			ImageButton imageButton = new ImageButton(style);
 			imageButtons.add(imageButton);
 
-			imageButton.addListener(new ClickListener() {
-				@Override
-				public void clicked(InputEvent event, float x, float y) {
-					super.clicked(event, x, y);
-
-					TotemGame.soundManager.play("button");
-				}
-			});
+			
 		}
+		
+		setupListeners();
 
 		Image panel = new Image(new Texture(Gdx.files.internal("ui/gameover/gowindow.png")));
 		panel.setPosition(Constants.WIDTH / 2 - panel.getWidth() / 2, Constants.HEIGHT / 3 * 2
@@ -108,6 +103,49 @@ public class GameOverScreen extends AbstractScreen {
 		Gdx.input.setInputProcessor(hudStage);
 		// DIFFERENT HUD STAGES
 		table.debug();
+	}
+	
+	public void setupListeners(){
+		imageButtons.get(0).addListener(new ClickListener() { //replay
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				super.clicked(event, x, y);
+				TotemGame.soundManager.play("button");
+				game.setScreen(new GameScreen(game));
+			}
+		});
+		imageButtons.get(1).addListener(new ClickListener() { //highscore
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				super.clicked(event, x, y);
+
+				TotemGame.soundManager.play("button");
+			}
+		});
+		imageButtons.get(2).addListener(new ClickListener() { //achievement
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				super.clicked(event, x, y);
+
+				TotemGame.soundManager.play("button");
+			}
+		});
+		imageButtons.get(3).addListener(new ClickListener() { //twitter
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				super.clicked(event, x, y);
+
+				TotemGame.soundManager.play("button");
+			}
+		});
+		imageButtons.get(4).addListener(new ClickListener() { //facebook
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				super.clicked(event, x, y);
+
+				TotemGame.soundManager.play("button");
+			}
+		});
 	}
 
 	@Override

@@ -51,14 +51,7 @@ public class LoginDialog extends Dialog {
 			public void clicked(InputEvent event, float x, float y) {
 				TotemGame.soundManager.play("button");
 
-				if (JBSApi.api != null) {
-
-				} else {
-					JBSApi.initialize();
-				}
-				if(!JBSApi.api.isConnected()){
-					JBSApi.initialize();
-				}
+				
 
 				boolean success = signIn(username.getText(), password.getText());
 

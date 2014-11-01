@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
@@ -35,6 +36,7 @@ public class Header extends Actor {
 		System.out.println((140 - text.getHeight()) / 2);
 		text.setPosition(Constants.WIDTH / 2 - text.getWidth() / 2,
 				Constants.HEIGHT - (130 - text.getHeight()) / 2 - text.getHeight());
+		
 	}
 
 	@Override

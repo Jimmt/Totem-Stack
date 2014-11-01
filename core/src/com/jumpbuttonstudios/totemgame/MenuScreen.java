@@ -30,6 +30,7 @@ public class MenuScreen extends AbstractScreen {
 
 		Icons.loadIcons();
 		GamePrefs.initialize();
+		JBSApi.initialize();
 
 		loginDialog = new LoginDialog("", getSkin());
 		logoutDialog = new LogoutDialog("", getSkin());
@@ -77,7 +78,7 @@ public class MenuScreen extends AbstractScreen {
 		highscoresButton.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				game.setScreen(new GameScreen(game));
+				game.setScreen(new HighScoresScreen(game));
 				TotemGame.soundManager.play("button");
 			}
 
