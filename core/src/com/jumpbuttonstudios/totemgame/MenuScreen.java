@@ -30,7 +30,12 @@ public class MenuScreen extends AbstractScreen {
 
 		Icons.loadIcons();
 		GamePrefs.initialize();
-		JBSApi.initialize();
+
+		if (JBSApi.api != null) {
+
+		} else {
+			JBSApi.initialize();
+		}
 
 		loginDialog = new LoginDialog("", getSkin());
 		logoutDialog = new LogoutDialog("", getSkin());
@@ -56,8 +61,7 @@ public class MenuScreen extends AbstractScreen {
 		loginStyle.imageUp = tmp.getDrawable();
 		tmp = new Image(tex = new Texture(Gdx.files.internal("login/login_clicked.png")));
 		loginStyle.imageDown = tmp.getDrawable();
-		
-		
+
 		logoutStyle = new ImageButtonStyle();
 		logoutStyle.up = Icons.getImage("login/logout.png").getDrawable();
 		logoutStyle.down = Icons.getImage("login/logout_clicked.png").getDrawable();
@@ -65,7 +69,7 @@ public class MenuScreen extends AbstractScreen {
 		startButton = new ImageButton(startStyle);
 		highscoresButton = new ImageButton(highscoresStyle);
 		loginButton = new ImageButton(loginStyle);
-		
+
 		startButton.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
@@ -124,8 +128,6 @@ public class MenuScreen extends AbstractScreen {
 		InputMultiplexer multiplexer = new InputMultiplexer(hudStage, stage);
 
 		Gdx.input.setInputProcessor(multiplexer);
-		
-		
 
 	}
 
@@ -138,11 +140,10 @@ public class MenuScreen extends AbstractScreen {
 		Table.drawDebug(stage);
 
 		if (JBSApi.loggedIn) {
-			loginButton.setStyle(logoutStyle);	
-			
-		}
-		 else {
-//			loginButton.setStyle(loginStyle);
+			loginButton.setStyle(logoutStyle);
+
+		} else {
+// loginButton.setStyle(loginStyle);
 		}
 	}
 

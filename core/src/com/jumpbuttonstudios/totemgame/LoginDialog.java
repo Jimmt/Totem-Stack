@@ -1,5 +1,7 @@
 package com.jumpbuttonstudios.totemgame;
 
+import aurelienribon.tweenengine.Tween;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -27,9 +29,14 @@ public class LoginDialog extends Dialog {
 		super(title, skin);
 
 		setTransform(true);
-
+		
+		Tween.registerAccessor(Image.class, new ImageAccessor());
+		
+		
 		BitmapFont font = new BitmapFont(Gdx.files.internal("ui/highscore/font.fnt"));
 		Image panel = new Image(new Texture(Gdx.files.internal("login/window.png")));
+		
+		Tween.to(panel, 0, 1.0f).target(0, 0).start();
 
 		setBackground(panel.getDrawable());
 

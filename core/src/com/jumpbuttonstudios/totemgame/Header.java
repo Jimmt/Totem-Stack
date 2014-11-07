@@ -15,6 +15,9 @@ public class Header extends Actor {
 	BitmapFont font;
 	String username;
 	Label text;
+	float alpha = 1;
+	float counter = 999f, cap = 0.05f;
+	float x = 1;
 
 	public Header(Image avatar, String username) {
 		this.avatar = avatar;
@@ -33,26 +36,32 @@ public class Header extends Actor {
 
 		LabelStyle style = new LabelStyle(font, Color.WHITE);
 		text = new Label("Welcome back, " + username, style);
-		System.out.println((140 - text.getHeight()) / 2);
 		text.setPosition(Constants.WIDTH / 2 - text.getWidth() / 2,
 				Constants.HEIGHT - (130 - text.getHeight()) / 2 - text.getHeight());
-		
 	}
 
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
 		super.draw(batch, parentAlpha);
 
-		background.draw(batch, parentAlpha);
-		avatar.draw(batch, parentAlpha);
-		border.draw(batch, parentAlpha);
+		if (counter > cap) {
 
-		text.draw(batch, parentAlpha);
+			if (alpha > 0) {
+				x++;
+				alpha -= ((x / 100) * (x / 100));
+			}
+			if (alpha < 0) {
+				alpha = 0;
+			}
+			counter = 0;
+		} else {
+			counter += Gdx.graphics.getDeltaTime();
+		}
 
-// String message = "Welcome back, " + username;
-
-// font.draw(batch, message, Constants.WIDTH / 2 - message.length() * 40f / 4,
-// Constants.HEIGHT - 40f);
+		background.draw(batch, alpha);
+		avatar.draw(batch, alpha);
+		border.draw(batch, alpha);
+		text.draw(batch, alpha);
 
 	}
 

@@ -10,7 +10,7 @@ import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.Sort;
 
 public class HighScores {
-	public static int[] scores = new int[10];
+	public static int[] scores = new int[15];
 	private static Json json;
 
 	public static void init() {
@@ -19,7 +19,7 @@ public class HighScores {
 
 	public static void addScore(int newScore) {
 
-		Integer[] conversion = new Integer[10];
+		Integer[] conversion = new Integer[15];
 		for (int i = 0; i < scores.length; i++) {
 			conversion[i] = Integer.valueOf(scores[i]);
 		}
@@ -37,6 +37,7 @@ public class HighScores {
 				break;
 			}
 		}
+		write();
 	}
 
 	public static void read() {

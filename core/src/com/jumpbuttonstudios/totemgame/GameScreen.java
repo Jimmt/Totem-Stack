@@ -3,18 +3,13 @@ package com.jumpbuttonstudios.totemgame;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton.ImageButtonStyle;
-import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 public class GameScreen extends AbstractScreen {
 	Background background;
@@ -28,6 +23,7 @@ public class GameScreen extends AbstractScreen {
 	Array<ParticleEffect> particles;
 	Stage particleStage;
 	Image black;
+	FitViewport viewport;
 
 	public GameScreen(TotemGame game) {
 		super(game);
@@ -38,7 +34,7 @@ public class GameScreen extends AbstractScreen {
 
 		particles = new Array<ParticleEffect>();
 
-		FitViewport viewport = new FitViewport(Constants.SCLWIDTH, Constants.SCLHEIGHT, camera);
+		viewport = new FitViewport(Constants.SCLWIDTH, Constants.SCLHEIGHT, camera);
 		stage.setViewport(viewport);
 		viewport.update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
 
@@ -70,6 +66,7 @@ public class GameScreen extends AbstractScreen {
 
 	}
 
+
 	@Override
 	public void show() {
 		super.show();
@@ -82,9 +79,14 @@ public class GameScreen extends AbstractScreen {
 					((IceTotem) spawner.totems.get(i)).unfreeze();
 				}
 			}
-
+			
+			GameOverDialog god = new GameOverDialog(score, getSkin(), this, game);
+			god.setPosition(Constants.WIDTH / 2 - god.getWidth() / 2,
+					Constants.HEIGHT / 2 - god.getHeight() / 2);
+			hudStage.addActor(god);
+			
 			gameOver = true;
-			game.setScreen(new GameOverScreen(game, this, score));
+			
 			TotemGame.soundManager.play("lose");
 		}
 	}
@@ -97,6 +99,8 @@ public class GameScreen extends AbstractScreen {
 			stage.getActors().removeValue(black, false);
 		}
 		stage.addActor(black);
+		
+		
 	}
 
 	/**
@@ -109,6 +113,7 @@ public class GameScreen extends AbstractScreen {
 		super.render(delta);
 
 		contactListener.update(delta);
+		
 
 // if (currentTotem != null) {
 // sr.setProjectionMatrix(camera.combined);
