@@ -33,7 +33,12 @@ public class Icons {
 			"ui/highscore/friendsdisable.png", "ui/highscore/global.png",
 			"ui/highscore/globaldisable.png", "ui/highscore/personal.png",
 			"ui/highscore/personaldisable.png", "ui/highscore/window.png", "ui/highscore/back.png",
-			"ui/highscore/back_pressed.png" };
+			"ui/highscore/back_pressed.png", "ui/shop/1dollar.png", "ui/shop/3dollar.png",
+			"ui/shop/7dollar.png", "ui/shop/100.png", "ui/shop/200.png", "ui/shop/300.png",
+			"ui/shop/500.png", "ui/shop/freeze.png", "ui/shop/selected.png", "ui/shop/slow.png",
+			"ui/shop/wind.png", "ui/shop/retry.png", "ui/shop/retryinfo.png",
+			"ui/shop/windinfo.png", "ui/shop/freezeinfo.png", "ui/shop/slowinfo.png", "ui/shop/buyjbs.png", "ui/shop/buyjbs_pressed.png", "ui/shop/buyitem.png", "ui/shop/buyitem_pressed.png" };
+
 	public static TextureRegion[][] iceImagesArr;
 	public static Array<TextureRegion> iceImages;
 

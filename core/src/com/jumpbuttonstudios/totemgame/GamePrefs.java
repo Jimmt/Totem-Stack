@@ -12,11 +12,17 @@ public class GamePrefs {
 			prefs.putBoolean("bgMusic", true);
 			prefs.putBoolean("soundEffects", true);
 			prefs.putBoolean("tap", true);
+			prefs.putInteger("bestScore", 0);
 		}
 	}
 
 	public static void putBoolean(String name, boolean value) {
 		prefs.putBoolean(name, value);
+		prefs.flush();
+	}
+	
+	public static void putInteger(String name, int value){
+		prefs.putInteger(name, value);
 		prefs.flush();
 	}
 }

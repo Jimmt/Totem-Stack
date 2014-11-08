@@ -23,6 +23,7 @@ public class HudTable extends Table {
 	String[] paths = { "pause", "soundon", "setting", "shop", "home" };
 	ImageButton[] buttons = { pause, sound, options, shop, home };
 	OptionsDialog optionsDialog;
+	ShopDialog shopDialog;
 
 	public HudTable(Skin skin, final AbstractScreen game) {
 		super(skin);
@@ -145,6 +146,15 @@ public class HudTable extends Table {
 				Constants.HEIGHT / 2 - optionsDialog.getHeight() / 2);
 		optionsDialog.setVisible(false);
 		
+		shopDialog = new ShopDialog("", game.getSkin());
+
+		game.hudStage.addActor(shopDialog);
+		shopDialog.setPosition(Constants.WIDTH / 2 - shopDialog.getWidth() / 2,
+				Constants.HEIGHT / 2 - shopDialog.getHeight() / 2);
+		shopDialog.setVisible(false);
+		
+		
+		
 	}
 
 	@Override
@@ -156,7 +166,7 @@ public class HudTable extends Table {
 	public void setupListeners() {
 		buttons[0].addListener(new ClickListener() {
 			@Override
-			public void clicked(InputEvent event, float x, float y) {
+			public void clicked(InputEvent event, float x, float y) { //pause
 				TotemGame.soundManager.play("button");
 				game.pause();
 			}
@@ -164,14 +174,14 @@ public class HudTable extends Table {
 		});
 		buttons[1].addListener(new ClickListener() {
 			@Override
-			public void clicked(InputEvent event, float x, float y) {
+			public void clicked(InputEvent event, float x, float y) { //sound
 				TotemGame.soundManager.play("button");
 			}
 
 		});
 		buttons[2].addListener(new ClickListener() {
 			@Override
-			public void clicked(InputEvent event, float x, float y) {
+			public void clicked(InputEvent event, float x, float y) { //options
 				TotemGame.soundManager.play("button");
 
 				optionsDialog.setVisible(true);
@@ -180,15 +190,18 @@ public class HudTable extends Table {
 		});
 		buttons[3].addListener(new ClickListener() {
 			@Override
-			public void clicked(InputEvent event, float x, float y) {
+			public void clicked(InputEvent event, float x, float y) { //shop
 				TotemGame.soundManager.play("button");
+				
+				shopDialog.setVisible(true);
 			}
 
 		});
 		buttons[4].addListener(new ClickListener() {
 			@Override
-			public void clicked(InputEvent event, float x, float y) {
+			public void clicked(InputEvent event, float x, float y) { //home
 				TotemGame.soundManager.play("button");
+				game.game.setScreen(new MenuScreen(game.game));
 			}
 
 		});

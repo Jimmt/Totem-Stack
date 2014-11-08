@@ -32,7 +32,6 @@ public class TotemGame extends Game {
 		soundManager.loadSound("check", Gdx.files.internal("sfx/ui/check.wav"));
 		soundManager.loadSound("welcomeback", Gdx.files.internal("sfx/ui/welcomeback.wav"));
 		
-//		setScreen(new GameOverScreen(this, 0));
 		setScreen(new MenuScreen(this));
 	}
 	

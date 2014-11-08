@@ -18,7 +18,7 @@ public class AbstractScreen implements Screen {
 	private Table table;
 	public World world;
 	public Stage stage;
-	protected TotemGame game;
+	public TotemGame game;
 	protected Box2DDebugRenderer debugRenderer;
 	protected OrthographicCamera camera;
 	protected Skin skin;

@@ -24,6 +24,9 @@ public class GameOverDialog extends Dialog {
 	GameScreen gs;
 	TotemGame game;
 	ShapeRenderer sr;
+	Label bestScoreLabel, scoreLabel;
+	Image idkwhythisworks;
+	float x, y;
 
 	public GameOverDialog(int score, Skin skin, GameScreen gs, TotemGame game) {
 		super("", skin);
@@ -36,6 +39,7 @@ public class GameOverDialog extends Dialog {
 
 		this.gs = gs;
 		this.game = game;
+		this.score = score;
 
 		String[] paths = { "ui/gameover/replay.png", "ui/gameover/highscores.png",
 				"ui/gameover/achievements.png", "ui/gameover/twitter.png",
@@ -69,17 +73,20 @@ public class GameOverDialog extends Dialog {
 			}
 		});
 
-
 		LabelStyle style = new LabelStyle();
 		style.font = new BitmapFont(Gdx.files.internal("ui/top/scoreFont.fnt"));
 
-		Label scoreLabel = new Label(String.valueOf(score), style);
+		scoreLabel = new Label(String.valueOf(score), style);
+		
 
-		Label bestScoreLabel = new Label("0123456789", style);
+		bestScoreLabel = new Label(String.valueOf(GamePrefs.prefs.getInteger("bestScore")),
+				style);
 
-		getContentTable().add(scoreLabel).colspan(5);
-		getContentTable().row();
-		getContentTable().add(bestScoreLabel).colspan(5);
+//		getContentTable().add(scoreLabel).colspan(5);
+//		getContentTable().row();
+//		getContentTable().add(bestScoreLabel).colspan(5);
+//		gs.hudStage.addActor(scoreLabel);
+//		gs.hudStage.addActor(bestScoreLabel);
 
 		for (int i = 0; i < imageButtons.size; i++) {
 			getButtonTable().add(imageButtons.get(i)).width(imageButtons.get(i).getWidth())
@@ -88,7 +95,7 @@ public class GameOverDialog extends Dialog {
 		getButtonTable().row();
 		getButtonTable().add(removeAds).colspan(5);
 		
-		
+		scoreLabel.setPosition(100, getY());
 		
 
 	}
@@ -139,33 +146,53 @@ public class GameOverDialog extends Dialog {
 			JBSApi.api.submitHighscore(score);
 		}
 		HighScores.addScore(score);
+
+		
+		if (score >= GamePrefs.prefs.getInteger("bestScore")) {
+			
+			GamePrefs.putInteger("bestScore", score);
+			System.out.println(score + " " + GamePrefs.prefs.getInteger("bestScore"));
+		}
+		idkwhythisworks = new Image(new Texture(Gdx.files.internal("black.png")));
 	}
 
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
 		super.draw(batch, parentAlpha);
-
+		
+		scoreLabel.draw(batch, parentAlpha);
+		bestScoreLabel.draw(batch, parentAlpha);
+		
+		
+		
 		if (gs.camera.position.y > 0) {
 			gs.camera.position.y -= (gs.camera.position.y - 1) * 0.1f;
 		}
+		
+		x = getX() + getWidth() / 2 - scoreLabel.getWidth() / 2;
+		y =  getY() + getHeight() - scoreLabel.getHeight() - 132 - (81 - scoreLabel.getHeight()) / 2;
+		
+		scoreLabel.setPosition(x, y);
+		bestScoreLabel.setPosition(x, y - 130f);
 
-		sr.setProjectionMatrix(getStage().getCamera().combined);
-		sr.begin(ShapeType.Line);
-		for (int i = 0; i < this.getContentTable().getCells().size; i++) {
-			sr.box(getX() + getContentTable().getCells().get(i).getActorX(), getY()
-					+ getContentTable().getY() + getContentTable().getCells().get(i).getActorY(),
-					0, getContentTable().getCells().get(i).getActorWidth(), getContentTable()
-							.getCells().get(i).getActorHeight(), 0);
-		}
-		sr.end();
-		sr.begin(ShapeType.Line);
-		for (int i = 0; i < this.getButtonTable().getCells().size; i++) {
-			sr.box(getX() + getButtonTable().getCells().get(i).getActorX(), getY()
-					+ getButtonTable().getY() + getButtonTable().getCells().get(i).getActorY(),
-					0, getButtonTable().getCells().get(i).getActorWidth(), getButtonTable()
-							.getCells().get(i).getActorHeight(), 0);
-		}
-		sr.end();
+//		sr.setProjectionMatrix(getStage().getCamera().combined);
+//		sr.begin(ShapeType.Line);
+//		for (int i = 0; i < this.getContentTable().getCells().size; i++) {
+//
+//			sr.box(getX() + getContentTable().getCells().get(i).getActorX(), getY()
+//					+ getContentTable().getY() + getContentTable().getCells().get(i).getActorY(),
+//					0, getContentTable().getCells().get(i).getActorWidth(), getContentTable()
+//							.getCells().get(i).getActorHeight(), 0);
+//		}
+//		sr.end();
+//		sr.begin(ShapeType.Line);
+//		for (int i = 0; i < this.getButtonTable().getCells().size; i++) {
+//			sr.box(getX() + getButtonTable().getCells().get(i).getActorX(), getY()
+//					+ getButtonTable().getY() + getButtonTable().getCells().get(i).getActorY(), 0,
+//					getButtonTable().getCells().get(i).getActorWidth(), getButtonTable().getCells()
+//							.get(i).getActorHeight(), 0);
+//		}
+//		sr.end();
 
 	}
 

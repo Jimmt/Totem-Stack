@@ -3,13 +3,14 @@ package com.jumpbuttonstudios.totemgame;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton.ImageButtonStyle;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 
 public class MenuScreen extends AbstractScreen {
 	ImageButton startButton, highscoresButton, loginButton;
@@ -18,6 +19,7 @@ public class MenuScreen extends AbstractScreen {
 	LoginDialog loginDialog;
 	LogoutDialog logoutDialog;
 	ImageButtonStyle logoutStyle, loginStyle;
+	Table table;
 
 	public MenuScreen(TotemGame game) {
 		super(game);
@@ -30,6 +32,8 @@ public class MenuScreen extends AbstractScreen {
 
 		Icons.loadIcons();
 		GamePrefs.initialize();
+		
+		
 
 		if (JBSApi.api != null) {
 
@@ -40,7 +44,7 @@ public class MenuScreen extends AbstractScreen {
 		loginDialog = new LoginDialog("", getSkin());
 		logoutDialog = new LogoutDialog("", getSkin());
 
-		Table table = super.getTable();
+		table = super.getTable();
 		table.setFillParent(true);
 
 		ImageButtonStyle startStyle = new ImageButtonStyle();
@@ -114,6 +118,9 @@ public class MenuScreen extends AbstractScreen {
 		table.add(startButton).width(startButton.getWidth()).height(startButton.getHeight());
 		table.add(loginButton).width(loginButton.getWidth()).height(loginButton.getHeight())
 				.padTop(startButton.getHeight() / 2);
+		
+		
+		System.err.println(table.getCells().get(0).getActorX());
 
 		hudStage.addActor(loginDialog);
 		loginDialog.setPosition(Constants.WIDTH / 2 - loginDialog.getWidth() / 2, Constants.HEIGHT
@@ -128,7 +135,7 @@ public class MenuScreen extends AbstractScreen {
 		InputMultiplexer multiplexer = new InputMultiplexer(hudStage, stage);
 
 		Gdx.input.setInputProcessor(multiplexer);
-
+		
 	}
 
 	@Override
