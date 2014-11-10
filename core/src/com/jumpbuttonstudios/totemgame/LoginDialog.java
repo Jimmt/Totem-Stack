@@ -72,6 +72,7 @@ public class LoginDialog extends Dialog {
 					e.setPosition(Constants.WIDTH / 2 - e.getWidth() / 2,
 							Constants.HEIGHT / 2 - e.getHeight() / 2);
 					getStage().addActor(e);
+					JBSApi.loggedIn = false;
 				}
 
 			}
@@ -125,6 +126,8 @@ public class LoginDialog extends Dialog {
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
 		super.draw(batch, parentAlpha);
+		
+		
 
 // if (getStage() != null) {
 // getStage().addActor(xb);

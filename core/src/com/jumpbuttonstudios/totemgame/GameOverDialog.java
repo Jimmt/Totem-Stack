@@ -25,7 +25,6 @@ public class GameOverDialog extends Dialog {
 	TotemGame game;
 	ShapeRenderer sr;
 	Label bestScoreLabel, scoreLabel;
-	Image idkwhythisworks;
 	float x, y;
 
 	public GameOverDialog(int score, Skin skin, GameScreen gs, TotemGame game) {
@@ -37,6 +36,8 @@ public class GameOverDialog extends Dialog {
 
 		imageButtons = new Array<ImageButton>();
 
+		setModal(false);
+		
 		this.gs = gs;
 		this.game = game;
 		this.score = score;
@@ -153,7 +154,6 @@ public class GameOverDialog extends Dialog {
 			GamePrefs.putInteger("bestScore", score);
 			System.out.println(score + " " + GamePrefs.prefs.getInteger("bestScore"));
 		}
-		idkwhythisworks = new Image(new Texture(Gdx.files.internal("black.png")));
 	}
 
 	@Override

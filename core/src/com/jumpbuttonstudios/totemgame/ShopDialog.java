@@ -22,9 +22,15 @@ public class ShopDialog extends Dialog {
 	Image text = Icons.getImage("ui/shop/retryinfo.png");
 	ImageButton buyButton, buyCoinButton;
 	ImageButton x;
+	Skin skin;
+	GameScreen gs;
 
-	public ShopDialog(String title, Skin skin) {
+	public ShopDialog(String title, Skin skin, GameScreen gs) {
 		super(title, skin);
+
+		this.gs = gs;
+
+		this.skin = skin;
 
 		text.setScale(1);
 
@@ -32,15 +38,9 @@ public class ShopDialog extends Dialog {
 		setBackground(panel.getDrawable());
 		setSize(panel.getWidth(), panel.getHeight());
 
-		int[] dollarNumbers = { 1, 3, 7 };
 		int[] coinNumbers = { 1, 2, 3, 5 };
-		int[] jbsNumbers = { 500, 1750, 4000 };
 		String[] buttonNames = { "retry", "freeze", "slow", "wind" };
 
-// for (int i = 0; i < dollarNumbers.length; i++) {
-// getContentTable().add(Icons.getImage("ui/shop/" + dollarNumbers[i] +
-// "dollars.png"));
-// }
 		ImageButtonStyle buyCoinStyle = new ImageButtonStyle();
 		buyCoinStyle.up = Icons.getImage("ui/shop/buyjbs.png").getDrawable();
 		buyCoinStyle.down = Icons.getImage("ui/shop/buyjbs_pressed.png").getDrawable();
@@ -78,8 +78,9 @@ public class ShopDialog extends Dialog {
 				public void clicked(InputEvent event, float x, float y) {
 					super.clicked(event, x, y);
 					TotemGame.soundManager.play("button");
-					
-					text.setDrawable(Icons.returnImage("ui/shop/" + name + "info.png").getDrawable());
+
+					text.setDrawable(Icons.returnImage("ui/shop/" + name + "info.png")
+							.getDrawable());
 				}
 			});
 
@@ -97,7 +98,7 @@ public class ShopDialog extends Dialog {
 		getContentTable().row();
 		getContentTable().add(text).expandX().center().padTop(images.get(0).getHeight()).colspan(4)
 				.padBottom((95 - text.getHeight()) / 2).width(text.getWidth())
-				.height(text.getHeight());
+				.height(text.getHeight() + 10f);
 		getContentTable().row();
 		getContentTable().add(buyCoinButton).colspan(2).padTop(5f);
 		getContentTable().add(buyButton).colspan(2).padTop(5f);
@@ -110,6 +111,11 @@ public class ShopDialog extends Dialog {
 			public void clicked(InputEvent event, float x, float y) {
 				super.clicked(event, x, y);
 				TotemGame.soundManager.play("button");
+
+				BuyCoinsDialog bcd = new BuyCoinsDialog(skin);
+				bcd.setPosition(Constants.WIDTH / 2 - bcd.getWidth() / 2, Constants.HEIGHT / 2
+						- bcd.getHeight() / 2);
+				getStage().addActor(bcd);
 
 			}
 		});
@@ -126,6 +132,9 @@ public class ShopDialog extends Dialog {
 			public void clicked(InputEvent event, float x, float y) {
 				TotemGame.soundManager.play("button");
 				setVisible(false);
+				if (gs != null) {
+					gs.pause();
+				}
 			}
 
 		});

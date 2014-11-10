@@ -14,7 +14,7 @@ public class Box2DActor extends Image {
 	PolygonShape shape;
 	BodyDef bodyDef;
 	FixtureDef fixtureDef;
-	Body body;
+	public Body body;
 	float width, height;
 
 	public Box2DActor(String path, float width, float height, World world) {

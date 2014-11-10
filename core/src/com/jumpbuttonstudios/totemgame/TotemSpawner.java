@@ -32,7 +32,9 @@ public class TotemSpawner extends Actor {
 	Array<Image> stars;
 	int count;
 	ParticleEffectActor rain, lightning;
-	boolean rainPlaying;
+	boolean rainPlaying, freezeTotem, frozeOnce;
+	float cloudConst = 1000f, windTime = 0, windCap = 30f, spawnTime = 999f, spawnCap = 1;
+	boolean windDebuff;
 
 	public TotemSpawner(GameScreen game) {
 		this.game = game;
@@ -74,6 +76,17 @@ public class TotemSpawner extends Actor {
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
 		super.draw(batch, parentAlpha);
+
+	}
+
+	public void addFreezeTotem() {
+		freezeTotem = true;
+		frozeOnce = true;
+	}
+
+	public void enableWindDebuff() {
+		cloudConst = 500f;
+		windDebuff = true;
 
 	}
 
@@ -190,12 +203,22 @@ public class TotemSpawner extends Actor {
 
 			}
 
+			if (windDebuff) {
+				if (windTime > windCap) {
+					windDebuff = false;
+					cloudConst = 1000f;
+					windTime = 0;
+				} else {
+					windTime += delta;
+				}
+			}
+
 			if (totems.size > 0) {
 				for (int i = 0; i < clouds.size; i++) {
 					if (clouds.get(i).hitbox.overlaps(totems.get(totems.size - 1).getRectangle())) {
 
-						totems.get(totems.size - 1).body.applyForceToCenter(
-								clouds.get(i).influence * 1000f, 0, true);
+						totems.get(totems.size - 1).body.applyForceToCenter(clouds.get(i).influence
+								* cloudConst, 0, true);
 
 					}
 				}
@@ -213,14 +236,21 @@ public class TotemSpawner extends Actor {
 // Totem t = new Totem(MathUtils.random(Constants.SCLWIDTH / 2 -
 // randomMagnitude,
 // Constants.SCLWIDTH / 2 + randomMagnitude), spawnY, game.world);
+				if (spawnTime > spawnCap) {
+					spawnTime = 0;
+					
+					Totem t;
+					if (freezeTotem) {
+						t = new IceTotem(0.5f * Constants.SCLWIDTH, spawnY, game.world,
+								game.particleStage);
+						freezeTotem = false;
 
-				Totem t;
-				if (TimeUtils.millis() > nextGoldSpawn && totems.size > 3) {
-					nextGoldSpawn += TimeUtils.millis() + MathUtils.random(90000);
+					} else if (TimeUtils.millis() > nextGoldSpawn && totems.size > 3) {
+						nextGoldSpawn += TimeUtils.millis() + MathUtils.random(90000);
 
-					t = new GoldTotem(0.5f * Constants.SCLWIDTH, spawnY + 0.5f, game.world,
-							game.particleStage);
-				} else {
+						t = new GoldTotem(0.5f * Constants.SCLWIDTH, spawnY + 0.5f, game.world,
+								game.particleStage);
+					} else {
 // t = new GoldTotem(0.5f * Constants.SCLWIDTH, spawnY, game.world,
 // game.particleStage);
 // t = new IceTotem(0.5f * Constants.SCLWIDTH, spawnY, game.world,
@@ -235,18 +265,22 @@ public class TotemSpawner extends Actor {
 //
 // t = new Totem(0.5f * Constants.SCLWIDTH, spawnY, game.world);
 // }
+						t = new Totem(MathUtils.random(Constants.SCLWIDTH / 2 - randomMagnitude,
+								Constants.SCLWIDTH / 2 + randomMagnitude), spawnY + 0.5f,
+								game.world);
 
-					t = new Totem(MathUtils.random(Constants.SCLWIDTH / 2 - randomMagnitude,
-							Constants.SCLWIDTH / 2 + randomMagnitude), spawnY + 0.5f, game.world);
+					}
+					totems.add(t);
+					game.stage.addActor(t);
+					currentTotem = t;
+					newTotem = false;
 
-				}
-				totems.add(t);
-				game.stage.addActor(t);
-				currentTotem = t;
-				newTotem = false;
-
-				if (totems.size >= 3) {
-					spawnY += currentTotem.getHeight();
+					if (totems.size >= 3) {
+						spawnY += currentTotem.getHeight();
+					}
+					
+				} else {
+					spawnTime += delta;
 				}
 			}
 
@@ -264,7 +298,7 @@ public class TotemSpawner extends Actor {
 				}
 			}
 
-			if (Gdx.app.getType() == ApplicationType.Desktop) {
+			if (!GamePrefs.prefs.getBoolean("tap")) {
 				if (currentTotem != null) {
 					if (Gdx.input.isKeyPressed(Keys.A)) {
 						moveLeft();
@@ -292,6 +326,8 @@ public class TotemSpawner extends Actor {
 	}
 
 	public void stop() {
-		currentTotem.body.setLinearVelocity(0, currentTotem.body.getLinearVelocity().y);
+		if (currentTotem != null) {
+			currentTotem.body.setLinearVelocity(0, currentTotem.body.getLinearVelocity().y);
+		}
 	}
 }

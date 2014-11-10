@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.Animation.PlayMode;
+import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Contact;
@@ -24,12 +25,21 @@ public class GameContactListener implements ContactListener {
 	Array<Totem> groundTotems;
 	AnimatedImage perfectLandImage;
 	ParticleEffectActor stars, goldStars, ice;
-	Image perfect, good;
+	Image perfect, good, streak, perfectStreak, amazing, perfectTotal;
 	Totem lastCheck;
 	float[] values = { 0.0f, 0.0f, 0.0f };
 	boolean green = true, yellow;
 	Sprite iceSprite1, iceSprite2;
 	float lastChangeTime = 999f, changeCap = .5f;
+	int perfectLandings, streakCount, perfectStreakCount;
+
+	/**
+	 * Impressive Streak!: is when the player gets a score of +2 or higher
+	 * on 10 consecutive lands.
+	 * Right On!: If the player lands 3 perfects in a row.
+	 * Amazing Job!: Shows everytime the player gets 50 points.
+	 * Perfect Landing!: Every 10th perfect landing in the same game
+	 */
 
 	public GameContactListener(GameScreen game) {
 		this.game = game;
@@ -57,6 +67,19 @@ public class GameContactListener implements ContactListener {
 
 		perfect = Icons.getImage("perfect.png");
 		good = Icons.getImage("good.png");
+		streak = Icons.getImage("ts compl/00.png");
+		perfectStreak = Icons.getImage("ts compl/01.png");
+		amazing = Icons.getImage("ts compl/02.png");
+		perfectTotal = Icons.getImage("ts compl/03.png");
+
+		game.stage.addActor(perfectTotal);
+		perfectTotal.addAction(Actions.alpha(0));
+
+		game.stage.addActor(streak);
+		streak.addAction(Actions.alpha(0));
+
+		game.stage.addActor(perfectStreak);
+		perfectStreak.addAction(Actions.alpha(0));
 
 	}
 
@@ -140,7 +163,8 @@ public class GameContactListener implements ContactListener {
 		if (a instanceof Totem || b instanceof Totem) {
 			if (a instanceof Totem) {
 				((Totem) a).removeParachute();
-			} else {
+			}
+			if (b instanceof Totem) {
 				((Totem) b).removeParachute();
 			}
 
@@ -166,7 +190,7 @@ public class GameContactListener implements ContactListener {
 			if (!game.gameOver) {
 				TotemGame.soundManager.play("hitground");
 			}
-			
+
 			if (((Totem) a).equals(game.spawner.currentTotem)) {
 				createTotem();
 				if (!groundTotems.contains((Totem) a, false)) {
@@ -232,6 +256,7 @@ public class GameContactListener implements ContactListener {
 	public void checkPoints(Object a, Object b, Totem lastTotem) {
 		int points = getPlacePoints((Totem) a, (Totem) b);
 		TotemGame.soundManager.play("normalland");
+
 		if (lastTotem instanceof GoldTotem) {
 
 			game.score += (points + 1) * 2;
@@ -274,6 +299,8 @@ public class GameContactListener implements ContactListener {
 				ice.effect.allowCompletion();
 				ice.effect.start();
 
+				((IceTotem) lastTotem).freezeTotem = true;
+
 				for (int i = 0; i < 3; i++) {
 					if (game.spawner.totems.size > i + 1) {
 						game.spawner.totems.get(game.spawner.totems.size - 2 - i).freeze();
@@ -303,6 +330,49 @@ public class GameContactListener implements ContactListener {
 		ice.effect.setPosition((lastTotem.getX() + lastTotem.getWidth() / 2) / Constants.SCALE,
 				(lastTotem.getY() + lastTotem.getHeight() / 2) / Constants.SCALE);
 
+		if (game.score % 50 == 0) {
+			if (game.stage.getActors().contains(amazing, false)) {
+				game.stage.getActors().removeValue(amazing, false);
+			}
+			game.stage.addActor(amazing);
+			amazing.addAction(Actions.alpha(1.0f));
+			amazing.addAction(Actions.sequence(Actions.alpha(0, 1.5f, Interpolation.exp5)));
+
+			amazing.setPosition(
+					lastTotem.body.getPosition().x + lastTotem.width / 2 - amazing.getWidth()
+							* Constants.SCALE / 2, lastTotem.getY() + lastTotem.getHeight() / 2
+							- amazing.getHeight() * Constants.SCALE / 2);
+		}
+
+		perfectTotal.setPosition(lastTotem.body.getPosition().x + lastTotem.width / 2
+				- perfectTotal.getWidth() * Constants.SCALE / 2,
+				lastTotem.getY() + lastTotem.getHeight() / 2 - perfectTotal.getHeight()
+						* Constants.SCALE / 2);
+
+		if (streakCount == 10) {
+			game.stage.getActors().removeValue(streak, false);
+			game.stage.addActor(streak);
+			streak.addAction(Actions.alpha(1.0f));
+			streak.addAction(Actions.sequence(Actions.alpha(0, 1.5f, Interpolation.exp5)));
+
+			streak.setPosition(
+					lastTotem.body.getPosition().x + lastTotem.width / 2 - streak.getWidth()
+							* Constants.SCALE / 2, lastTotem.getY() + lastTotem.getHeight() / 2
+							- streak.getHeight() * Constants.SCALE / 2);
+		}
+
+		if (perfectStreakCount == 10) {
+			game.stage.getActors().removeValue(perfectStreak, false);
+			game.stage.addActor(perfectStreak);
+			perfectStreak.addAction(Actions.alpha(1.0f));
+			perfectStreak.addAction(Actions.sequence(Actions.alpha(0, 1.5f, Interpolation.exp5)));
+
+			perfectStreak.setPosition(lastTotem.body.getPosition().x + lastTotem.width / 2
+					- perfectStreak.getWidth() * Constants.SCALE / 2,
+					lastTotem.getY() + lastTotem.getHeight() / 2 - perfectStreak.getHeight()
+							* Constants.SCALE / 2);
+		}
+
 	}
 
 	public int getPlacePoints(Totem current, Totem bottom) {
@@ -310,9 +380,26 @@ public class GameContactListener implements ContactListener {
 
 		if (distance <= 10f * Constants.SCALE) {
 
+			streakCount++;
+
 			if (distance < 5f * Constants.SCALE) {
 
 				TotemGame.soundManager.play("perfectland");
+
+				perfectLandings++;
+				perfectStreakCount++;
+
+				if (perfectLandings == 10) {
+					if (game.stage.getActors().contains(perfectTotal, false)) {
+						game.stage.getActors().removeValue(perfectTotal, false);
+						game.stage.addActor(perfectTotal);
+					} else {
+						game.stage.addActor(perfectTotal);
+
+					}
+					perfectTotal.addAction(Actions.sequence(Actions.alpha(1.0f),
+							Actions.alpha(0, 1.5f, Interpolation.exp5)));
+				}
 
 				if (game.stage.getActors().contains(perfect, false)) {
 					game.stage.getActors().removeValue(perfect, false);
@@ -332,8 +419,11 @@ public class GameContactListener implements ContactListener {
 			return 2;
 		}
 		if (distance <= 20f * Constants.SCALE) {
+			perfectStreakCount = 0;
 			if (distance <= 17f * Constants.SCALE) {
 				green = true;
+
+				streakCount++;
 
 				if (game.stage.getActors().contains(good, false)) {
 					game.stage.getActors().removeValue(good, false);
@@ -348,8 +438,12 @@ public class GameContactListener implements ContactListener {
 			return 1;
 		}
 		if (distance <= 50f * Constants.SCALE) {
+			streakCount = 0;
+			perfectStreakCount = 0;
 			return 0;
 		} else {
+			streakCount = 0;
+			perfectStreakCount = 0;
 			return 0;
 		}
 

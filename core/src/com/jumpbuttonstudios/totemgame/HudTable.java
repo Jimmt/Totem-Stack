@@ -1,6 +1,9 @@
 package com.jumpbuttonstudios.totemgame;
 
+import sun.security.jgss.GSSCaller;
+
 import com.badlogic.gdx.Application.ApplicationType;
+import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -18,12 +21,16 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 public class HudTable extends Table {
 	AbstractScreen game;
 	Label score;
-	ImageButton pause, sound, options, shop, home;
+	ImageButton pause, sound, options, shop, home, leftButton, rightButton;
 	Image header;
+
 	String[] paths = { "pause", "soundon", "setting", "shop", "home" };
 	ImageButton[] buttons = { pause, sound, options, shop, home };
+	String[] powerups = { "retry", "freeze", "slow", "wind" };
+
 	OptionsDialog optionsDialog;
 	ShopDialog shopDialog;
+	Drape[] drapes = new Drape[4];
 
 	public HudTable(Skin skin, final AbstractScreen game) {
 		super(skin);
@@ -51,8 +58,6 @@ public class HudTable extends Table {
 
 		}
 
-		setupListeners();
-
 		Table left = new Table();
 		Table right = new Table();
 
@@ -62,7 +67,9 @@ public class HudTable extends Table {
 		}
 
 		for (int i = 0; i < 4; i++) {
-			right.add(new Image(new Texture(Gdx.files.internal("drape.png"))));
+			Drape d = new Drape(powerups[i]);
+			drapes[i] = d;
+			right.add(d);
 		}
 
 		add(left).expand().left().top();
@@ -70,67 +77,64 @@ public class HudTable extends Table {
 		debug();
 
 		if (game instanceof GameScreen) {
+
 			Table bottom = new Table();
 			ImageButtonStyle ibs = new ImageButtonStyle();
 			ibs.imageUp = Icons.getImage("ui/gameplay/left.png").getDrawable();
 			ibs.imageDown = Icons.getImage("ui/gameplay/leftclicked.png").getDrawable();
-			ImageButton leftButton = new ImageButton(ibs);
-			if (Gdx.app.getType() == ApplicationType.Android) {
-				leftButton.addListener(new ClickListener() {
-					@Override
-					public boolean touchDown(InputEvent event, float x, float y, int pointer,
-							int button) {
-						if (((GameScreen) game).spawner.currentTotem != null) {
-							((GameScreen) game).spawner.moveLeft();
-
-						}
-						return true;
+			leftButton = new ImageButton(ibs);
+			leftButton.addListener(new ClickListener() {
+				@Override
+				public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+					if (((GameScreen) game).spawner.currentTotem != null) {
+						((GameScreen) game).spawner.moveLeft();
 
 					}
+					return true;
 
-					@Override
-					public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-						super.touchUp(event, x, y, pointer, button);
+				}
 
-						((GameScreen) game).spawner.stop();
+				@Override
+				public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+					super.touchUp(event, x, y, pointer, button);
 
-					}
+					((GameScreen) game).spawner.stop();
 
-				});
-			}
+				}
+
+			});
 
 			leftButton.setPosition(0, 0);
 
 			ImageButtonStyle ibs2 = new ImageButtonStyle();
 			ibs2.imageUp = Icons.getImage("ui/gameplay/right.png").getDrawable();
 			ibs2.imageDown = Icons.getImage("ui/gameplay/rightclicked.png").getDrawable();
-			ImageButton rightButton = new ImageButton(ibs2);
-			if (Gdx.app.getType() == ApplicationType.Android) {
-				rightButton.addListener(new ClickListener() {
-					@Override
-					public boolean touchDown(InputEvent event, float x, float y, int pointer,
-							int button) {
+			rightButton = new ImageButton(ibs2);
+			rightButton.addListener(new ClickListener() {
+				@Override
+				public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
 
-						if (((GameScreen) game).spawner.currentTotem != null) {
-							((GameScreen) game).spawner.moveRight();
-						}
-						return true;
+					if (((GameScreen) game).spawner.currentTotem != null) {
+						((GameScreen) game).spawner.moveRight();
 					}
+					return true;
+				}
 
-					@Override
-					public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-						super.touchUp(event, x, y, pointer, button);
+				@Override
+				public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+					super.touchUp(event, x, y, pointer, button);
 
-						((GameScreen) game).spawner.stop();
+					((GameScreen) game).spawner.stop();
 
-					}
+				}
 
-				});
-			}
+			});
+
 			rightButton.setPosition(Constants.WIDTH - rightButton.getWidth(), 0);
-
 			game.hudStage.addActor(leftButton);
 			game.hudStage.addActor(rightButton);
+			leftButton.setVisible(false);
+			rightButton.setVisible(false);
 		}
 
 		score = new Label("", style);
@@ -139,22 +143,29 @@ public class HudTable extends Table {
 
 		game.hudStage.addActor(score);
 
-		optionsDialog = new OptionsDialog("", game.getSkin());
+		if (game instanceof GameScreen) {
+			optionsDialog = new OptionsDialog("", game.getSkin(), (GameScreen) game);
+		} else {
+			optionsDialog = new OptionsDialog("", game.getSkin(), null);
+		}
 
 		game.hudStage.addActor(optionsDialog);
 		optionsDialog.setPosition(Constants.WIDTH / 2 - optionsDialog.getWidth() / 2,
 				Constants.HEIGHT / 2 - optionsDialog.getHeight() / 2);
 		optionsDialog.setVisible(false);
-		
-		shopDialog = new ShopDialog("", game.getSkin());
+
+		if (game instanceof GameScreen) {
+			shopDialog = new ShopDialog("", game.getSkin(), (GameScreen) game);
+		} else {
+			shopDialog = new ShopDialog("", game.getSkin(), null);
+		}
 
 		game.hudStage.addActor(shopDialog);
-		shopDialog.setPosition(Constants.WIDTH / 2 - shopDialog.getWidth() / 2,
-				Constants.HEIGHT / 2 - shopDialog.getHeight() / 2);
+		shopDialog.setPosition(Constants.WIDTH / 2 - shopDialog.getWidth() / 2, Constants.HEIGHT
+				/ 2 - shopDialog.getHeight() / 2);
 		shopDialog.setVisible(false);
-		
-		
-		
+
+		setupListeners();
 	}
 
 	@Override
@@ -164,9 +175,74 @@ public class HudTable extends Table {
 	}
 
 	public void setupListeners() {
+		drapes[0].addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) { // retry
+				TotemGame.soundManager.play("button");
+
+				if (game instanceof GameScreen) {
+					if (GamePrefs.prefs.getInteger("retryUses") > 0
+							&& drapes[0].spawner.totems.size > 1 && !drapes[0].spawner.totems.get(drapes[0].spawner.totems.size - 1).enableParachute) {
+						GamePrefs.putInteger("retryUses",
+								GamePrefs.prefs.getInteger("retryUses") - 1);
+
+						((GameScreen) game).removeTotems.add(drapes[0].spawner.totems
+								.get(drapes[0].spawner.totems.size - 1));
+						((GameScreen) game).stage.getActors().removeValue(
+								drapes[0].spawner.totems.get(drapes[0].spawner.totems.size - 1),
+								false);
+						drapes[0].spawner.totems.removeIndex(drapes[0].spawner.totems.size - 1);
+
+					}
+				}
+			}
+
+		});
+		drapes[1].addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) { // freeze
+				TotemGame.soundManager.play("button");
+				if (game instanceof GameScreen) {
+					if (!drapes[0].spawner.frozeOnce) {
+						if (GamePrefs.prefs.getInteger("freezeUses") > 0) {
+							GamePrefs.putInteger("freezeUses",
+									GamePrefs.prefs.getInteger("freezeUses") - 1);
+							drapes[0].spawner.addFreezeTotem();
+						}
+					}
+				}
+			}
+
+		});
+		drapes[2].addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) { // slow
+				TotemGame.soundManager.play("button");
+				if (game instanceof GameScreen) {
+					if (GamePrefs.prefs.getInteger("slowUses") > 0) {
+						GamePrefs.putInteger("slowUses", GamePrefs.prefs.getInteger("slowUses") - 1);
+						game.setStep(1 / 120f);
+					}
+				}
+			}
+
+		});
+		drapes[3].addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) { // wind
+				TotemGame.soundManager.play("button");
+				if (game instanceof GameScreen) {
+					if (GamePrefs.prefs.getInteger("windUses") > 0) {
+						GamePrefs.putInteger("windUses", GamePrefs.prefs.getInteger("windUses") - 1);
+						drapes[0].spawner.enableWindDebuff();
+					}
+				}
+			}
+
+		});
 		buttons[0].addListener(new ClickListener() {
 			@Override
-			public void clicked(InputEvent event, float x, float y) { //pause
+			public void clicked(InputEvent event, float x, float y) { // pause
 				TotemGame.soundManager.play("button");
 				game.pause();
 			}
@@ -174,32 +250,33 @@ public class HudTable extends Table {
 		});
 		buttons[1].addListener(new ClickListener() {
 			@Override
-			public void clicked(InputEvent event, float x, float y) { //sound
+			public void clicked(InputEvent event, float x, float y) { // sound
 				TotemGame.soundManager.play("button");
 			}
 
 		});
 		buttons[2].addListener(new ClickListener() {
 			@Override
-			public void clicked(InputEvent event, float x, float y) { //options
+			public void clicked(InputEvent event, float x, float y) { // options
 				TotemGame.soundManager.play("button");
-
+				game.pause();
 				optionsDialog.setVisible(true);
+
 			}
 
 		});
 		buttons[3].addListener(new ClickListener() {
 			@Override
-			public void clicked(InputEvent event, float x, float y) { //shop
+			public void clicked(InputEvent event, float x, float y) { // shop
 				TotemGame.soundManager.play("button");
-				
+				game.pause();
 				shopDialog.setVisible(true);
 			}
 
 		});
 		buttons[4].addListener(new ClickListener() {
 			@Override
-			public void clicked(InputEvent event, float x, float y) { //home
+			public void clicked(InputEvent event, float x, float y) { // home
 				TotemGame.soundManager.play("button");
 				game.game.setScreen(new MenuScreen(game.game));
 			}
@@ -210,11 +287,22 @@ public class HudTable extends Table {
 	@Override
 	public void act(float delta) {
 		super.act(delta);
-		
-		
+
+		for (int i = 0; i < drapes.length; i++) {
+			drapes[i].setCount(GamePrefs.prefs.getInteger(powerups[i] + "Uses"));
+		}
 
 		if (game instanceof GameScreen) {
 			score.setText(String.valueOf(((GameScreen) game).score));
+			drapes[0].setTotemSpawner(((GameScreen) game).spawner);
+
+			if (GamePrefs.prefs.getBoolean("tap")) {
+				leftButton.setVisible(true);
+				rightButton.setVisible(true);
+			} else {
+				leftButton.setVisible(false);
+				rightButton.setVisible(false);
+			}
 		}
 
 		if (score.getText().length() > 1) {

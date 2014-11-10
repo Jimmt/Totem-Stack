@@ -26,6 +26,9 @@ public class AbstractScreen implements Screen {
 	protected TotemGameComparator comparator;
 	protected static InputMultiplexer multiplexer;
 	protected boolean paused;
+	private float step = 1 / 60f;
+	private float slowTime = 0, slowCap = 30;
+	private boolean slowChanged;
 
 	public AbstractScreen(TotemGame game) {
 		this.game = game;
@@ -40,6 +43,11 @@ public class AbstractScreen implements Screen {
 		camera = (OrthographicCamera) stage.getCamera();
 		multiplexer = new InputMultiplexer(stage, hudStage);
 		Gdx.input.setInputProcessor(multiplexer);
+	}
+
+	public void setStep(float step) {
+		this.step = step;
+		slowChanged = true;
 	}
 
 	@Override
@@ -57,8 +65,18 @@ public class AbstractScreen implements Screen {
 
 // Table.drawDebug(hudStage);
 
+		if (slowChanged) {
+			if (slowTime > slowCap) {
+				step = 1 / 60f;
+				slowChanged = false;
+				slowTime = 0;
+			} else {
+				slowTime += delta;
+			}
+		}
+
 		if (!paused) {
-			world.step(1f / 60f, 5, 8);
+			world.step(step, 5, 8);
 		}
 
 // debugRenderer.render(world, stage.getCamera().combined);

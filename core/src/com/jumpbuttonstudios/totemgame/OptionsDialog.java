@@ -23,9 +23,12 @@ public class OptionsDialog extends Dialog {
 	ImageButton x;
 	CheckBox bgMusic, soundEffects, tapControl, tiltControl;
 	ShapeRenderer sr;
+	GameScreen gs;
 
-	public OptionsDialog(String title, Skin skin) {
+	public OptionsDialog(String title, Skin skin, GameScreen gs) {
 		super(title, skin);
+
+		this.gs = gs;
 
 		sr = new ShapeRenderer();
 
@@ -105,15 +108,15 @@ public class OptionsDialog extends Dialog {
 	public void act(float delta) {
 		super.act(delta);
 
-//		sr.setProjectionMatrix(getStage().getCamera().combined);
-//		sr.begin(ShapeType.Line);
-//		for (int i = 0; i < this.getContentTable().getCells().size; i++) {
-//			sr.box(getX() + getContentTable().getCells().get(i).getActorX(), getY()
-//					+ getContentTable().getY() + getContentTable().getCells().get(i).getActorY(),
-//					0, getContentTable().getCells().get(i).getActorWidth(), getContentTable()
-//							.getCells().get(i).getActorHeight(), 0);
-//		}
-//		sr.end();
+// sr.setProjectionMatrix(getStage().getCamera().combined);
+// sr.begin(ShapeType.Line);
+// for (int i = 0; i < this.getContentTable().getCells().size; i++) {
+// sr.box(getX() + getContentTable().getCells().get(i).getActorX(), getY()
+// + getContentTable().getY() + getContentTable().getCells().get(i).getActorY(),
+// 0, getContentTable().getCells().get(i).getActorWidth(), getContentTable()
+// .getCells().get(i).getActorHeight(), 0);
+// }
+// sr.end();
 	}
 
 	public void setupListeners() {
@@ -156,6 +159,9 @@ public class OptionsDialog extends Dialog {
 			public void clicked(InputEvent event, float x, float y) {
 				TotemGame.soundManager.play("button");
 				setVisible(false);
+				if (gs != null) {
+					gs.pause();
+				}
 			}
 
 		});

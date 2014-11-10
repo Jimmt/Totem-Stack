@@ -9,6 +9,7 @@ public class IceTotem extends Totem {
 	Stage particleStage;
 	Image noAura;
 	boolean unfreeze;
+	boolean freezeTotem;
 
 	public IceTotem(float x, float y, World world, Stage particleStage) {
 		super(x, y, world);
@@ -20,6 +21,7 @@ public class IceTotem extends Totem {
 		width = img.getWidth() * Constants.SCALE;
 		height = img.getHeight() * Constants.SCALE;
 		setSize(width, height);
+
 	}
 
 	public void unfreeze() {
@@ -38,13 +40,18 @@ public class IceTotem extends Totem {
 	public void act(float delta) {
 		super.act(delta);
 
+
+		if(freezeTotem){
+			body.setType(BodyType.StaticBody);
+		}
+		
 		if (unfreeze && body.getType() != BodyType.DynamicBody) {
 			body.setType(BodyType.DynamicBody);
 		}
 
 		if (flag != null) {
-			flag.animatedSprite.setPosition(getX() + getWidth() - 20f * Constants.SCALE, getY()
-					+ getHeight() - 74f * Constants.SCALE);
+			flag.animatedSprite.setPosition(getX() + getWidth() - 45f * Constants.SCALE, getY()
+					+ getHeight() - 70f * Constants.SCALE);
 		}
 
 		parachute.setPosition(getX(), getY() + getHeight() - 20f * Constants.SCALE);

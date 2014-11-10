@@ -24,13 +24,12 @@ public class GameScreen extends AbstractScreen {
 	Stage particleStage;
 	Image black;
 	FitViewport viewport;
+	Array<Totem> removeTotems = new Array<Totem>();
 
 	public GameScreen(TotemGame game) {
 		super(game);
 
 		particleStage = new Stage();
-
-		
 
 		particles = new Array<ParticleEffect>();
 
@@ -43,7 +42,6 @@ public class GameScreen extends AbstractScreen {
 		hudTable.setTransform(true);
 		hudTable.setFillParent(true);
 		hudStage.addActor(hudTable);
-
 
 		background = new Background(stage, world);
 
@@ -59,13 +57,12 @@ public class GameScreen extends AbstractScreen {
 		black = new Image(new Texture(Gdx.files.internal("black.png")));
 		black.setSize(Constants.SCLWIDTH, Constants.SCLHEIGHT);
 		black.setColor(black.getColor().r, black.getColor().g, black.getColor().b, 0.75f);
-		
+
 		multiplexer = new InputMultiplexer(stage, hudStage);
-	
+
 		Gdx.input.setInputProcessor(multiplexer);
 
 	}
-
 
 	@Override
 	public void show() {
@@ -79,28 +76,28 @@ public class GameScreen extends AbstractScreen {
 					((IceTotem) spawner.totems.get(i)).unfreeze();
 				}
 			}
-			
+
 			GameOverDialog god = new GameOverDialog(score, getSkin(), this, game);
 			god.setPosition(Constants.WIDTH / 2 - god.getWidth() / 2,
 					Constants.HEIGHT / 2 - god.getHeight() / 2);
 			hudStage.addActor(god);
-			
+
 			gameOver = true;
-			
+
 			TotemGame.soundManager.play("lose");
 		}
 	}
-	
-	public void pause(){
+
+	public void pause() {
 		paused = !paused;
 		black.setVisible(paused);
-		black.setPosition(camera.position.x - Constants.SCLWIDTH / 2, camera.position.y - Constants.SCLHEIGHT / 2);
+		black.setPosition(camera.position.x - Constants.SCLWIDTH / 2, camera.position.y
+				- Constants.SCLHEIGHT / 2);
 		if (!stage.getActors().contains(black, false)) {
 			stage.getActors().removeValue(black, false);
 		}
 		stage.addActor(black);
-		
-		
+
 	}
 
 	/**
@@ -113,7 +110,6 @@ public class GameScreen extends AbstractScreen {
 		super.render(delta);
 
 		contactListener.update(delta);
-		
 
 // if (currentTotem != null) {
 // sr.setProjectionMatrix(camera.combined);
@@ -133,6 +129,11 @@ public class GameScreen extends AbstractScreen {
 // sr.end();
 // }
 
+		for(int i = 0; i < removeTotems.size; i++){
+			world.destroyBody(removeTotems.get(i).body);
+			removeTotems.removeIndex(i);
+		}
+		
 		if (spawner.totems.size > 1 && !gameOver) {
 			if (spawner.totems.get(spawner.totems.size - 1).getY() < spawner.totems.get(
 					spawner.totems.size - 2).getY()
@@ -144,7 +145,7 @@ public class GameScreen extends AbstractScreen {
 
 			}
 		}
-		
+
 		if (contactListener.getGroundTotems().size > 1 && !gameOver) {
 			gameOver();
 		}
@@ -154,15 +155,14 @@ public class GameScreen extends AbstractScreen {
 				stage.addActor(black);
 			}
 			black.setVisible(true);
-			black.setPosition(camera.position.x - Constants.SCLWIDTH / 2, camera.position.y - Constants.SCLHEIGHT / 2);
+			black.setPosition(camera.position.x - Constants.SCLWIDTH / 2, camera.position.y
+					- Constants.SCLHEIGHT / 2);
 		}
 
 		particleStage.act(delta);
 		particleStage.draw();
 		particleStage.getCamera().position.set(stage.getCamera().position.x / Constants.SCALE,
 				stage.getCamera().position.y / Constants.SCALE, 0);
-		
-		
 
 // Table.drawDebug(hudStage);
 		hudTable.debug();

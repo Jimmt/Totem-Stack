@@ -32,8 +32,6 @@ public class MenuScreen extends AbstractScreen {
 
 		Icons.loadIcons();
 		GamePrefs.initialize();
-		
-		
 
 		if (JBSApi.api != null) {
 
@@ -67,8 +65,10 @@ public class MenuScreen extends AbstractScreen {
 		loginStyle.imageDown = tmp.getDrawable();
 
 		logoutStyle = new ImageButtonStyle();
-		logoutStyle.up = Icons.getImage("login/logout.png").getDrawable();
-		logoutStyle.down = Icons.getImage("login/logout_clicked.png").getDrawable();
+		tmp = new Image(tex = new Texture(Gdx.files.internal("login/logout.png")));
+		logoutStyle.imageUp = tmp.getDrawable();
+		tmp = new Image(tex = new Texture(Gdx.files.internal("login/logout_clicked.png")));
+		logoutStyle.imageDown = tmp.getDrawable();
 
 		startButton = new ImageButton(startStyle);
 		highscoresButton = new ImageButton(highscoresStyle);
@@ -95,7 +95,10 @@ public class MenuScreen extends AbstractScreen {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 				if (JBSApi.loggedIn) {
-					logoutDialog.setVisible(true);
+					LogoutDialog logoutDialog = new LogoutDialog("", getSkin());
+					logoutDialog.setPosition(Constants.WIDTH / 2 - loginDialog.getWidth() / 2, Constants.HEIGHT
+							/ 2 - loginDialog.getHeight() / 2);
+					hudStage.addActor(logoutDialog);
 				} else {
 					loginDialog.setVisible(true);
 				}
@@ -118,8 +121,7 @@ public class MenuScreen extends AbstractScreen {
 		table.add(startButton).width(startButton.getWidth()).height(startButton.getHeight());
 		table.add(loginButton).width(loginButton.getWidth()).height(loginButton.getHeight())
 				.padTop(startButton.getHeight() / 2);
-		
-		
+
 		System.err.println(table.getCells().get(0).getActorX());
 
 		hudStage.addActor(loginDialog);
@@ -127,15 +129,10 @@ public class MenuScreen extends AbstractScreen {
 				/ 2 - loginDialog.getHeight() / 2);
 		loginDialog.setVisible(false);
 
-		hudStage.addActor(logoutDialog);
-		logoutDialog.setPosition(Constants.WIDTH / 2 - loginDialog.getWidth() / 2, Constants.HEIGHT
-				/ 2 - loginDialog.getHeight() / 2);
-		logoutDialog.setVisible(false);
-
 		InputMultiplexer multiplexer = new InputMultiplexer(hudStage, stage);
 
 		Gdx.input.setInputProcessor(multiplexer);
-		
+
 	}
 
 	@Override
@@ -150,7 +147,7 @@ public class MenuScreen extends AbstractScreen {
 			loginButton.setStyle(logoutStyle);
 
 		} else {
-// loginButton.setStyle(loginStyle);
+			loginButton.setStyle(loginStyle);
 		}
 	}
 

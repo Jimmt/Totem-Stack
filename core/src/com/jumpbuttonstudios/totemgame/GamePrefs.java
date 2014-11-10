@@ -13,7 +13,18 @@ public class GamePrefs {
 			prefs.putBoolean("soundEffects", true);
 			prefs.putBoolean("tap", true);
 			prefs.putInteger("bestScore", 0);
+			prefs.putInteger("retryUses", 0);
+			prefs.putInteger("freezeUses", 0);
+			prefs.putInteger("slowUses", 0);
+			prefs.putInteger("windUses", 0);
+			prefs.flush();
 		}
+		//testing
+		prefs.putInteger("retryUses", 99);
+		prefs.putInteger("freezeUses", 99);
+		prefs.putInteger("slowUses", 99);
+		prefs.putInteger("windUses", 99);
+		prefs.flush();
 	}
 
 	public static void putBoolean(String name, boolean value) {
