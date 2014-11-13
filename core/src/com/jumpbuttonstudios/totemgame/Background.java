@@ -16,23 +16,27 @@ public class Background {
 		sky = new Image(new Texture(Gdx.files.internal("bg/skygradient.png")));
 		sky.setScale(Constants.SCALE);
 		stage.addActor(sky);
-		sky.setHeight(Constants.HEIGHT * 10);
+		sky.setHeight(740 + Zone.RAIN.getY() / Constants.SCALE);
 		sky.setWidth(Constants.WIDTH);	
 		
 		mountains = new Image(new Texture(Gdx.files.internal("bg/mountain.png")));
 		mountains.setScale(Constants.SCALE);
+		mountains.setWidth(Constants.WIDTH);
 		
 		stage.addActor(mountains);
 		rocks = new Image(new Texture(Gdx.files.internal("bg/bigrock.png")));
 		rocks.setScale(Constants.SCALE);
 		rocks.setY(230f * Constants.SCALE);
+		rocks.setWidth(Constants.WIDTH);
 		mountains.setY(rocks.getY() + 256f * Constants.SCALE);
 		stage.addActor(rocks);
 
 		ground = new Ground("bg/ground.png", world);
+		
 		ground.bodyDef.type = BodyType.StaticBody;
 		ground.body.setTransform(ground.getWidth() / 2, ground.boxHeight / 2, 0);
 		stage.addActor(ground);
+		ground.setWidth(Constants.SCLWIDTH);
 
 	}
 }

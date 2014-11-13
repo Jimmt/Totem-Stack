@@ -1,5 +1,9 @@
 package com.jumpbuttonstudios.totemgame;
 
+import java.io.IOException;
+
+import twitter4j.TwitterException;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.Texture;
@@ -20,6 +24,7 @@ public class MenuScreen extends AbstractScreen {
 	LogoutDialog logoutDialog;
 	ImageButtonStyle logoutStyle, loginStyle;
 	Table table;
+	CoinsDialog coinsDialog;
 
 	public MenuScreen(TotemGame game) {
 		super(game);
@@ -33,11 +38,21 @@ public class MenuScreen extends AbstractScreen {
 		Icons.loadIcons();
 		GamePrefs.initialize();
 
+//		try {
+//			TwitterUtil.post("test");
+//		} catch (TwitterException e) {
+//			e.printStackTrace();
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+
 		if (JBSApi.api != null) {
 
 		} else {
-			JBSApi.initialize();
+//			JBSApi.initialize();
 		}
+		
+		
 
 		loginDialog = new LoginDialog("", getSkin());
 		logoutDialog = new LogoutDialog("", getSkin());
@@ -96,8 +111,8 @@ public class MenuScreen extends AbstractScreen {
 			public void clicked(InputEvent event, float x, float y) {
 				if (JBSApi.loggedIn) {
 					LogoutDialog logoutDialog = new LogoutDialog("", getSkin());
-					logoutDialog.setPosition(Constants.WIDTH / 2 - loginDialog.getWidth() / 2, Constants.HEIGHT
-							/ 2 - loginDialog.getHeight() / 2);
+					logoutDialog.setPosition(Constants.WIDTH / 2 - loginDialog.getWidth() / 2,
+							Constants.HEIGHT / 2 - loginDialog.getHeight() / 2);
 					hudStage.addActor(logoutDialog);
 				} else {
 					loginDialog.setVisible(true);
@@ -133,6 +148,12 @@ public class MenuScreen extends AbstractScreen {
 
 		Gdx.input.setInputProcessor(multiplexer);
 
+		
+		coinsDialog = new CoinsDialog("", getSkin());
+		hudStage.addActor(coinsDialog);
+	
+		coinsDialog.setY(hudTable.header.getY() - coinsDialog.getHeight());
+		coinsDialog.setModal(false);
 	}
 
 	@Override

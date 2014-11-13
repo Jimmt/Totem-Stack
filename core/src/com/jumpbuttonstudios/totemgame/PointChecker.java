@@ -26,16 +26,17 @@ public class PointChecker extends Actor {
 		this.stage = stage;
 		this.game = game;
 		
+		float xRatio = Constants.WIDTH / 900;
 
-		onePointLeft = new Rectangle(219 * Constants.SCALE, 94 * Constants.SCALE,
+		onePointLeft = new Rectangle(xRatio * 219 * Constants.SCALE, 94 * Constants.SCALE,
 				85 * Constants.SCALE, 20 * Constants.SCALE);
-		onePointRight = new Rectangle(599 * Constants.SCALE, 94 * Constants.SCALE,
+		onePointRight = new Rectangle(xRatio * 599 * Constants.SCALE, 94 * Constants.SCALE,
 				85 * Constants.SCALE, 20 * Constants.SCALE);
-		twoPointLeft = new Rectangle(304 * Constants.SCALE, 91 * Constants.SCALE,
+		twoPointLeft = new Rectangle(xRatio * 313 * Constants.SCALE, 91 * Constants.SCALE,
 				78 * Constants.SCALE, 20 * Constants.SCALE);
-		twoPointRight = new Rectangle(520 * Constants.SCALE, 91 * Constants.SCALE,
+		twoPointRight = new Rectangle(xRatio * 508 * Constants.SCALE, 91 * Constants.SCALE,
 				78 * Constants.SCALE, 20 * Constants.SCALE);
-		threePoint = new Rectangle(382 * Constants.SCALE, 92 * Constants.SCALE,
+		threePoint = new Rectangle(xRatio * 382 * Constants.SCALE, 92 * Constants.SCALE,
 				138 * Constants.SCALE, 20 * Constants.SCALE);
 		totemRect = new Rectangle();
 	}

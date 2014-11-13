@@ -49,6 +49,7 @@ public class LoginDialog extends Dialog {
 		password.setPasswordMode(true);
 
 		ImageButtonStyle signInStyle = new ImageButtonStyle();
+		
 		signInStyle.up = Icons.getImage("login/signin.png").getDrawable();
 		signInStyle.down = Icons.getImage("login/signin_pressed.png").getDrawable();
 

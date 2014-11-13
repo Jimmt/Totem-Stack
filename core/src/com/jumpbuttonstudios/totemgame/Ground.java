@@ -12,7 +12,7 @@ public class Ground extends Box2DActor {
 
 		boxHeight = 93 * Constants.SCALE;
 
-		shape.setAsBox(width / 2, boxHeight / 2);
+		shape.setAsBox(width, boxHeight / 2);
 
 		fixtureDef = new FixtureDef();
 		fixtureDef.friction = 1.0f;

@@ -1,16 +1,20 @@
 package com.jumpbuttonstudios.totemgame;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ButtonGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton.ImageButtonStyle;
+import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
@@ -18,12 +22,13 @@ import com.badlogic.gdx.utils.Array;
 public class ShopDialog extends Dialog {
 	Array<Image> images = new Array<Image>();
 	Array<ImageButton> upgradeButtons = new Array<ImageButton>();
-	boolean positionSet;
+	boolean positionSet, changed;
 	Image text = Icons.getImage("ui/shop/retryinfo.png");
-	ImageButton buyButton, buyCoinButton;
-	ImageButton x;
+	ImageButton backButton, buyCoinButton;
 	Skin skin;
 	GameScreen gs;
+	String currentText = "retryinfo";
+	ShapeRenderer sr = new ShapeRenderer();
 
 	public ShopDialog(String title, Skin skin, GameScreen gs) {
 		super(title, skin);
@@ -34,7 +39,7 @@ public class ShopDialog extends Dialog {
 
 		text.setScale(1);
 
-		Image panel = new Image(new Texture(Gdx.files.internal("ui/shop/window.png")));
+		Image panel = new Image(new Texture(Gdx.files.internal("shop/boardNew.png")));
 		setBackground(panel.getDrawable());
 		setSize(panel.getWidth(), panel.getHeight());
 
@@ -46,20 +51,20 @@ public class ShopDialog extends Dialog {
 		buyCoinStyle.down = Icons.getImage("ui/shop/buyjbs_pressed.png").getDrawable();
 		buyCoinButton = new ImageButton(buyCoinStyle);
 
-		ImageButtonStyle buyStyle = new ImageButtonStyle();
-		buyStyle.up = Icons.getImage("ui/shop/buyitem.png").getDrawable();
-		buyStyle.down = Icons.getImage("ui/shop/buyitem_pressed.png").getDrawable();
-		buyButton = new ImageButton(buyStyle);
+		ImageButtonStyle backStyle = new ImageButtonStyle();
+		backStyle.up = Icons.getImage("ui/highscore/back.png").getDrawable();
+		backStyle.down = Icons.getImage("ui/highscore/back_pressed.png").getDrawable();
+		backButton = new ImageButton(backStyle);
 
-		ImageButtonStyle buttonStyle = new ImageButtonStyle();
-		buttonStyle.up = Icons.getImage("ui/options/close.png").getDrawable();
-		x = new ImageButton(buttonStyle);
 
 		setupListeners();
 
 		ButtonGroup group = new ButtonGroup();
 
-		getContentTable().add(x).expandX().right().colspan(4);
+		CoinLabel coinLabel = new CoinLabel();
+
+		getContentTable().add(Icons.getImage("blank.png")).expand().bottom().left().colspan(4).padBottom(coinLabel.coins.getHeight());
+
 		getContentTable().row();
 
 		for (int i = 0; i < buttonNames.length; i++) {
@@ -79,30 +84,44 @@ public class ShopDialog extends Dialog {
 					super.clicked(event, x, y);
 					TotemGame.soundManager.play("button");
 
+					currentText = name;
+
 					text.setDrawable(Icons.returnImage("ui/shop/" + name + "info.png")
 							.getDrawable());
+
 				}
 			});
 
 			group.add(button);
 			upgradeButtons.add(button);
-			getContentTable().add(button).padTop(5f);
+
+			getContentTable().add(button);
 		}
+
+		getContentTable().row();
+
+		for (int i = 0; i < 4; i++) {
+			ImageButtonStyle ibs = new ImageButtonStyle();
+			ibs.up = Icons.getImage("shop/button_normal.png").getDrawable();
+			ibs.down = Icons.getImage("shop/button_pressed.png").getDrawable();
+
+			ImageButton button = new ImageButton(ibs);
+
+			getContentTable().add(button);
+		}
+
 		for (int i = 0; i < coinNumbers.length; i++) {
 
-			Image img = Icons.getImage("ui/shop/" + String.valueOf(coinNumbers[i]) + "00.png");
-			img.setScale(1);
-			images.add(Icons.getImage("ui/shop/" + coinNumbers[i] + "00.png"));
+			Image img = new Image(new Texture(Gdx.files.internal("shop/paper.png")));
+			images.add(img);
 
 		}
 		getContentTable().row();
-		getContentTable().add(text).expandX().center().padTop(images.get(0).getHeight()).colspan(4)
-				.padBottom((95 - text.getHeight()) / 2).width(text.getWidth())
-				.height(text.getHeight() + 10f);
-		getContentTable().row();
-		getContentTable().add(buyCoinButton).colspan(2).padTop(5f);
-		getContentTable().add(buyButton).colspan(2).padTop(5f);
+		getContentTable().add(text).colspan(4).height(95).padBottom(95);
 
+		getContentTable().row();
+		getButtonTable().add(buyCoinButton).colspan(2).expandX().padRight(75);
+		getButtonTable().add(backButton).colspan(2).expandX();
 	}
 
 	public void setupListeners() {
@@ -119,24 +138,16 @@ public class ShopDialog extends Dialog {
 
 			}
 		});
-		buyButton.addListener(new ClickListener() {
+		backButton.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 				super.clicked(event, x, y);
-				TotemGame.soundManager.play("button");
-
-			}
-		});
-		x.addListener(new ClickListener() {
-			@Override
-			public void clicked(InputEvent event, float x, float y) {
 				TotemGame.soundManager.play("button");
 				setVisible(false);
 				if (gs != null) {
 					gs.pause();
 				}
 			}
-
 		});
 	}
 
@@ -144,17 +155,18 @@ public class ShopDialog extends Dialog {
 	public void draw(Batch batch, float parentAlpha) {
 		super.draw(batch, parentAlpha);
 
-		for (int i = 0; i < upgradeButtons.size; i++) {
-			Image img = images.get(i);
-			img.setPosition(getX() + getContentTable().getCell(upgradeButtons.get(i)).getActorX()
-					+ 3f, getY() + getContentTable().getCell(upgradeButtons.get(i)).getActorY()
-					- getContentTable().getCell(upgradeButtons.get(i)).getActorHeight() / 4f);
+		if (currentText.equals("freeze")) {
+			text.setHeight(95);
+		} else {
+			text.setHeight(63);
 		}
 
-		for (int i = 0; i < images.size; i++) {
-			images.get(i).draw(batch, parentAlpha);
-		}
-
+// for (int i = 0; i < upgradeButtons.size; i++) {
+// Image img = images.get(i);
+// img.setPosition(getX() +
+// getContentTable().getCell(upgradeButtons.get(i)).getActorX()
+// + 3f, getY() + getContentTable().getCell(upgradeButtons.get(i)).getActorY()
+// - getContentTable().getCell(upgradeButtons.get(i)).getActorHeight() / 4f);
+// }
 	}
-
 }

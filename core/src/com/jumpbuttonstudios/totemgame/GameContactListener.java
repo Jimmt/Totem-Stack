@@ -349,6 +349,7 @@ public class GameContactListener implements ContactListener {
 				lastTotem.getY() + lastTotem.getHeight() / 2 - perfectTotal.getHeight()
 						* Constants.SCALE / 2);
 
+		System.out.println(streakCount);
 		if (streakCount == 10) {
 			game.stage.getActors().removeValue(streak, false);
 			game.stage.addActor(streak);

@@ -1,5 +1,9 @@
 package com.jumpbuttonstudios.totemgame;
 
+import twitter4j.Twitter;
+import twitter4j.TwitterFactory;
+import twitter4j.conf.ConfigurationBuilder;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.Texture;
@@ -9,7 +13,6 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 public class GameScreen extends AbstractScreen {
 	Background background;
@@ -28,6 +31,9 @@ public class GameScreen extends AbstractScreen {
 
 	public GameScreen(TotemGame game) {
 		super(game);
+		
+//		Twitter twitter = TwitterFactory.getSingleton();
+		
 
 		particleStage = new Stage();
 
@@ -79,7 +85,7 @@ public class GameScreen extends AbstractScreen {
 
 			GameOverDialog god = new GameOverDialog(score, getSkin(), this, game);
 			god.setPosition(Constants.WIDTH / 2 - god.getWidth() / 2,
-					Constants.HEIGHT / 2 - god.getHeight() / 2);
+					Constants.HEIGHT / 2 - god.getHeight() / 2 - 90);
 			hudStage.addActor(god);
 
 			gameOver = true;

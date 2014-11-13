@@ -238,7 +238,7 @@ public class TotemSpawner extends Actor {
 // Constants.SCLWIDTH / 2 + randomMagnitude), spawnY, game.world);
 				if (spawnTime > spawnCap) {
 					spawnTime = 0;
-					
+
 					Totem t;
 					if (freezeTotem) {
 						t = new IceTotem(0.5f * Constants.SCLWIDTH, spawnY, game.world,
@@ -278,7 +278,7 @@ public class TotemSpawner extends Actor {
 					if (totems.size >= 3) {
 						spawnY += currentTotem.getHeight();
 					}
-					
+
 				} else {
 					spawnTime += delta;
 				}
@@ -318,11 +318,19 @@ public class TotemSpawner extends Actor {
 	}
 
 	public void moveLeft() {
-		currentTotem.body.setLinearVelocity(-5, currentTotem.body.getLinearVelocity().y);
+		if (currentTotem.getX() > 0) {
+			currentTotem.body.setLinearVelocity(-5, currentTotem.body.getLinearVelocity().y);
+		} else {
+			currentTotem.body.setLinearVelocity(0, currentTotem.body.getLinearVelocity().y);
+		}
 	}
 
 	public void moveRight() {
-		currentTotem.body.setLinearVelocity(5, currentTotem.body.getLinearVelocity().y);
+		if (currentTotem.getX() + currentTotem.getWidth() < Constants.SCLWIDTH) {
+			currentTotem.body.setLinearVelocity(5, currentTotem.body.getLinearVelocity().y);
+		} else {
+			currentTotem.body.setLinearVelocity(0, currentTotem.body.getLinearVelocity().y);
+		}
 	}
 
 	public void stop() {

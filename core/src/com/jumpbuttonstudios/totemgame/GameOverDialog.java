@@ -1,7 +1,12 @@
 package com.jumpbuttonstudios.totemgame;
 
+import java.io.IOException;
+
+import twitter4j.TwitterException;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -15,8 +20,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.ImageButton.ImageButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Scaling;
 
 public class GameOverDialog extends Dialog {
 	int score;
@@ -25,7 +32,8 @@ public class GameOverDialog extends Dialog {
 	TotemGame game;
 	ShapeRenderer sr;
 	Label bestScoreLabel, scoreLabel;
-	float x, y;
+	Image label;
+	float x, y, ratio;
 
 	public GameOverDialog(int score, Skin skin, GameScreen gs, TotemGame game) {
 		super("", skin);
@@ -34,10 +42,14 @@ public class GameOverDialog extends Dialog {
 
 		setTransform(true);
 
+		gs.spawner.rain.effect.allowCompletion();
+		gs.spawner.lightning.effect.allowCompletion();
+		TotemGame.soundManager.sounds.get("rain").stop();
+
 		imageButtons = new Array<ImageButton>();
 
 		setModal(false);
-		
+
 		this.gs = gs;
 		this.game = game;
 		this.score = score;
@@ -58,9 +70,18 @@ public class GameOverDialog extends Dialog {
 
 		setupListeners();
 
-		Image panel = new Image(new Texture(Gdx.files.internal("ui/gameover/gowindow.png")));
+		Image panel = new Image(new Texture(Gdx.files.internal("gameover/window.png")));
 		setBackground(panel.getDrawable());
+		
+		panel.setSize(Constants.WIDTH, Constants.HEIGHT - 80);
 		setSize(panel.getWidth(), panel.getHeight());
+
+		label = Icons.getImage("gameover/gameover.png");
+		ratio = label.getWidth() / label.getHeight();
+		label.setScale(1);	
+		label.setScaling(Scaling.none);
+		getContentTable().add(label);
+		getContentTable().row();
 
 		ImageButtonStyle removeAdStyle = new ImageButtonStyle();
 		removeAdStyle.up = Icons.getImage("ui/paused/removead.png").getDrawable();
@@ -74,20 +95,35 @@ public class GameOverDialog extends Dialog {
 			}
 		});
 
+		BitmapFont font = new BitmapFont(Gdx.files.internal("ui/top/scoreFont.fnt"));
+
 		LabelStyle style = new LabelStyle();
-		style.font = new BitmapFont(Gdx.files.internal("ui/top/scoreFont.fnt"));
+		style.font = font;
+		style.fontColor = Color.WHITE;
+		style.background = Icons.getImage("gameover/yourScoreBox.png").getDrawable();
 
 		scoreLabel = new Label(String.valueOf(score), style);
-		
+		scoreLabel.setWidth(Icons.getImage("gameover/yourScoreBox.png").getWidth());
+		scoreLabel.setHeight(Icons.getImage("gameover/yourScoreBox.png").getHeight());
+		scoreLabel.setAlignment(Align.center);
 
-		bestScoreLabel = new Label(String.valueOf(GamePrefs.prefs.getInteger("bestScore")),
-				style);
+		LabelStyle style1 = new LabelStyle();
+		style1.font = font;
+		style1.fontColor = Color.WHITE;
+		style1.background = Icons.getImage("gameover/bestScoreBox.png").getDrawable();
 
-//		getContentTable().add(scoreLabel).colspan(5);
-//		getContentTable().row();
-//		getContentTable().add(bestScoreLabel).colspan(5);
-//		gs.hudStage.addActor(scoreLabel);
-//		gs.hudStage.addActor(bestScoreLabel);
+		bestScoreLabel = new Label(String.valueOf(GamePrefs.prefs.getInteger("bestScore")), style1);
+		bestScoreLabel.setWidth(Icons.getImage("gameover/bestScoreBox.png").getWidth());
+		bestScoreLabel.setHeight(Icons.getImage("gameover/bestScoreBox.png").getHeight());
+		bestScoreLabel.setAlignment(Align.center);
+
+		getContentTable().add(scoreLabel)
+				.width(Icons.getImage("gameover/yourScoreBox.png").getWidth())
+				.height(Icons.getImage("gameover/yourScoreBox.png").getHeight()).expandX().center();
+		getContentTable().row();
+		getContentTable().add(bestScoreLabel)
+				.width(Icons.getImage("gameover/bestScoreBox.png").getWidth())
+				.height(Icons.getImage("gameover/bestScoreBox.png").getHeight()).expandX().center();
 
 		for (int i = 0; i < imageButtons.size; i++) {
 			getButtonTable().add(imageButtons.get(i)).width(imageButtons.get(i).getWidth())
@@ -95,9 +131,8 @@ public class GameOverDialog extends Dialog {
 		}
 		getButtonTable().row();
 		getButtonTable().add(removeAds).colspan(5);
-		
+
 		scoreLabel.setPosition(100, getY());
-		
 
 	}
 
@@ -130,8 +165,15 @@ public class GameOverDialog extends Dialog {
 					@Override
 					public void clicked(InputEvent event, float x, float y) {
 						super.clicked(event, x, y);
-
 						TotemGame.soundManager.play("button");
+
+						try {
+							TwitterUtil.post(String.valueOf(score));
+						} catch (TwitterException e) {
+							e.printStackTrace();
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
 					}
 				});
 		imageButtons.get(4).addListener(new ClickListener() { // facebook
@@ -148,9 +190,8 @@ public class GameOverDialog extends Dialog {
 		}
 		HighScores.addScore(score);
 
-		
 		if (score >= GamePrefs.prefs.getInteger("bestScore")) {
-			
+
 			GamePrefs.putInteger("bestScore", score);
 			System.out.println(score + " " + GamePrefs.prefs.getInteger("bestScore"));
 		}
@@ -159,40 +200,17 @@ public class GameOverDialog extends Dialog {
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
 		super.draw(batch, parentAlpha);
-		
-		scoreLabel.draw(batch, parentAlpha);
-		bestScoreLabel.draw(batch, parentAlpha);
-		
-		
-		
+
 		if (gs.camera.position.y > 0) {
 			gs.camera.position.y -= (gs.camera.position.y - 1) * 0.1f;
 		}
-		
-		x = getX() + getWidth() / 2 - scoreLabel.getWidth() / 2;
-		y =  getY() + getHeight() - scoreLabel.getHeight() - 132 - (81 - scoreLabel.getHeight()) / 2;
-		
-		scoreLabel.setPosition(x, y);
-		bestScoreLabel.setPosition(x, y - 130f);
 
-//		sr.setProjectionMatrix(getStage().getCamera().combined);
-//		sr.begin(ShapeType.Line);
-//		for (int i = 0; i < this.getContentTable().getCells().size; i++) {
-//
-//			sr.box(getX() + getContentTable().getCells().get(i).getActorX(), getY()
-//					+ getContentTable().getY() + getContentTable().getCells().get(i).getActorY(),
-//					0, getContentTable().getCells().get(i).getActorWidth(), getContentTable()
-//							.getCells().get(i).getActorHeight(), 0);
-//		}
-//		sr.end();
-//		sr.begin(ShapeType.Line);
-//		for (int i = 0; i < this.getButtonTable().getCells().size; i++) {
-//			sr.box(getX() + getButtonTable().getCells().get(i).getActorX(), getY()
-//					+ getButtonTable().getY() + getButtonTable().getCells().get(i).getActorY(), 0,
-//					getButtonTable().getCells().get(i).getActorWidth(), getButtonTable().getCells()
-//							.get(i).getActorHeight(), 0);
-//		}
-//		sr.end();
+		
+
+		scoreLabel.setWidth(Icons.getImage("gameover/yourScoreBox.png").getWidth());
+		scoreLabel.setHeight(Icons.getImage("gameover/yourScoreBox.png").getHeight());
+		bestScoreLabel.setWidth(Icons.getImage("gameover/bestScoreBox.png").getWidth());
+		bestScoreLabel.setHeight(Icons.getImage("gameover/bestScoreBox.png").getHeight());
 
 	}
 

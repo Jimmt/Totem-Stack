@@ -20,6 +20,8 @@ public class Icons {
 
 	public static ObjectMap<String, Image> images;
 
+	public static FileHandle listFile = Gdx.files.local("file.txt");
+
 	public static Image returnImage(String path) {
 		Image i = new Image(new Texture(Gdx.files.internal(path)));
 		i.setScale(Constants.SCALE);
@@ -35,6 +37,7 @@ public class Icons {
 		for (int i = 0; i < files.length; i++) {
 			if (files[i].extension().equals("png")) {
 				String uri = files[i].toString().replace("./bin/", "");
+// listFile.writeString(uri + "\n", true);
 				images.put(uri, returnImage(files[i].toString()));
 			}
 			if (files[i].isDirectory()) {
@@ -52,11 +55,17 @@ public class Icons {
 		FileHandle master;
 		if (Gdx.app.getType() == ApplicationType.Android) {
 			master = Gdx.files.internal("");
+			search(master.list());
 
 		} else {
 			master = Gdx.files.internal("./bin/");
+
+			String[] listPaths = listFile.readString().split("\n");
+//			for (int i = 0; i < listPaths.length; i++) {
+//				images.put(listPaths[i], returnImage(listPaths[i])); enable for desktop builds
+//			}
+			search(master.list()); //disable for desktop builds
 		}
-		search(master.list());
 
 		iceImagesArr = new TextureRegion(new Texture("totem/ice/Trail_Packed.png")).split(63, 62);
 
