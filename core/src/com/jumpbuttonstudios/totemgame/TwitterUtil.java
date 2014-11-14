@@ -1,89 +1,61 @@
 package com.jumpbuttonstudios.totemgame;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
+import twitter4j.Twitter;
 import twitter4j.TwitterException;
+import twitter4j.TwitterFactory;
+import twitter4j.auth.AccessToken;
+import twitter4j.auth.RequestToken;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Net.HttpMethods;
-import com.badlogic.gdx.Net.HttpRequest;
-import com.badlogic.gdx.Net.HttpResponse;
-import com.badlogic.gdx.Net.HttpResponseListener;
-import com.badlogic.gdx.net.HttpParametersUtils;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 public class TwitterUtil {
 	private final static String CONSUMER_KEY = "ML6Yz2T3xlt5MKDdtcfmb22Th";
 	private final static String CONSUMER_KEY_SECRET = "p1LWpMN4juOpdRbsNgKMlvg1JyOqpLyU6lHIxGLTg26OOZOO6Z";
+	private static String pin;
+	public static AccessToken accessToken = null;
+	public static Twitter twitter;
+	public static RequestToken requestToken;
+	public static boolean loggedIn;
 
-	public static void post(String text) throws TwitterException, IOException {
+	public static void init() throws TwitterException, IOException {
 
-		Map parameters = new HashMap();
-		parameters.put("oauth_callback", "http://jumpbuttonstudio.com");
+		twitter = new TwitterFactory().getInstance();
+		twitter.setOAuthConsumer(CONSUMER_KEY, CONSUMER_KEY_SECRET);
 
-		HttpRequest httpPost = new HttpRequest(HttpMethods.GET);
-		httpPost.setUrl("https://api.twitter.com/oauth/request_token");
-		httpPost.setContent(HttpParametersUtils.convertHttpParameters(parameters));
+	}
 
-		Gdx.net.sendHttpRequest(httpPost, new HttpResponseListener() {
-			public void handleHttpResponse(HttpResponse httpResponse) {
-				String status = httpResponse.getResultAsString();
-				System.out.println(status);
-				// do stuff here based on response
-			}
+	public static void openURL() {
+		try {
+			requestToken = twitter.getOAuthRequestToken();
+		} catch (TwitterException e) {
+			e.printStackTrace();
+		}
+		Gdx.net.openURI(requestToken.getAuthorizationURL());
+	}
 
-			public void failed(Throwable t) {
-				String status = "failed";
+	public static void postFinal(String text) {
+		twitter.setOAuthAccessToken(accessToken);
 
-				// do stuff here based on the failed attempt
-			}
+		try {
+			twitter.updateStatus(text);
+		} catch (TwitterException e) {
+			e.printStackTrace();
+		}
+	}
 
-			@Override
-			public void cancelled() {
-				// TODO Auto-generated method stub
-
-			}
-		});
-
-// Twitter twitter = new TwitterFactory().getInstance();
-// twitter.setOAuthConsumer(CONSUMER_KEY, CONSUMER_KEY_SECRET);
-// RequestToken requestToken = twitter.getOAuthRequestToken();
-// System.out.println("Authorization URL: \n" +
-// requestToken.getAuthorizationURL());
-//
-// Gdx.net.openURI(requestToken.getAuthorizationURL());
-//
-//
-// AccessToken accessToken = null;
-//
-// BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-// while (null == accessToken) {
-// try {
-// System.out.print("Input PIN here: ");
-// String pin = br.readLine();
-//
-// accessToken = twitter.getOAuthAccessToken(requestToken, pin);
-//
-// } catch (TwitterException te) {
-//
-// System.out.println("Failed to get access token, caused by: " +
-// te.getMessage());
-//
-// System.out.println("Retry input PIN");
-//
-// }
-// }
-//
-//
-//
-// System.out.println("Access Token: " + accessToken.getToken());
-// System.out.println("Access Token Secret: " + accessToken.getTokenSecret());
-//
-// twitter.setOAuthAccessToken(accessToken);
-//
-// twitter.updateStatus(text);
-
+	public static void setPin(String newPin) {
+		pin = newPin;
+		try {
+			accessToken = twitter.getOAuthAccessToken(requestToken, pin);
+			loggedIn = true;
+		} catch (TwitterException e) {
+			loggedIn = false;
+			e.printStackTrace();
+		}
 	}
 
 }

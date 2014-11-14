@@ -1,14 +1,13 @@
 package com.jumpbuttonstudios.totemgame;
 
-import java.io.IOException;
-
-import twitter4j.TwitterException;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.Net.HttpMethods;
+import com.badlogic.gdx.Net.HttpRequest;
+import com.badlogic.gdx.Net.HttpResponse;
+import com.badlogic.gdx.Net.HttpResponseListener;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.net.HttpStatus;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
@@ -38,21 +37,23 @@ public class MenuScreen extends AbstractScreen {
 		Icons.loadIcons();
 		GamePrefs.initialize();
 
-//		try {
-//			TwitterUtil.post("test");
-//		} catch (TwitterException e) {
-//			e.printStackTrace();
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
+// try {
+// TwitterUtil.post("test");
+// } catch (TwitterException e) {
+// e.printStackTrace();
+// } catch (IOException e) {
+// e.printStackTrace();
+// }
 
 		if (JBSApi.api != null) {
 
 		} else {
-//			JBSApi.initialize();
+
+			CheckNetResponseListener responseListener = new CheckNetResponseListener();
+			HttpRequest request = new HttpRequest(HttpMethods.GET);
+			request.setUrl("http://google.com");
+			Gdx.net.sendHttpRequest(request, responseListener);
 		}
-		
-		
 
 		loginDialog = new LoginDialog("", getSkin());
 		logoutDialog = new LogoutDialog("", getSkin());
@@ -148,10 +149,9 @@ public class MenuScreen extends AbstractScreen {
 
 		Gdx.input.setInputProcessor(multiplexer);
 
-		
 		coinsDialog = new CoinsDialog("", getSkin());
 		hudStage.addActor(coinsDialog);
-	
+
 		coinsDialog.setY(hudTable.header.getY() - coinsDialog.getHeight());
 		coinsDialog.setModal(false);
 	}

@@ -34,9 +34,12 @@ public class GameOverDialog extends Dialog {
 	Label bestScoreLabel, scoreLabel;
 	Image label;
 	float x, y, ratio;
+	Skin skin;
 
 	public GameOverDialog(int score, Skin skin, GameScreen gs, TotemGame game) {
 		super("", skin);
+
+		this.skin = skin;
 
 		sr = new ShapeRenderer();
 
@@ -72,13 +75,13 @@ public class GameOverDialog extends Dialog {
 
 		Image panel = new Image(new Texture(Gdx.files.internal("gameover/window.png")));
 		setBackground(panel.getDrawable());
-		
+
 		panel.setSize(Constants.WIDTH, Constants.HEIGHT - 80);
 		setSize(panel.getWidth(), panel.getHeight());
 
 		label = Icons.getImage("gameover/gameover.png");
 		ratio = label.getWidth() / label.getHeight();
-		label.setScale(1);	
+		label.setScale(1);
 		label.setScaling(Scaling.none);
 		getContentTable().add(label);
 		getContentTable().row();
@@ -167,13 +170,30 @@ public class GameOverDialog extends Dialog {
 						super.clicked(event, x, y);
 						TotemGame.soundManager.play("button");
 
-						try {
-							TwitterUtil.post(String.valueOf(score));
-						} catch (TwitterException e) {
-							e.printStackTrace();
-						} catch (IOException e) {
-							e.printStackTrace();
+						if (!TwitterUtil.loggedIn) {
+							try {
+								TwitterUtil.init();
+								TwitterUtil.openURL();
+							} catch (TwitterException e) {
+								e.printStackTrace();
+							} catch (IOException e) {
+								e.printStackTrace();
+							}
+							
+							PinDialog pinDialog = new PinDialog(String.valueOf(score), skin, gs);
+							gs.hudStage.addActor(pinDialog);
+							pinDialog.setPosition(Constants.WIDTH / 2 - pinDialog.getWidth() / 2,
+									Constants.HEIGHT / 2 - pinDialog.getHeight() / 2);
+						
+						} else {
+							TwitterUtil.postFinal("I just scored " + score + " points in Totem Stack!");
+							TweetedDialog tweeted = new TweetedDialog("Your tweet has been posted!", skin);
+							gs.hudStage.addActor(tweeted);
+							tweeted.setPosition(Constants.WIDTH / 2 - tweeted.getWidth() / 2, Constants.HEIGHT
+									/ 2 - tweeted.getHeight() / 2);
 						}
+
+						
 					}
 				});
 		imageButtons.get(4).addListener(new ClickListener() { // facebook
@@ -204,8 +224,6 @@ public class GameOverDialog extends Dialog {
 		if (gs.camera.position.y > 0) {
 			gs.camera.position.y -= (gs.camera.position.y - 1) * 0.1f;
 		}
-
-		
 
 		scoreLabel.setWidth(Icons.getImage("gameover/yourScoreBox.png").getWidth());
 		scoreLabel.setHeight(Icons.getImage("gameover/yourScoreBox.png").getHeight());

@@ -29,13 +29,12 @@ public class LoginDialog extends Dialog {
 		super(title, skin);
 
 		setTransform(true);
-		
+
 		Tween.registerAccessor(Image.class, new ImageAccessor());
-		
-		
+
 		BitmapFont font = new BitmapFont(Gdx.files.internal("ui/highscore/font.fnt"));
 		Image panel = new Image(new Texture(Gdx.files.internal("login/window.png")));
-		
+
 		Tween.to(panel, 0, 1.0f).target(0, 0).start();
 
 		setBackground(panel.getDrawable());
@@ -49,7 +48,7 @@ public class LoginDialog extends Dialog {
 		password.setPasswordMode(true);
 
 		ImageButtonStyle signInStyle = new ImageButtonStyle();
-		
+
 		signInStyle.up = Icons.getImage("login/signin.png").getDrawable();
 		signInStyle.down = Icons.getImage("login/signin_pressed.png").getDrawable();
 
@@ -59,21 +58,22 @@ public class LoginDialog extends Dialog {
 			public void clicked(InputEvent event, float x, float y) {
 				TotemGame.soundManager.play("button");
 
-				
+				if (JBSApi.api != null && !JBSApi.loggedIn && JBSApi.api.isConnected() && JBSApi.api.isAuthenticated()) {
+					boolean success = signIn(username.getText(), password.getText());
 
-				boolean success = signIn(username.getText(), password.getText());
-
-				if (success) {
-					setVisible(false);
-					JBSApi.loggedIn = true;
-					Header h = new Header(ImageDownloader.downloadImage(JBSApi.api.getUserAvatar()), username.getText());
-					getStage().addActor(h);
-				} else {
-					ErrorDialog e = new ErrorDialog("", skin);
-					e.setPosition(Constants.WIDTH / 2 - e.getWidth() / 2,
-							Constants.HEIGHT / 2 - e.getHeight() / 2);
-					getStage().addActor(e);
-					JBSApi.loggedIn = false;
+					if (success) {
+						setVisible(false);
+						JBSApi.loggedIn = true;
+						Header h = new Header(ImageDownloader.downloadImage(JBSApi.api
+								.getUserAvatar()), username.getText());
+						getStage().addActor(h);
+					} else {
+						ErrorDialog e = new ErrorDialog("", skin);
+						e.setPosition(Constants.WIDTH / 2 - e.getWidth() / 2, Constants.HEIGHT / 2
+								- e.getHeight() / 2);
+						getStage().addActor(e);
+						JBSApi.loggedIn = false;
+					}
 				}
 
 			}
@@ -127,21 +127,19 @@ public class LoginDialog extends Dialog {
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
 		super.draw(batch, parentAlpha);
-		
-		
 
 // if (getStage() != null) {
 // getStage().addActor(xb);
 // }
 
-		sr.setProjectionMatrix(getStage().getCamera().combined);
-		sr.begin(ShapeType.Line);
-		for (int i = 0; i < this.getContentTable().getCells().size; i++) {
- sr.box(getX() + getContentTable().getCells().get(i).getActorX(), getY()
- + getContentTable().getY() + getContentTable().getCells().get(i).getActorY(),
- 0, getContentTable().getCells().get(i).getActorWidth(), getContentTable()
- .getCells().get(i).getActorHeight(), 0);
-		}
-		sr.end();
+// sr.setProjectionMatrix(getStage().getCamera().combined);
+// sr.begin(ShapeType.Line);
+// for (int i = 0; i < this.getContentTable().getCells().size; i++) {
+// sr.box(getX() + getContentTable().getCells().get(i).getActorX(), getY()
+// + getContentTable().getY() + getContentTable().getCells().get(i).getActorY(),
+// 0, getContentTable().getCells().get(i).getActorWidth(), getContentTable()
+// .getCells().get(i).getActorHeight(), 0);
+// }
+// sr.end();
 	}
 }
