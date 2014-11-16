@@ -8,9 +8,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
@@ -24,6 +22,7 @@ public class LoginDialog extends Dialog {
 	ShapeRenderer sr;
 	TextField username, password;
 	ImageButton xb;
+	BitmapFont font;
 
 	public LoginDialog(String title, final Skin skin) {
 		super(title, skin);
@@ -32,7 +31,8 @@ public class LoginDialog extends Dialog {
 
 		Tween.registerAccessor(Image.class, new ImageAccessor());
 
-		BitmapFont font = new BitmapFont(Gdx.files.internal("ui/highscore/font.fnt"));
+		font = new BitmapFont(Gdx.files.internal("ui/highscore/font.fnt")); 
+//		font = new BitmapFont(Gdx.files.internal("login/font.fnt")); 
 		Image panel = new Image(new Texture(Gdx.files.internal("login/window.png")));
 
 		Tween.to(panel, 0, 1.0f).target(0, 0).start();
@@ -43,6 +43,8 @@ public class LoginDialog extends Dialog {
 		textStyle.font = font;
 		textStyle.fontColor = Color.WHITE;
 
+//		username = new CustomTextField("", textStyle);
+//		password = new CustomTextField("", textStyle);
 		username = new TextField("", textStyle);
 		password = new TextField("", textStyle);
 		password.setPasswordMode(true);
@@ -58,7 +60,8 @@ public class LoginDialog extends Dialog {
 			public void clicked(InputEvent event, float x, float y) {
 				TotemGame.soundManager.play("button");
 
-				if (JBSApi.api != null && !JBSApi.loggedIn && JBSApi.api.isConnected() && JBSApi.api.isAuthenticated()) {
+				if (JBSApi.api != null && !JBSApi.loggedIn && JBSApi.api.isConnected()
+						&& JBSApi.api.isAuthenticated()) {
 					boolean success = signIn(username.getText(), password.getText());
 
 					if (success) {
@@ -106,9 +109,10 @@ public class LoginDialog extends Dialog {
 		});
 		getContentTable().add(xb).expandX().right().colspan(2);
 		getContentTable().row();
-		getContentTable().add(username).width(panel.getWidth() - 50).colspan(2).padBottom(47);
+		
+		getContentTable().add(username).colspan(2).width(panel.getWidth() - 50).padBottom(47f);
 		getContentTable().row();
-		getContentTable().add(password).width(panel.getWidth() - 50).colspan(2).padBottom(47);
+		getContentTable().add(password).colspan(2).width(panel.getWidth() - 50).padBottom(47f);
 		getContentTable().row();
 		getContentTable().add(signIn).padBottom(15f);
 		getContentTable().add(register).padBottom(15f);
@@ -116,7 +120,7 @@ public class LoginDialog extends Dialog {
 		pack();
 
 		sr = new ShapeRenderer();
-
+		password.setPasswordCharacter('.');
 	}
 
 	public boolean signIn(String username, String password) {
@@ -127,19 +131,20 @@ public class LoginDialog extends Dialog {
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
 		super.draw(batch, parentAlpha);
-
+		
 // if (getStage() != null) {
 // getStage().addActor(xb);
 // }
 
-// sr.setProjectionMatrix(getStage().getCamera().combined);
-// sr.begin(ShapeType.Line);
-// for (int i = 0; i < this.getContentTable().getCells().size; i++) {
-// sr.box(getX() + getContentTable().getCells().get(i).getActorX(), getY()
-// + getContentTable().getY() + getContentTable().getCells().get(i).getActorY(),
-// 0, getContentTable().getCells().get(i).getActorWidth(), getContentTable()
-// .getCells().get(i).getActorHeight(), 0);
-// }
-// sr.end();
+
+//		sr.setProjectionMatrix(getStage().getCamera().combined);
+//		sr.begin(ShapeType.Line);
+//		for (int i = 0; i < this.getContentTable().getCells().size; i++) {
+//			sr.box(getX() + getContentTable().getCells().get(i).getActorX(), getY()
+//					+ getContentTable().getY() + getContentTable().getCells().get(i).getActorY(),
+//					0, getContentTable().getCells().get(i).getActorWidth(), getContentTable()
+//							.getCells().get(i).getActorHeight(), 0);
+//		}
+//		sr.end();
 	}
 }

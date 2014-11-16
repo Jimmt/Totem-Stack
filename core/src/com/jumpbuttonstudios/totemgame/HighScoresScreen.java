@@ -128,12 +128,16 @@ public class HighScoresScreen extends AbstractScreen {
 		table.add(friendsButton).width(Constants.WIDTH / 3).colspan(1);
 		table.row();
 
+		if(JBSApi.api != null){
+			
+		
 		if (!(JBSApi.api.isConnected() && JBSApi.api.isAuthenticated())) {
 			globalButton.setDisabled(true);
 			friendsButton.setDisabled(true);
 		}
 		if (!JBSApi.loggedIn) {
 			friendsButton.setDisabled(true);
+		}
 		}
 
 		BitmapFont font = new BitmapFont(Gdx.files.internal("ui/highscore/font.fnt"));

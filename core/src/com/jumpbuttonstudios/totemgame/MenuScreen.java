@@ -7,6 +7,7 @@ import com.badlogic.gdx.Net.HttpRequest;
 import com.badlogic.gdx.Net.HttpResponse;
 import com.badlogic.gdx.Net.HttpResponseListener;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.net.HttpStatus;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -138,8 +139,6 @@ public class MenuScreen extends AbstractScreen {
 		table.add(loginButton).width(loginButton.getWidth()).height(loginButton.getHeight())
 				.padTop(startButton.getHeight() / 2);
 
-		System.err.println(table.getCells().get(0).getActorX());
-
 		hudStage.addActor(loginDialog);
 		loginDialog.setPosition(Constants.WIDTH / 2 - loginDialog.getWidth() / 2, Constants.HEIGHT
 				/ 2 - loginDialog.getHeight() / 2);
@@ -160,6 +159,9 @@ public class MenuScreen extends AbstractScreen {
 	public void render(float delta) {
 		super.render(delta);
 
+		
+			
+		
 		hudStage.draw();
 		hudStage.act(delta);
 		Table.drawDebug(stage);

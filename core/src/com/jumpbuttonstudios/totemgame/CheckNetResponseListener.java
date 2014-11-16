@@ -10,7 +10,7 @@ public class CheckNetResponseListener implements HttpResponseListener {
 	@Override
 	public void handleHttpResponse(HttpResponse httpResponse) {
 		hasInternet = true;
-		JBSApi.initialize();
+//		JBSApi.initialize();
 	}
 
 	@Override

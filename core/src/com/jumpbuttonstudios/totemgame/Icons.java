@@ -61,10 +61,10 @@ public class Icons {
 			master = Gdx.files.internal("./bin/");
 
 			String[] listPaths = listFile.readString().split("\n");
-//			for (int i = 0; i < listPaths.length; i++) {
-//				images.put(listPaths[i], returnImage(listPaths[i])); enable for desktop builds
-//			}
-			search(master.list()); //disable for desktop builds
+			for (int i = 0; i < listPaths.length; i++) {
+				images.put(listPaths[i], returnImage(listPaths[i])); //enable for desktop builds
+			}
+//			search(master.list()); //disable for desktop builds
 		}
 
 		iceImagesArr = new TextureRegion(new Texture("totem/ice/Trail_Packed.png")).split(63, 62);
