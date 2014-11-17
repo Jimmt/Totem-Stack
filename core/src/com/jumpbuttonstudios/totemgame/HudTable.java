@@ -1,9 +1,8 @@
 package com.jumpbuttonstudios.totemgame;
 
-import sun.security.jgss.GSSCaller;
-
 import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Input.Buttons;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -22,10 +21,12 @@ public class HudTable extends Table {
 	AbstractScreen game;
 	Label score;
 	ImageButton pause, sound, options, shop, home, leftButton, rightButton;
+	ImageButtonStyle soundOnStyle, soundOffStyle;
+	boolean soundOn = true;
 	Image header;
 
-	String[] paths = { "pause", "soundon", "setting", "shop", "home" };
-	ImageButton[] buttons = { pause, sound, options, shop, home };
+	String[] paths = { "pause", "setting", "shop", "home" };
+	ImageButton[] buttons = { pause, options, shop, home };
 	String[] powerups = { "retry", "freeze", "slow", "wind" };
 
 	OptionsDialog optionsDialog;
@@ -58,10 +59,24 @@ public class HudTable extends Table {
 
 		}
 
+		soundOnStyle = new ImageButtonStyle();
+		soundOnStyle.up = new Image(new Texture("ui/top/soundon.png")).getDrawable();
+		soundOnStyle.down = new Image(new Texture("ui/top/soundon_pressed.png")).getDrawable();
+
+		sound = new ImageButton(soundOnStyle);
+
+		soundOffStyle = new ImageButtonStyle();
+		soundOffStyle.up = new Image(new Texture("ui/top/soundoff.png")).getDrawable();
+		soundOffStyle.down = new Image(new Texture("ui/top/soundoff_pressed.png")).getDrawable();
+
 		Table left = new Table();
 		Table right = new Table();
 
 		for (int i = 0; i < buttons.length; i++) {
+			if (i == 1) {
+				left.add(sound).padLeft(4f).padTop(4f).width(sound.getWidth())
+						.height(sound.getHeight());
+			}
 			left.add(buttons[i]).padLeft(4f).padTop(4f).width(buttons[i].getWidth())
 					.height(buttons[i].getHeight());
 		}
@@ -182,7 +197,8 @@ public class HudTable extends Table {
 
 				if (game instanceof GameScreen) {
 					if (GamePrefs.prefs.getInteger("retryUses") > 0
-							&& drapes[0].spawner.totems.size > 1 && !drapes[0].spawner.totems.get(drapes[0].spawner.totems.size - 1).enableParachute) {
+							&& drapes[0].spawner.totems.size > 1
+							&& !drapes[0].spawner.totems.get(drapes[0].spawner.totems.size - 1).enableParachute) {
 						GamePrefs.putInteger("retryUses",
 								GamePrefs.prefs.getInteger("retryUses") - 1);
 
@@ -248,14 +264,24 @@ public class HudTable extends Table {
 			}
 
 		});
-		buttons[1].addListener(new ClickListener() {
+
+		sound.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) { // sound
 				TotemGame.soundManager.play("button");
+				
+				if (soundOn) {
+					sound.setStyle(soundOffStyle);
+					TotemGame.soundManager.setMasterPlay(false);
+				} else {
+					sound.setStyle(soundOnStyle);
+					TotemGame.soundManager.setMasterPlay(true);
+				}
+				soundOn = !soundOn;
 			}
 
 		});
-		buttons[2].addListener(new ClickListener() {
+		buttons[1].addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) { // options
 				TotemGame.soundManager.play("button");
@@ -265,7 +291,7 @@ public class HudTable extends Table {
 			}
 
 		});
-		buttons[3].addListener(new ClickListener() {
+		buttons[2].addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) { // shop
 				TotemGame.soundManager.play("button");
@@ -274,7 +300,7 @@ public class HudTable extends Table {
 			}
 
 		});
-		buttons[4].addListener(new ClickListener() {
+		buttons[3].addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) { // home
 				TotemGame.soundManager.play("button");

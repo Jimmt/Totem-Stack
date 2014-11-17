@@ -8,24 +8,24 @@ import com.badlogic.gdx.utils.ObjectMap;
 public class SoundManager {
 	ObjectMap<String, Sound> sounds;
 
-	private boolean playEffects = true, playMusic = true;
+	private boolean playEffects = true, playMusic = true, masterPlay = true;
 
 	public SoundManager() {
 		sounds = new ObjectMap<String, Sound>();
 	}
 
 	public void play(String name) {
-		if (playEffects)
+		if (playEffects && masterPlay)
 			((Sound) sounds.get(name)).play();
 	}
-	
+
 	public void play(String name, float volume) {
-		if (playEffects)
+		if (playEffects && masterPlay)
 			((Sound) sounds.get(name)).play(volume);
 	}
-	
+
 	public void loop(String name) {
-		if (playEffects)
+		if (playEffects && masterPlay)
 			((Sound) sounds.get(name)).loop();
 	}
 
@@ -40,5 +40,9 @@ public class SoundManager {
 
 	public void setPlayMusic(boolean playMusic) {
 		this.playMusic = playMusic;
+	}
+
+	public void setMasterPlay(boolean masterPlay) {
+		this.masterPlay = masterPlay;
 	}
 }
