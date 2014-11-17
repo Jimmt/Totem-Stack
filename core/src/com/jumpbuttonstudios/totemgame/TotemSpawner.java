@@ -33,7 +33,7 @@ public class TotemSpawner extends Actor {
 	int count;
 	ParticleEffectActor rain, lightning;
 	boolean rainPlaying, freezeTotem, frozeOnce;
-	float cloudConst = 1000f, windTime = 0, windCap = 30f, spawnTime = 999f, spawnCap = 1;
+	float cloudConst = 1000f, windTime = 0, windCap = 30f, spawnTime = 999f, spawnCap = 1, vel;
 	boolean windDebuff;
 
 	public TotemSpawner(GameScreen game) {
@@ -320,6 +320,12 @@ public class TotemSpawner extends Actor {
 	public void moveLeft() {
 		if (currentTotem.getX() > 0) {
 			currentTotem.body.setLinearVelocity(-5, currentTotem.body.getLinearVelocity().y);
+
+			if (currentTotem.body.getAngle() < Math.PI / 4) {
+				currentTotem.body.setAngularVelocity(-0.45f);
+			} else {
+				currentTotem.body.setAngularVelocity(0);
+			}
 		} else {
 			currentTotem.body.setLinearVelocity(0, currentTotem.body.getLinearVelocity().y);
 		}
@@ -328,6 +334,12 @@ public class TotemSpawner extends Actor {
 	public void moveRight() {
 		if (currentTotem.getX() + currentTotem.getWidth() < Constants.SCLWIDTH) {
 			currentTotem.body.setLinearVelocity(5, currentTotem.body.getLinearVelocity().y);
+
+			if (currentTotem.body.getAngle() < Math.PI / 4) {
+				currentTotem.body.setAngularVelocity(0.45f);
+			} else {
+				currentTotem.body.setAngularVelocity(0);
+			}
 		} else {
 			currentTotem.body.setLinearVelocity(0, currentTotem.body.getLinearVelocity().y);
 		}
@@ -336,6 +348,13 @@ public class TotemSpawner extends Actor {
 	public void stop() {
 		if (currentTotem != null) {
 			currentTotem.body.setLinearVelocity(0, currentTotem.body.getLinearVelocity().y);
+			
+			if(currentTotem.body.getAngle() > 0){
+				currentTotem.body.setAngularVelocity(-0.45f);
+			}
+			if(currentTotem.body.getAngle() < 0){
+				currentTotem.body.setAngularVelocity(0.45f);
+			}
 		}
 	}
 }

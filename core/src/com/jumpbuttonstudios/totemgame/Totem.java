@@ -109,6 +109,10 @@ public class Totem extends Box2DActor {
 
 		parachute.setPosition(getX() - 25f * Constants.SCALE, getY() + getHeight() + 3f
 				* Constants.SCALE);
+		
+		parachute.setRotation(getRotation());
+		
+		parachute.setOrigin(getWidth() * Constants.SCALE / 2, -MathUtils.sinDeg(getRotation()));
 
 		setOrigin(width / 2, height / 2);
 

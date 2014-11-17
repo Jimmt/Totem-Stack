@@ -148,13 +148,15 @@ public class GameScreen extends AbstractScreen {
 				if (spawner.totems.get(spawner.totems.size - 1).getRectangle()
 						.overlaps(spawner.totems.get(spawner.totems.size - 2).getRectangle())) {
 					gameOver();
+					
 				}
 
 			}
 		}
 
-		if (contactListener.getGroundTotems().size > 1 && !gameOver) {
+		if (contactListener.getGroundTotems().size > 1 && !gameOver && spawner.totems.size > 1) {
 			gameOver();
+			
 		}
 
 		if (gameOver) {

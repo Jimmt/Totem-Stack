@@ -182,7 +182,9 @@ public class GameContactListener implements ContactListener {
 					groundTotems.add((Totem) b);
 				}
 			} else {
-				game.gameOver();
+				if (game.spawner.totems.size > 1) {
+					game.gameOver();
+				}
 			}
 		}
 		if (b instanceof Ground && a instanceof Totem) {
@@ -197,7 +199,9 @@ public class GameContactListener implements ContactListener {
 					groundTotems.add((Totem) a);
 				}
 			} else {
-				game.gameOver();
+				if (game.spawner.totems.size > 1) {
+					game.gameOver();
+				}
 			}
 		}
 		if (a instanceof Totem && b instanceof Totem) {
