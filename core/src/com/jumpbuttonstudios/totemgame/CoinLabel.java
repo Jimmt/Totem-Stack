@@ -3,6 +3,8 @@ package com.jumpbuttonstudios.totemgame;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -24,13 +26,20 @@ public class CoinLabel extends Actor {
 		LabelStyle labelStyle = new LabelStyle();
 		labelStyle.font = numbers;
 		labelStyle.fontColor = Color.WHITE;
-		labelStyle.background = Icons.getImage("shop/jbscoin.png").getDrawable();
+		Texture bgTex = new Texture(Gdx.files.internal("shop/jbscoin.png"));
+		bgTex.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+		Image background = new Image(bgTex);
+		labelStyle.background = background.getDrawable();
 
 		coins = new Label(" 420", labelStyle);
 		coins.setWidth(Icons.getImage("shop/jbscoin.png").getWidth());
 		coins.setHeight(Icons.getImage("shop/jbscoin.png").getHeight());
+		
+		System.out.println(coins.getWidth());
 
-		coinImage = Icons.getImage("shop/coin.png");
+		Texture coinTex = new Texture(Gdx.files.internal("shop/coin.png"));
+		coinTex.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+		coinImage = new Image(coinTex);
 		coinImage.setScale(1);
 
 		ImageButtonStyle coinButtonStyle = new ImageButtonStyle();
@@ -46,6 +55,7 @@ public class CoinLabel extends Actor {
 
 			}
 		});
+	
 	}
 
 	@Override
@@ -62,7 +72,7 @@ public class CoinLabel extends Actor {
 			}
 		}
 
-		coins.setPosition(getX() + coinImage.getWidth() - 13, getY() + coinImage.getHeight() / 2
+		coins.setPosition(getX() + coinImage.getWidth() - 20, getY() + coinImage.getHeight() / 2
 				- coins.getHeight() / 2 - 3);
 		coinImage.setPosition(getX(), getY());
 		coinButton.setPosition(getX() + coinImage.getWidth() - coinButton.getWidth(), getY());

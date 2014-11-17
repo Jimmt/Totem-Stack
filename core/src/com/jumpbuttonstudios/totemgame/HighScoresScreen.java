@@ -141,6 +141,7 @@ public class HighScoresScreen extends AbstractScreen {
 		}
 
 		BitmapFont font = new BitmapFont(Gdx.files.internal("ui/highscore/font.fnt"));
+//		font.getData().getGlyph('.').yoffset = 30;
 
 		for (int i = 0; i < length; i++) {
 			scrollTable.row();

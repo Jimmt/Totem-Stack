@@ -35,6 +35,8 @@ public class LoginDialog extends Dialog {
 //		font = new BitmapFont(Gdx.files.internal("login/font.fnt")); 
 		Image panel = new Image(new Texture(Gdx.files.internal("login/window.png")));
 
+		font.getData().getGlyph('.').yoffset = -10;
+		
 		Tween.to(panel, 0, 1.0f).target(0, 0).start();
 
 		setBackground(panel.getDrawable());

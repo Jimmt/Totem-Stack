@@ -32,7 +32,6 @@ public class GameScreen extends AbstractScreen {
 	public GameScreen(TotemGame game) {
 		super(game);
 		
-//		Twitter twitter = TwitterFactory.getSingleton();
 		
 
 		particleStage = new Stage();
@@ -94,7 +93,9 @@ public class GameScreen extends AbstractScreen {
 		}
 	}
 
+	@Override
 	public void pause() {
+		super.pause();
 		paused = !paused;
 		black.setVisible(paused);
 		black.setPosition(camera.position.x - Constants.SCLWIDTH / 2, camera.position.y
