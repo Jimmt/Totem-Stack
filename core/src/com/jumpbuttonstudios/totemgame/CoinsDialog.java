@@ -18,6 +18,7 @@ public class CoinsDialog extends Dialog {
 		Image panel = new Image(new Texture(Gdx.files.internal("blank.png")));
 		setBackground(panel.getDrawable());
 		coinLabel = new CoinLabel();
+		//
 		setSize(305, coinLabel.coinImage.getHeight() + 7);
 		
 		
