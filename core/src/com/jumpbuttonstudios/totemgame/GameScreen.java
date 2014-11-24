@@ -60,8 +60,8 @@ public class GameScreen extends AbstractScreen {
 		spawner.newTotem();
 
 		black = new Image(new Texture(Gdx.files.internal("black.png")));
-		black.setSize(Constants.SCLWIDTH, Constants.SCLHEIGHT);
-		black.setColor(black.getColor().r, black.getColor().g, black.getColor().b, 0.75f);
+		black.setSize(Constants.SCLWIDTH, Constants.SCLHEIGHT * 2);
+		black.setColor(black.getColor().r, black.getColor().g, black.getColor().b, 0.65f);
 
 		multiplexer = new InputMultiplexer(stage, hudStage);
 
@@ -95,7 +95,7 @@ public class GameScreen extends AbstractScreen {
 
 	@Override
 	public void pause() {
-		super.pause();
+//		super.pause();
 		paused = !paused;
 		black.setVisible(paused);
 		black.setPosition(camera.position.x - Constants.SCLWIDTH / 2, camera.position.y

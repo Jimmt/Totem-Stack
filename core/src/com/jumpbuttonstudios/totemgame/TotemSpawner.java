@@ -300,14 +300,37 @@ public class TotemSpawner extends Actor {
 
 			if (!GamePrefs.prefs.getBoolean("tap")) {
 				if (currentTotem != null) {
-					if (Gdx.input.isKeyPressed(Keys.A)) {
-						moveLeft();
-					}
-					if (Gdx.input.isKeyPressed(Keys.D)) {
-						moveRight();
-					}
-					if (!Gdx.input.isKeyPressed(Keys.A) && !Gdx.input.isKeyPressed(Keys.D)) {
-						stop();
+					if (Gdx.app.getType() == ApplicationType.Desktop) {
+						if (Gdx.input.isKeyPressed(Keys.A)) {
+							moveLeft();
+						}
+						if (Gdx.input.isKeyPressed(Keys.D)) {
+							moveRight();
+						}
+						if (!Gdx.input.isKeyPressed(Keys.A) && !Gdx.input.isKeyPressed(Keys.D)) {
+							stop();
+						}
+					} else {
+
+						if (Gdx.input.getAccelerometerX() > 0) {
+							if (currentTotem.getX() > 0) {
+								currentTotem.body.setLinearVelocity(-Gdx.input.getAccelerometerX() * 2,
+										currentTotem.body.getLinearVelocity().y);
+							} else {
+								currentTotem.body.setLinearVelocity(0,
+										currentTotem.body.getLinearVelocity().y);
+							}
+
+						} else if (Gdx.input.getAccelerometerX() < 0) {
+
+							if (currentTotem.getX() + currentTotem.getWidth() < Constants.SCLWIDTH) {
+								currentTotem.body.setLinearVelocity(-Gdx.input.getAccelerometerX() * 2,
+										currentTotem.body.getLinearVelocity().y);
+							} else {
+								currentTotem.body.setLinearVelocity(0,
+										currentTotem.body.getLinearVelocity().y);
+							}
+						}
 					}
 				}
 			}
@@ -321,11 +344,11 @@ public class TotemSpawner extends Actor {
 		if (currentTotem.getX() > 0) {
 			currentTotem.body.setLinearVelocity(-5, currentTotem.body.getLinearVelocity().y);
 
-			if (currentTotem.body.getAngle() < Math.PI / 4) {
-				currentTotem.body.setAngularVelocity(-0.45f);
-			} else {
-				currentTotem.body.setAngularVelocity(0);
-			}
+// if (currentTotem.body.getAngle() < Math.PI / 4) {
+// currentTotem.body.setAngularVelocity(-0.45f);
+// } else {
+// currentTotem.body.setAngularVelocity(0);
+// }
 		} else {
 			currentTotem.body.setLinearVelocity(0, currentTotem.body.getLinearVelocity().y);
 		}
@@ -335,11 +358,11 @@ public class TotemSpawner extends Actor {
 		if (currentTotem.getX() + currentTotem.getWidth() < Constants.SCLWIDTH) {
 			currentTotem.body.setLinearVelocity(5, currentTotem.body.getLinearVelocity().y);
 
-			if (currentTotem.body.getAngle() < Math.PI / 4) {
-				currentTotem.body.setAngularVelocity(0.45f);
-			} else {
-				currentTotem.body.setAngularVelocity(0);
-			}
+// if (currentTotem.body.getAngle() < Math.PI / 4) {
+// currentTotem.body.setAngularVelocity(0.45f);
+// } else {
+// currentTotem.body.setAngularVelocity(0);
+// }
 		} else {
 			currentTotem.body.setLinearVelocity(0, currentTotem.body.getLinearVelocity().y);
 		}
@@ -348,13 +371,13 @@ public class TotemSpawner extends Actor {
 	public void stop() {
 		if (currentTotem != null) {
 			currentTotem.body.setLinearVelocity(0, currentTotem.body.getLinearVelocity().y);
-			
-			if(currentTotem.body.getAngle() > 0){
-				currentTotem.body.setAngularVelocity(-0.45f);
-			}
-			if(currentTotem.body.getAngle() < 0){
-				currentTotem.body.setAngularVelocity(0.45f);
-			}
+
+// if(currentTotem.body.getAngle() > 0){
+// currentTotem.body.setAngularVelocity(-0.45f);
+// }
+// if(currentTotem.body.getAngle() < 0){
+// currentTotem.body.setAngularVelocity(0.45f);
+// }
 		}
 	}
 }

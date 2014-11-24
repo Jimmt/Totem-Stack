@@ -28,15 +28,13 @@ public class MenuScreen extends AbstractScreen {
 
 	public MenuScreen(TotemGame game) {
 		super(game);
-
 	}
 
 	@Override
 	public void show() {
 		super.show();
 
-		Icons.loadIcons();
-		GamePrefs.initialize();
+		
 
 // try {
 // TwitterUtil.post("test");
@@ -46,15 +44,7 @@ public class MenuScreen extends AbstractScreen {
 // e.printStackTrace();
 // }
 
-		if (JBSApi.api != null) {
-
-		} else {
-
-			CheckNetResponseListener responseListener = new CheckNetResponseListener();
-			HttpRequest request = new HttpRequest(HttpMethods.GET);
-			request.setUrl("http://google.com");
-			Gdx.net.sendHttpRequest(request, responseListener);
-		}
+		
 
 		loginDialog = new LoginDialog("", getSkin());
 		logoutDialog = new LogoutDialog("", getSkin());
@@ -125,6 +115,7 @@ public class MenuScreen extends AbstractScreen {
 		});
 
 		Image background = new Image(new Texture(Gdx.files.internal("bg/net.png")));
+		background.setWidth(Constants.WIDTH);
 		stage.addActor(background);
 
 		stage.getActors().removeValue(table, false);
@@ -159,9 +150,6 @@ public class MenuScreen extends AbstractScreen {
 	public void render(float delta) {
 		super.render(delta);
 
-		
-			
-		
 		hudStage.draw();
 		hudStage.act(delta);
 		Table.drawDebug(stage);

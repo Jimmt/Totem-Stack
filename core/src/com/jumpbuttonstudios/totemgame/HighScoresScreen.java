@@ -38,7 +38,7 @@ public class HighScoresScreen extends AbstractScreen {
 	@Override
 	public void show() {
 		super.show();
-
+		
 		Table table = super.getTable();
 		table.setFillParent(true);
 

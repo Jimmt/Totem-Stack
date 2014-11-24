@@ -121,13 +121,13 @@ public class AbstractScreen implements Screen {
 
 	@Override
 	public void pause() {
-		// TODO Auto-generated method stub
+		System.out.println("pause");
 
 	}
 
 	@Override
 	public void resume() {
-		// TODO Auto-generated method stub
+		System.out.println("resume");
 
 	}
 

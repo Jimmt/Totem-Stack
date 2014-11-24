@@ -34,6 +34,7 @@ public class TwitterUtil {
 		} catch (TwitterException e) {
 			e.printStackTrace();
 		}
+		
 		Gdx.net.openURI(requestToken.getAuthorizationURL());
 	}
 

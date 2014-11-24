@@ -169,7 +169,7 @@ public class GameOverDialog extends Dialog {
 					public void clicked(InputEvent event, float x, float y) {
 						super.clicked(event, x, y);
 						TotemGame.soundManager.play("button");
-
+						
 						if (!TwitterUtil.loggedIn) {
 							try {
 								TwitterUtil.init();

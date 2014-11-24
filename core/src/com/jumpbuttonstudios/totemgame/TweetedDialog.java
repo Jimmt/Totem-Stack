@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.ImageButton.ImageButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.utils.Align;
 
 public class TweetedDialog extends Dialog {
 
@@ -22,8 +23,10 @@ public class TweetedDialog extends Dialog {
 		lStyle.font = new BitmapFont(Gdx.files.internal("ui/highscore/font.fnt"));
 
 		Label label = new Label(text, lStyle);
+		label.setWrap(true);
+		label.setAlignment(Align.center);
 
-		getContentTable().add(label);
+		getContentTable().add(label).width(getWidth());
 		
 		ImageButtonStyle buttonStyle = new ImageButtonStyle();
 		buttonStyle.up = Icons.getImage("login/ok.png").getDrawable();
