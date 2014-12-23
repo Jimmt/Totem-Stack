@@ -62,7 +62,7 @@ public class AndroidLauncher extends AndroidApplication implements IabInterface 
 						test = true;
 						
 //						if(info.getSku().equals(SKU_BUY_COINS)){
-							Log.d("IAB", info.getSku());
+							Log.d("IAB", info.getSku()); //info is null
 							Log.d("IAB", "Buying " + amount + " coins");
 							GamePrefs.putInteger("coins", GamePrefs.prefs.getInteger("coins") + amount);
 //						}

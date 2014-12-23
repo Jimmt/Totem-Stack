@@ -265,6 +265,7 @@ public class HudTable extends Table {
 			public void clicked(InputEvent event, float x, float y) { // pause
 				TotemGame.soundManager.play("button");
 				game.pause(true);
+				game.pauseDialog.setVisible(game.paused);
 			}
 
 		});
@@ -290,7 +291,8 @@ public class HudTable extends Table {
 			public void clicked(InputEvent event, float x, float y) { // options
 				TotemGame.soundManager.play("button");
 				game.pause(false);
-				optionsDialog.setVisible(true);
+				optionsDialog.setVisible(game.paused);
+				
 
 			}
 
@@ -318,8 +320,7 @@ public class HudTable extends Table {
 	@Override
 	public void act(float delta) {
 		super.act(delta);
-		
-		
+
 
 		for (int i = 0; i < drapes.length; i++) {
 			drapes[i].setCount(GamePrefs.prefs.getInteger(powerups[i] + "Uses"));

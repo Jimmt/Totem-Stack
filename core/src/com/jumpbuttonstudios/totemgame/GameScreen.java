@@ -1,17 +1,13 @@
 package com.jumpbuttonstudios.totemgame;
 
-import twitter4j.Twitter;
-import twitter4j.TwitterFactory;
-import twitter4j.conf.ConfigurationBuilder;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Interpolation.PowIn;
+import com.badlogic.gdx.math.Interpolation.PowOut;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
@@ -57,7 +53,7 @@ public class GameScreen extends AbstractScreen {
 		sr = new ShapeRenderer();
 		spawner.newTotem();
 
-		black.setSize(Constants.SCLWIDTH, Constants.SCLHEIGHT * 2);
+// black.setSize(Constants.SCLWIDTH, Constants.SCLHEIGHT * 2);
 
 		multiplexer = new InputMultiplexer(stage, hudStage);
 
@@ -79,15 +75,16 @@ public class GameScreen extends AbstractScreen {
 			}
 
 			GameOverDialog god = new GameOverDialog(score, getSkin(), this, game);
-			god.setPosition(Constants.WIDTH / 2 - god.getWidth() / 2, 0);
-			
-// god.setPosition(Constants.WIDTH / 2 - god.getWidth() / 2,
-// Constants.HEIGHT / 2 - god.getHeight() / 2 - 90);
+			god.setKeepWithinStage(false);
+			god.setPosition(Constants.WIDTH / 2 - god.getWidth() / 2, Constants.HEIGHT);
 			hudStage.addActor(god);
 
-// god.addAction(Actions.moveB);
-			god.addAction(Actions.moveBy(0, 100, 1.0f));
-			
+			PowIn pi = new PowIn(2);
+			PowOut po = new PowOut(2);
+			god.addAction(Actions.sequence(Actions.moveBy(0, -Constants.HEIGHT, 0.75f, pi),
+					Actions.moveBy(0, Constants.HEIGHT / 8, 0.3f, po),
+					Actions.moveBy(0, -Constants.HEIGHT / 8, 0.3f, pi)));
+
 			gameOver = true;
 
 			TotemGame.soundManager.play("lose");

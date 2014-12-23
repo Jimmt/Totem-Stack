@@ -33,7 +33,7 @@ public class AbstractScreen implements Screen {
 	private float step = 1 / 60f;
 	private float slowTime = 0, slowCap = 30;
 	private boolean slowChanged;
-	private PauseDialog pauseDialog;
+	public PauseDialog pauseDialog;
 
 	public AbstractScreen(TotemGame game) {
 		this.game = game;
@@ -145,6 +145,8 @@ public class AbstractScreen implements Screen {
 		if (showDialog) {
 			pauseDialog.setVisible(true);
 		}
+		
+		
 	}
 
 	@Override

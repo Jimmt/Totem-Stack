@@ -23,7 +23,7 @@ import com.badlogic.gdx.utils.Array;
 public class GameContactListener implements ContactListener {
 	GameScreen game;
 	Array<Totem> groundTotems;
-	AnimatedImage perfectLandImage;
+	AnimatedImage perfectLandImage, dust;
 	ParticleEffectActor stars, goldStars, ice;
 	Image perfect, good, streak, perfectStreak, amazing, perfectTotal;
 	Totem lastCheck;
@@ -52,6 +52,8 @@ public class GameContactListener implements ContactListener {
 		perfectLandImage.animatedSprite.setAlpha(0.0f);
 		perfectLandImage.animatedSprite.getAnimation().setPlayMode(PlayMode.LOOP);
 
+		dust = new AnimatedImage("effects/dust.png", 1 / 15f, 450, 150, 0, 0);
+
 		stars = new ParticleEffectActor("effects/stars.p", "effects");
 
 		goldStars = new ParticleEffectActor("totem/special/stars.p", "totem/special");
@@ -59,7 +61,6 @@ public class GameContactListener implements ContactListener {
 		ice = new ParticleEffectActor("totem/ice/ice.p", "totem/ice");
 		iceSprite1 = new Sprite(Icons.iceImages.get(MathUtils.random(3)));
 		iceSprite2 = new Sprite(Icons.iceImages.get(MathUtils.random(3)));
-
 		ice.effect.getEmitters().get(0).setSprite(iceSprite1);
 		ice.effect.getEmitters().get(1).setSprite(iceSprite2);
 
@@ -181,6 +182,14 @@ public class GameContactListener implements ContactListener {
 				if (!groundTotems.contains((Totem) b, false)) {
 					groundTotems.add((Totem) b);
 				}
+				if (game.spawner.totems.size == 1) {
+					game.stage.addActor(dust);
+					Totem totem = (Totem) b;
+					dust.animatedSprite.setPosition(totem.getX() + totem.getWidth() / 2
+							- dust.animatedSprite.getWidth() / 2, totem.getY()
+							- dust.animatedSprite.getHeight() / 4);
+					dust.play();
+				}
 			} else {
 				if (game.spawner.totems.size > 1) {
 					game.gameOver();
@@ -265,12 +274,10 @@ public class GameContactListener implements ContactListener {
 
 			game.score += (points + 1) * 2;
 
-			if (game.stage.getActors().contains(Icons.doublePoints[points], false)) {
-				Icons.doublePoints[points].addAction(Actions.alpha(1.0f));
-			} else {
-				game.stage.addActor(Icons.doublePoints[points]);
-			}
-			Icons.doublePoints[points].addAction(Actions.sequence(Actions.alpha(0, 0.5f)));
+			game.stage.addActor(Icons.doublePoints[points]);
+
+			Icons.doublePoints[points].addAction(Actions.sequence(Actions.alpha(1, 0.5f),
+					Actions.alpha(0, 0.5f)));
 
 			Icons.doublePoints[points].setPosition(
 					lastTotem.body.getPosition().x + lastTotem.width / 2,
@@ -286,12 +293,10 @@ public class GameContactListener implements ContactListener {
 
 			game.score += points + 1;
 
-			if (game.stage.getActors().contains(Icons.normalPoints[points], false)) {
-				Icons.normalPoints[points].addAction(Actions.alpha(1.0f));
-			} else {
-				game.stage.addActor(Icons.normalPoints[points]);
-			}
-			Icons.normalPoints[points].addAction(Actions.sequence(Actions.alpha(0, 0.5f)));
+			game.stage.addActor(Icons.normalPoints[points]);
+
+			Icons.normalPoints[points].addAction(Actions.sequence(Actions.alpha(1.0f, 0.5f),
+					Actions.alpha(0, 0.5f)));
 
 			Icons.normalPoints[points].setPosition(lastTotem.getX() + lastTotem.getWidth(),
 					lastTotem.getY() + lastTotem.getHeight() / 4);
@@ -353,7 +358,6 @@ public class GameContactListener implements ContactListener {
 				lastTotem.getY() + lastTotem.getHeight() / 2 - perfectTotal.getHeight()
 						* Constants.SCALE / 2);
 
-		System.out.println(streakCount);
 		if (streakCount == 10) {
 			game.stage.getActors().removeValue(streak, false);
 			game.stage.addActor(streak);
@@ -418,7 +422,8 @@ public class GameContactListener implements ContactListener {
 				game.stage.addActor(perfectLandImage);
 				perfectLandImage.play();
 
-				perfect.addAction(Actions.sequence(Actions.alpha(1.0f), Actions.alpha(0, 0.5f)));
+				perfect.addAction(Actions.sequence(Actions.alpha(1.0f, 0.5f),
+						Actions.alpha(0, 0.5f)));
 
 			}
 			return 2;
@@ -436,7 +441,7 @@ public class GameContactListener implements ContactListener {
 				} else {
 					game.stage.addActor(good);
 				}
-				good.addAction(Actions.sequence(Actions.alpha(1.0f), Actions.alpha(0, 0.5f)));
+				good.addAction(Actions.sequence(Actions.alpha(1.0f, 0.5f), Actions.alpha(0, 0.5f)));
 			} else {
 				green = false;
 			}

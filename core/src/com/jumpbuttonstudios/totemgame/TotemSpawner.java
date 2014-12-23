@@ -314,7 +314,7 @@ public class TotemSpawner extends Actor {
 
 						if (Gdx.input.getAccelerometerX() > 0) {
 							if (currentTotem.getX() > 0) {
-								currentTotem.body.setLinearVelocity(-Gdx.input.getAccelerometerX() * 2,
+								currentTotem.body.setLinearVelocity(-Gdx.input.getAccelerometerX(),
 										currentTotem.body.getLinearVelocity().y);
 							} else {
 								currentTotem.body.setLinearVelocity(0,
@@ -324,7 +324,7 @@ public class TotemSpawner extends Actor {
 						} else if (Gdx.input.getAccelerometerX() < 0) {
 
 							if (currentTotem.getX() + currentTotem.getWidth() < Constants.SCLWIDTH) {
-								currentTotem.body.setLinearVelocity(-Gdx.input.getAccelerometerX() * 2,
+								currentTotem.body.setLinearVelocity(-Gdx.input.getAccelerometerX(),
 										currentTotem.body.getLinearVelocity().y);
 							} else {
 								currentTotem.body.setLinearVelocity(0,
@@ -342,13 +342,7 @@ public class TotemSpawner extends Actor {
 
 	public void moveLeft() {
 		if (currentTotem.getX() > 0) {
-			currentTotem.body.setLinearVelocity(-5, currentTotem.body.getLinearVelocity().y);
-
-// if (currentTotem.body.getAngle() < Math.PI / 4) {
-// currentTotem.body.setAngularVelocity(-0.45f);
-// } else {
-// currentTotem.body.setAngularVelocity(0);
-// }
+			currentTotem.body.setLinearVelocity(-2.5f, currentTotem.body.getLinearVelocity().y);
 		} else {
 			currentTotem.body.setLinearVelocity(0, currentTotem.body.getLinearVelocity().y);
 		}
@@ -356,13 +350,8 @@ public class TotemSpawner extends Actor {
 
 	public void moveRight() {
 		if (currentTotem.getX() + currentTotem.getWidth() < Constants.SCLWIDTH) {
-			currentTotem.body.setLinearVelocity(5, currentTotem.body.getLinearVelocity().y);
+			currentTotem.body.setLinearVelocity(2.5f, currentTotem.body.getLinearVelocity().y);
 
-// if (currentTotem.body.getAngle() < Math.PI / 4) {
-// currentTotem.body.setAngularVelocity(0.45f);
-// } else {
-// currentTotem.body.setAngularVelocity(0);
-// }
 		} else {
 			currentTotem.body.setLinearVelocity(0, currentTotem.body.getLinearVelocity().y);
 		}
@@ -372,12 +361,6 @@ public class TotemSpawner extends Actor {
 		if (currentTotem != null) {
 			currentTotem.body.setLinearVelocity(0, currentTotem.body.getLinearVelocity().y);
 
-// if(currentTotem.body.getAngle() > 0){
-// currentTotem.body.setAngularVelocity(-0.45f);
-// }
-// if(currentTotem.body.getAngle() < 0){
-// currentTotem.body.setAngularVelocity(0.45f);
-// }
 		}
 	}
 }
