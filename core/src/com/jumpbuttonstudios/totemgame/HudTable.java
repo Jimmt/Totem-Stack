@@ -174,9 +174,9 @@ public class HudTable extends Table {
 		optionsDialog.setVisible(false);
 
 		if (game instanceof GameScreen) {
-			shopDialog = new ShopDialog("", game.getSkin(), (GameScreen) game);
+			shopDialog = new ShopDialog("", game.getSkin(), (GameScreen) game, game);
 		} else {
-			shopDialog = new ShopDialog("", game.getSkin(), null);
+			shopDialog = new ShopDialog("", game.getSkin(), null, game);
 		}
 
 		game.hudStage.addActor(shopDialog);

@@ -1,20 +1,16 @@
 package com.jumpbuttonstudios.totemgame;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.ButtonGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton.ImageButtonStyle;
-import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
@@ -23,23 +19,25 @@ public class ShopDialog extends Dialog {
 	Array<Image> images = new Array<Image>();
 	Array<ImageButton> upgradeButtons = new Array<ImageButton>();
 	boolean positionSet, changed;
-	Image text = new Image(new Texture(Gdx.files.internal("ui/shop/retryinfo.png")));
+	Image text = new Image(new Texture(Gdx.files.internal("ui/shop/retryinfo.png"))), black;
 	ImageButton backButton, buyCoinButton;
 	Skin skin;
 	GameScreen gs;
+	AbstractScreen as;
 	String currentText = "retryinfo";
 	ShapeRenderer sr = new ShapeRenderer();
 
-	public ShopDialog(String title, Skin skin, GameScreen gs) {
+	public ShopDialog(String title, Skin skin, GameScreen gs, AbstractScreen as) {
 		super(title, skin);
 
 		this.gs = gs;
+		this.as = as;
 
 		this.skin = skin;
 
 		text.setScale(1);
 
-		Image panel = new Image(new Texture(Gdx.files.internal("shop/boardNew.png")));
+		Image panel = new Image(new Texture(Gdx.files.internal("shop/boardNew1.png")));
 		setBackground(panel.getDrawable());
 		setSize(panel.getWidth(), panel.getHeight());
 
@@ -47,15 +45,18 @@ public class ShopDialog extends Dialog {
 		String[] buttonNames = { "retry", "freeze", "slow", "wind" };
 
 		ImageButtonStyle buyCoinStyle = new ImageButtonStyle();
-		buyCoinStyle.up = new Image(new Texture(Gdx.files.internal("ui/shop/buyjbs.png"))).getDrawable();
-		buyCoinStyle.down = new Image(new Texture(Gdx.files.internal("ui/shop/buyjbs_pressed.png"))).getDrawable();
+		buyCoinStyle.up = new Image(new Texture(Gdx.files.internal("ui/shop/buyjbs.png")))
+				.getDrawable();
+		buyCoinStyle.down = new Image(new Texture(Gdx.files.internal("ui/shop/buyjbs_pressed.png")))
+				.getDrawable();
 		buyCoinButton = new ImageButton(buyCoinStyle);
 
 		ImageButtonStyle backStyle = new ImageButtonStyle();
-		backStyle.up = new Image(new Texture(Gdx.files.internal("ui/highscore/back.png"))).getDrawable();
-		backStyle.down = new Image(new Texture(Gdx.files.internal("ui/highscore/back_pressed.png"))).getDrawable();
+		backStyle.up = new Image(new Texture(Gdx.files.internal("ui/highscore/back.png")))
+				.getDrawable();
+		backStyle.down = new Image(new Texture(Gdx.files.internal("ui/highscore/back_pressed.png")))
+				.getDrawable();
 		backButton = new ImageButton(backStyle);
-
 
 		setupListeners();
 
@@ -63,7 +64,8 @@ public class ShopDialog extends Dialog {
 
 		CoinLabel coinLabel = new CoinLabel();
 
-		getContentTable().add(new Image(new Texture(Gdx.files.internal("blank.png")))).expand().bottom().left().colspan(4).padBottom(coinLabel.coins.getHeight());
+		getContentTable().add(new Image(new Texture(Gdx.files.internal("blank.png")))).expand()
+				.bottom().left().colspan(4).padBottom(coinLabel.coins.getHeight());
 
 		getContentTable().row();
 
@@ -102,8 +104,10 @@ public class ShopDialog extends Dialog {
 
 		for (int i = 0; i < 4; i++) {
 			ImageButtonStyle ibs = new ImageButtonStyle();
-			ibs.up = new Image(new Texture(Gdx.files.internal("shop/button_normal.png"))).getDrawable();
-			ibs.down = new Image(new Texture(Gdx.files.internal("shop/button_pressed.png"))).getDrawable();
+			ibs.up = new Image(new Texture(Gdx.files.internal("shop/button_normal.png")))
+					.getDrawable();
+			ibs.down = new Image(new Texture(Gdx.files.internal("shop/button_pressed.png")))
+					.getDrawable();
 
 			ImageButton button = new ImageButton(ibs);
 
@@ -117,11 +121,18 @@ public class ShopDialog extends Dialog {
 
 		}
 		getContentTable().row();
-		getContentTable().add(text).colspan(4).height(95).padBottom(95);
+		Group textGroup = new Group();
+		black = new Image(new Texture(Gdx.files.internal("shop/textbg.png")));
+		black.setSize(text.getWidth() + 37 * 2, text.getHeight() + 17 * 2);
+		black.setPosition(-37, -17);
+		textGroup.addActor(black);
+		textGroup.addActor(text);
+		textGroup.setSize(text.getWidth(), text.getHeight());
+		getContentTable().add(textGroup).colspan(4).height(115).padBottom(75).center();
 
 		getContentTable().row();
-		getButtonTable().add(buyCoinButton).colspan(2).expandX().padRight(75);
-		getButtonTable().add(backButton).colspan(2).expandX();
+		getButtonTable().add(buyCoinButton).colspan(2).expandX().padRight(37);
+		getButtonTable().add(backButton).colspan(2).expandX().padLeft(37);
 	}
 
 	public void setupListeners() {
@@ -144,9 +155,9 @@ public class ShopDialog extends Dialog {
 				super.clicked(event, x, y);
 				TotemGame.soundManager.play("button");
 				setVisible(false);
-				if (gs != null) {
-					gs.pause(false);
-				}
+
+				as.pause(false);
+
 			}
 		});
 	}
@@ -160,6 +171,8 @@ public class ShopDialog extends Dialog {
 		} else {
 			text.setHeight(63);
 		}
+
+		black.setSize(text.getWidth() + 37 * 2, text.getHeight() + 17 * 2);
 
 // for (int i = 0; i < upgradeButtons.size; i++) {
 // Image img = images.get(i);
