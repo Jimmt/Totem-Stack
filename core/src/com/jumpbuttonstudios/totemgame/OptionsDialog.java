@@ -2,20 +2,25 @@ package com.jumpbuttonstudios.totemgame;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox.CheckBoxStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton.ImageButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 public class OptionsDialog extends Dialog {
@@ -23,9 +28,12 @@ public class OptionsDialog extends Dialog {
 	ImageButton x;
 	CheckBox bgMusic, soundEffects, tapControl, tiltControl;
 	ShapeRenderer sr;
-	GameScreen gs;
+	AbstractScreen gs;
+	Image tilt, tap;
+	Stage xStage;
+	Label tiltControlLabel, tapControlLabel, bgMusicLabel;
 
-	public OptionsDialog(String title, Skin skin, GameScreen gs) {
+	public OptionsDialog(String title, Skin skin, AbstractScreen gs) {
 		super(title, skin);
 
 		this.gs = gs;
@@ -42,71 +50,103 @@ public class OptionsDialog extends Dialog {
 		setBackground(panel.getDrawable());
 
 		CheckBoxStyle checkBoxStyle = new CheckBoxStyle();
-		checkBoxStyle.checkboxOn = Icons.getImage("ui/options/checkbg.png").getDrawable();
-		checkBoxStyle.checkboxOff = Icons.getImage("ui/options/xbg.png").getDrawable();
+		checkBoxStyle.checkboxOn = new Image(new Texture(
+				Gdx.files.internal("ui/options/checkbg.png"))).getDrawable();
+		checkBoxStyle.checkboxOff = new Image(new Texture(Gdx.files.internal("ui/options/xbg.png")))
+				.getDrawable();
 		checkBoxStyle.font = font;
 
 		LabelStyle labelStyle = new LabelStyle();
 		labelStyle.font = font;
 
 		bgMusic = new CheckBox("", checkBoxStyle);
-		Label bgMusicLabel = new Label("Background Music", labelStyle);
-
+		bgMusicLabel = new Label("Background Music", labelStyle);
+		bgMusicLabel.pack();
 		soundEffects = new CheckBox("", checkBoxStyle);
 		Label soundEffectsLabel = new Label("Sound Effects", labelStyle);
-
+		soundEffectsLabel.pack();
 		tapControl = new CheckBox("", checkBoxStyle);
-		Label tapControlLabel = new Label("Tap Controls", labelStyle);
-
+		tapControlLabel = new Label("Tap Controls", labelStyle);
+		tapControlLabel.pack();
 		tiltControl = new CheckBox("", checkBoxStyle);
-		Label tiltControlLabel = new Label("Tilt Controls", labelStyle);
-
+		tiltControlLabel = new Label("Tilt Controls", labelStyle);
+		tiltControlLabel.pack();
 		bgMusic.setChecked(GamePrefs.prefs.getBoolean("bgMusic"));
 		soundEffects.setChecked(GamePrefs.prefs.getBoolean("soundEffects"));
 		tapControl.setChecked(GamePrefs.prefs.getBoolean("tap"));
 		tiltControl.setChecked(!GamePrefs.prefs.getBoolean("tap"));
 
 		ImageButtonStyle buttonStyle = new ImageButtonStyle();
-		buttonStyle.up = Icons.getImage("ui/options/close.png").getDrawable();
+		Texture closeTex = new Texture(Gdx.files.internal("ui/options/close.png"));
+		closeTex.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+		buttonStyle.up = new Image(closeTex).getDrawable();
 		x = new ImageButton(buttonStyle);
-		getContentTable().add(x).expandX().right().colspan(3).padTop(x.getHeight() / 2);
-		getContentTable().row();
+		xStage = new Stage();
+		xStage.addActor(x);
 
 		setupListeners();
 
-		Image tap = Icons.getImage("ui/options/tap.png");
-		tap.setScale(1);
-		Image tilt = Icons.getImage("ui/options/tilt.png");
+		tap = new Image(new Texture(Gdx.files.internal("ui/options/tap.png")));
+		tap.setScale(1f);
+		tap.setOrigin(tap.getWidth() / 2, tap.getHeight() / 2);
+		tilt = new Image(new Texture(Gdx.files.internal("ui/options/tilt.png")));
 		tilt.setScale(1);
-
-		getContentTable().add(bgMusic);
-		getContentTable().add(bgMusicLabel).padBottom(9).left().height(font.getCapHeight());
+		tilt.setOrigin(tilt.getWidth() / 2, tilt.getHeight() / 2);
+		getContentTable().align(Align.left).padLeft(30f);
+		getContentTable().add(bgMusic).padTop(Constants.HEIGHT / 8).left();
+		getContentTable().add(bgMusicLabel).padTop(Constants.HEIGHT / 8).padBottom(9).left()
+				.height(font.getCapHeight());
 		getContentTable().row();
-		getContentTable().add(soundEffects);
+		getContentTable().add(soundEffects).left();
 		getContentTable().add(soundEffectsLabel).padBottom(9).left().height(font.getCapHeight());
 		getContentTable().row();
-		getContentTable().add(tapControl);
+		getContentTable().add(tapControl).left();
 		getContentTable().add(tapControlLabel).padBottom(9).left().height(font.getCapHeight());
-		getContentTable().add(tap).padBottom(9);
 		getContentTable().row();
-		getContentTable().add(tiltControl).padBottom(54);
-		getContentTable().add(tiltControlLabel).padBottom(54).left().height(font.getCapHeight());
-		getContentTable().add(tilt).padBottom(54);
+		getContentTable().add(tiltControl).padBottom(54).left();
+		getContentTable().add(tiltControlLabel).padBottom(54).left().height(font.getCapHeight())
+				.width(tiltControlLabel.getWidth());
 		getContentTable().row();
+		getContentTable().debug();
 
 		pack();
+
+		xStage.addActor(tap);
+		xStage.addActor(tilt);
 
 	}
 
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
 		super.draw(batch, parentAlpha);
-
+		x.draw(batch, parentAlpha);
+		tap.draw(batch, parentAlpha);
+		tilt.draw(batch, parentAlpha);
+// Table.drawDebug(gs.hudStage);
 	}
 
 	@Override
 	public void act(float delta) {
 		super.act(delta);
+		
+		tap.setPosition(getX() + tapControlLabel.getX() + tapControlLabel.getWidth() + 10, getY()
+				+ tapControlLabel.getY());
+		tilt.setPosition(getX() + tiltControlLabel.getX() + tiltControlLabel.getWidth() + 10, getY()
+				+ tiltControlLabel.getY());
+
+		x.setPosition(getX() + panel.getWidth() - x.getWidth(),
+				getY() + panel.getHeight() - x.getHeight() / 2 * 3);
+
+		xStage.act(delta);
+
+		if (tilt.getActions().size == 0) {
+			tilt.addAction(Actions.sequence(Actions.rotateBy(45, 0.5f),
+					Actions.rotateBy(-90, 1.0f), Actions.rotateBy(45, 0.5f)));
+		}
+		if (tap.getActions().size == 0) {
+			tap.addAction(Actions.sequence(Actions.delay(1.0f), Actions.scaleTo(0.5f, 0.5f, 0.5f),
+					Actions.scaleTo(1.5f, 1.5f, 0.5f)));
+		}
 
 // sr.setProjectionMatrix(getStage().getCamera().combined);
 // sr.begin(ShapeType.Line);
@@ -160,7 +200,7 @@ public class OptionsDialog extends Dialog {
 				TotemGame.soundManager.play("button");
 				setVisible(false);
 				if (gs != null) {
-					gs.pause();
+					gs.pause(false);
 				}
 			}
 

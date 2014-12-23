@@ -1,7 +1,8 @@
 package com.jumpbuttonstudios.totemgame;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.ButtonGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
@@ -27,17 +28,17 @@ public class BuyCoinsDialog extends Dialog {
 		int[] jbsNumbers = { 500, 1750, 4000 };
 		int[] dollarNumbers = { 1, 3, 7 };
 
-		setBackground(Icons.getImage("ui/shop/window01.png").getDrawable());
-		setWidth(Icons.getImage("ui/shop/window01.png").getWidth());
-		setHeight(Icons.getImage("ui/shop/window01.png").getHeight());
+		setBackground(new Image(new Texture(Gdx.files.internal("ui/shop/window01.png"))).getDrawable());
+		setWidth(new Image(new Texture(Gdx.files.internal("ui/shop/window01.png"))).getWidth());
+		setHeight(new Image(new Texture(Gdx.files.internal("ui/shop/window01.png"))).getHeight());
 
 		ImageButtonStyle buttonStyle = new ImageButtonStyle();
-		buttonStyle.up = Icons.getImage("ui/options/close.png").getDrawable();
+		buttonStyle.up = new Image(new Texture(Gdx.files.internal("ui/options/close.png"))).getDrawable();
 		x = new ImageButton(buttonStyle);
 
 		ImageButtonStyle buyStyle = new ImageButtonStyle();
-		buyStyle.up = Icons.getImage("ui/shop/buyitem.png").getDrawable();
-		buyStyle.down = Icons.getImage("ui/shop/buyitem_pressed.png").getDrawable();
+		buyStyle.up = new Image(new Texture(Gdx.files.internal("ui/shop/buyitem.png"))).getDrawable();
+		buyStyle.down = new Image(new Texture(Gdx.files.internal("ui/shop/buyitem_pressed.png"))).getDrawable();
 		buyButton = new ImageButton(buyStyle);
 		
 		buyButton.addListener(new ClickListener() {
@@ -55,8 +56,8 @@ public class BuyCoinsDialog extends Dialog {
 
 		for (int i = 0; i < 3; i++) {
 			ImageButtonStyle style = new ImageButtonStyle();
-			style.up = Icons.getImage("ui/shop/unselected.png").getDrawable();
-			style.checked = Icons.getImage("ui/shop/selected.png").getDrawable();
+			style.up = new Image(new Texture(Gdx.files.internal("ui/shop/unselected.png"))).getDrawable();
+			style.checked = new Image(new Texture(Gdx.files.internal("ui/shop/selected.png"))).getDrawable();
 			ImageButton button = new ImageButton(style);
 			group.add(button);
 			getContentTable().add(button).padLeft(8f);
@@ -69,15 +70,15 @@ public class BuyCoinsDialog extends Dialog {
 		getContentTable().add(buyButton).colspan(4).padTop(30f).padBottom(15f);
 
 		for (int i = 0; i < 3; i++) {
-			Image img = Icons.getImage("ui/shop/jbscoin_000" + i + "_Layer-" + (3 - i) + ".png");
+			Image img = new Image(new Texture(Gdx.files.internal("ui/shop/jbscoin_000" + i + "_Layer-" + (3 - i) + ".png")));
 			img.setScale(1);
 			coinImages[3 - i - 1] = img;
 
-			img = Icons.getImage("ui/shop/" + dollarNumbers[i] + "dollar.png");
+			img = new Image(new Texture(Gdx.files.internal("ui/shop/" + dollarNumbers[i] + "dollar.png")));
 			img.setScale(1);
 			dollarImages[i] = img;
 
-			img = Icons.getImage("ui/shop/" + jbsNumbers[i] + "jbs.png");
+			img = new Image(new Texture(Gdx.files.internal("ui/shop/" + jbsNumbers[i] + "jbs.png")));
 			img.setScale(1);
 			textImages[i] = img;
 		}

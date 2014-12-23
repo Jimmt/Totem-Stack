@@ -1,5 +1,7 @@
 package com.jumpbuttonstudios.totemgame;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -16,12 +18,12 @@ public class LogoutDialog extends Dialog {
 		super(title, skin);
 		setTransform(true);
 
-		panel = Icons.getImage("login/logoutwindow.png");
+		panel = new Image(new Texture(Gdx.files.internal("login/logoutwindow.png")));
 		setBackground(panel.getDrawable());
 
 		ImageButtonStyle yesStyle = new ImageButtonStyle();
-		yesStyle.up = Icons.getImage("login/yes.png").getDrawable();
-		yesStyle.down = Icons.getImage("login/yes_pressed.png").getDrawable();
+		yesStyle.up = new Image(new Texture(Gdx.files.internal("login/yes.png"))).getDrawable();
+		yesStyle.down = new Image(new Texture(Gdx.files.internal("login/yes_pressed.png"))).getDrawable();
 
 		yes = new ImageButton(yesStyle);
 		

@@ -48,7 +48,7 @@ public class TotemSpawner extends Actor {
 		cloudSpawnCap = MathUtils.random(zone.getCloudFrequency() * 1000);
 
 		stars = new Array<Image>();
-		Image star = Icons.getImage("bg/stars.png");
+		Image star = new Image(new Texture(Gdx.files.internal("bg/stars.png")));
 		star.setSize(Constants.WIDTH, Constants.HEIGHT);
 		star.setPosition(0, Zone.STARS.getY());
 		stars.add(star);

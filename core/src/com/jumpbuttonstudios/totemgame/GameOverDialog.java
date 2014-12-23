@@ -63,9 +63,9 @@ public class GameOverDialog extends Dialog {
 
 		for (int i = 0; i < paths.length; i++) {
 			ImageButtonStyle style = new ImageButtonStyle();
-			style.imageUp = Icons.getImage(paths[i]).getDrawable();
+			style.imageUp = new Image(new Texture(Gdx.files.internal(paths[i]))).getDrawable();
 			String pressed = paths[i].substring(0, paths[i].length() - 4) + "_pressed.png";
-			style.imageDown = Icons.getImage(pressed).getDrawable();
+			style.imageDown = new Image(new Texture(Gdx.files.internal(pressed))).getDrawable();
 			ImageButton imageButton = new ImageButton(style);
 			imageButtons.add(imageButton);
 
@@ -79,7 +79,7 @@ public class GameOverDialog extends Dialog {
 		panel.setSize(Constants.WIDTH, Constants.HEIGHT - 80);
 		setSize(panel.getWidth(), panel.getHeight());
 
-		label = Icons.getImage("gameover/gameover.png");
+		label = new Image(new Texture(Gdx.files.internal("gameover/gameover.png")));
 		ratio = label.getWidth() / label.getHeight();
 		label.setScale(1);
 		label.setScaling(Scaling.none);
@@ -87,8 +87,8 @@ public class GameOverDialog extends Dialog {
 		getContentTable().row();
 
 		ImageButtonStyle removeAdStyle = new ImageButtonStyle();
-		removeAdStyle.up = Icons.getImage("ui/paused/removead.png").getDrawable();
-		removeAdStyle.down = Icons.getImage("ui/paused/removead.png").getDrawable();
+		removeAdStyle.up = new Image(new Texture(Gdx.files.internal("ui/paused/removead.png"))).getDrawable();
+		removeAdStyle.down = new Image(new Texture(Gdx.files.internal("ui/paused/removead.png"))).getDrawable();
 		ImageButton removeAds = new ImageButton(removeAdStyle);
 		removeAds.addListener(new ClickListener() {
 			@Override
@@ -103,30 +103,30 @@ public class GameOverDialog extends Dialog {
 		LabelStyle style = new LabelStyle();
 		style.font = font;
 		style.fontColor = Color.WHITE;
-		style.background = Icons.getImage("gameover/yourScoreBox.png").getDrawable();
+		style.background = new Image(new Texture(Gdx.files.internal("gameover/yourScoreBox.png"))).getDrawable();
 
 		scoreLabel = new Label(String.valueOf(score), style);
-		scoreLabel.setWidth(Icons.getImage("gameover/yourScoreBox.png").getWidth());
-		scoreLabel.setHeight(Icons.getImage("gameover/yourScoreBox.png").getHeight());
+		scoreLabel.setWidth(new Image(new Texture(Gdx.files.internal("gameover/yourScoreBox.png"))).getWidth());
+		scoreLabel.setHeight(new Image(new Texture(Gdx.files.internal("gameover/yourScoreBox.png"))).getHeight());
 		scoreLabel.setAlignment(Align.center);
 
 		LabelStyle style1 = new LabelStyle();
 		style1.font = font;
 		style1.fontColor = Color.WHITE;
-		style1.background = Icons.getImage("gameover/bestScoreBox.png").getDrawable();
+		style1.background = new Image(new Texture(Gdx.files.internal("gameover/bestScoreBox.png"))).getDrawable();
 
 		bestScoreLabel = new Label(String.valueOf(GamePrefs.prefs.getInteger("bestScore")), style1);
-		bestScoreLabel.setWidth(Icons.getImage("gameover/bestScoreBox.png").getWidth());
-		bestScoreLabel.setHeight(Icons.getImage("gameover/bestScoreBox.png").getHeight());
+		bestScoreLabel.setWidth(new Image(new Texture(Gdx.files.internal("gameover/bestScoreBox.png"))).getWidth());
+		bestScoreLabel.setHeight(new Image(new Texture(Gdx.files.internal("gameover/bestScoreBox.png"))).getHeight());
 		bestScoreLabel.setAlignment(Align.center);
 
 		getContentTable().add(scoreLabel)
-				.width(Icons.getImage("gameover/yourScoreBox.png").getWidth())
-				.height(Icons.getImage("gameover/yourScoreBox.png").getHeight()).expandX().center();
+				.width(new Image(new Texture(Gdx.files.internal("gameover/yourScoreBox.png"))).getWidth())
+				.height(new Image(new Texture(Gdx.files.internal("gameover/yourScoreBox.png"))).getHeight()).expandX().center();
 		getContentTable().row();
 		getContentTable().add(bestScoreLabel)
-				.width(Icons.getImage("gameover/bestScoreBox.png").getWidth())
-				.height(Icons.getImage("gameover/bestScoreBox.png").getHeight()).expandX().center();
+				.width(new Image(new Texture(Gdx.files.internal("gameover/bestScoreBox.png"))).getWidth())
+				.height(new Image(new Texture(Gdx.files.internal("gameover/bestScoreBox.png"))).getHeight()).expandX().center();
 
 		for (int i = 0; i < imageButtons.size; i++) {
 			getButtonTable().add(imageButtons.get(i)).width(imageButtons.get(i).getWidth())
@@ -169,7 +169,7 @@ public class GameOverDialog extends Dialog {
 					public void clicked(InputEvent event, float x, float y) {
 						super.clicked(event, x, y);
 						TotemGame.soundManager.play("button");
-						
+
 						if (!TwitterUtil.loggedIn) {
 							try {
 								TwitterUtil.init();
@@ -179,21 +179,22 @@ public class GameOverDialog extends Dialog {
 							} catch (IOException e) {
 								e.printStackTrace();
 							}
-							
+
 							PinDialog pinDialog = new PinDialog(String.valueOf(score), skin, gs);
 							gs.hudStage.addActor(pinDialog);
 							pinDialog.setPosition(Constants.WIDTH / 2 - pinDialog.getWidth() / 2,
 									Constants.HEIGHT / 2 - pinDialog.getHeight() / 2);
-						
+
 						} else {
-							TwitterUtil.postFinal("I just scored " + score + " points in Totem Stack!");
-							TweetedDialog tweeted = new TweetedDialog("Your tweet has been posted!", skin);
+							TwitterUtil.postFinal("I just scored " + score
+									+ " points in Totem Stack!");
+							TweetedDialog tweeted = new TweetedDialog(
+									"Your tweet has been posted!", skin);
 							gs.hudStage.addActor(tweeted);
-							tweeted.setPosition(Constants.WIDTH / 2 - tweeted.getWidth() / 2, Constants.HEIGHT
-									/ 2 - tweeted.getHeight() / 2);
+							tweeted.setPosition(Constants.WIDTH / 2 - tweeted.getWidth() / 2,
+									Constants.HEIGHT / 2 - tweeted.getHeight() / 2);
 						}
 
-						
 					}
 				});
 		imageButtons.get(4).addListener(new ClickListener() { // facebook
@@ -225,10 +226,10 @@ public class GameOverDialog extends Dialog {
 			gs.camera.position.y -= (gs.camera.position.y - 1) * 0.1f;
 		}
 
-		scoreLabel.setWidth(Icons.getImage("gameover/yourScoreBox.png").getWidth());
-		scoreLabel.setHeight(Icons.getImage("gameover/yourScoreBox.png").getHeight());
-		bestScoreLabel.setWidth(Icons.getImage("gameover/bestScoreBox.png").getWidth());
-		bestScoreLabel.setHeight(Icons.getImage("gameover/bestScoreBox.png").getHeight());
+		scoreLabel.setWidth(new Image(new Texture(Gdx.files.internal("gameover/yourScoreBox.png"))).getWidth());
+		scoreLabel.setHeight(new Image(new Texture(Gdx.files.internal("gameover/yourScoreBox.png"))).getHeight());
+		bestScoreLabel.setWidth(new Image(new Texture(Gdx.files.internal("gameover/bestScoreBox.png"))).getWidth());
+		bestScoreLabel.setHeight(new Image(new Texture(Gdx.files.internal("gameover/bestScoreBox.png"))).getHeight());
 
 	}
 

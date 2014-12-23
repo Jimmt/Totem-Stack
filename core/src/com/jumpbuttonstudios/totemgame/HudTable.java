@@ -84,7 +84,7 @@ public class HudTable extends Table {
 		for (int i = 0; i < 4; i++) {
 			Drape d = new Drape(powerups[i]);
 			drapes[i] = d;
-			right.add(d);
+			right.add(d).padLeft(1f);
 		}
 
 		add(left).expand().left().top();
@@ -95,8 +95,10 @@ public class HudTable extends Table {
 
 			Table bottom = new Table();
 			ImageButtonStyle ibs = new ImageButtonStyle();
-			ibs.imageUp = Icons.getImage("ui/gameplay/left.png").getDrawable();
-			ibs.imageDown = Icons.getImage("ui/gameplay/leftclicked.png").getDrawable();
+			ibs.imageUp = new Image(new Texture(Gdx.files.internal("ui/gameplay/left.png")))
+					.getDrawable();
+			ibs.imageDown = new Image(
+					new Texture(Gdx.files.internal("ui/gameplay/leftclicked.png"))).getDrawable();
 			leftButton = new ImageButton(ibs);
 			leftButton.addListener(new ClickListener() {
 				@Override
@@ -122,8 +124,10 @@ public class HudTable extends Table {
 			leftButton.setPosition(0, 0);
 
 			ImageButtonStyle ibs2 = new ImageButtonStyle();
-			ibs2.imageUp = Icons.getImage("ui/gameplay/right.png").getDrawable();
-			ibs2.imageDown = Icons.getImage("ui/gameplay/rightclicked.png").getDrawable();
+			ibs2.imageUp = new Image(new Texture(Gdx.files.internal("ui/gameplay/right.png")))
+					.getDrawable();
+			ibs2.imageDown = new Image(new Texture(
+					Gdx.files.internal("ui/gameplay/rightclicked.png"))).getDrawable();
 			rightButton = new ImageButton(ibs2);
 			rightButton.addListener(new ClickListener() {
 				@Override
@@ -159,9 +163,9 @@ public class HudTable extends Table {
 		game.hudStage.addActor(score);
 
 		if (game instanceof GameScreen) {
-			optionsDialog = new OptionsDialog("", game.getSkin(), (GameScreen) game);
+			optionsDialog = new OptionsDialog("", game.getSkin(), game);
 		} else {
-			optionsDialog = new OptionsDialog("", game.getSkin(), null);
+			optionsDialog = new OptionsDialog("", game.getSkin(), game);
 		}
 
 		game.hudStage.addActor(optionsDialog);
@@ -260,7 +264,7 @@ public class HudTable extends Table {
 			@Override
 			public void clicked(InputEvent event, float x, float y) { // pause
 				TotemGame.soundManager.play("button");
-				game.pause();
+				game.pause(true);
 			}
 
 		});
@@ -269,7 +273,7 @@ public class HudTable extends Table {
 			@Override
 			public void clicked(InputEvent event, float x, float y) { // sound
 				TotemGame.soundManager.play("button");
-				
+
 				if (soundOn) {
 					sound.setStyle(soundOffStyle);
 					TotemGame.soundManager.setMasterPlay(false);
@@ -285,7 +289,7 @@ public class HudTable extends Table {
 			@Override
 			public void clicked(InputEvent event, float x, float y) { // options
 				TotemGame.soundManager.play("button");
-				game.pause();
+				game.pause(false);
 				optionsDialog.setVisible(true);
 
 			}
@@ -295,7 +299,8 @@ public class HudTable extends Table {
 			@Override
 			public void clicked(InputEvent event, float x, float y) { // shop
 				TotemGame.soundManager.play("button");
-				game.pause();
+				game.pause(false);
+				shopDialog.setWidth(Constants.WIDTH);
 				shopDialog.setVisible(true);
 			}
 
@@ -313,6 +318,8 @@ public class HudTable extends Table {
 	@Override
 	public void act(float delta) {
 		super.act(delta);
+		
+		
 
 		for (int i = 0; i < drapes.length; i++) {
 			drapes[i].setCount(GamePrefs.prefs.getInteger(powerups[i] + "Uses"));

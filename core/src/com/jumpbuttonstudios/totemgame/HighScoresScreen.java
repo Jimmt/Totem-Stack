@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -12,7 +13,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.ImageButton.ImageButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
-import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane.ScrollPaneStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.jumpbuttonstudio.Friend;
@@ -48,9 +48,9 @@ public class HighScoresScreen extends AbstractScreen {
 		HighScores.setScoreLength(length);
 
 		ImageButtonStyle gStyle = new ImageButtonStyle();
-		gStyle.up = Icons.getImage("ui/highscore/global.png").getDrawable();
-		gStyle.down = Icons.getImage("ui/highscore/globaldisable.png").getDrawable();
-		gStyle.disabled = Icons.getImage("ui/highscore/globaldisable.png").getDrawable();
+		gStyle.up = new Image(new Texture(Gdx.files.internal("ui/highscore/global.png"))).getDrawable();
+		gStyle.down = new Image(new Texture(Gdx.files.internal("ui/highscore/globaldisable.png"))).getDrawable();
+		gStyle.disabled = new Image(new Texture(Gdx.files.internal("ui/highscore/globaldisable.png"))).getDrawable();
 
 		globalButton = new ImageButton(gStyle);
 		globalButton.addListener(new ClickListener() {
@@ -71,8 +71,8 @@ public class HighScoresScreen extends AbstractScreen {
 		HighScores.read();
 
 		ImageButtonStyle pStyle = new ImageButtonStyle();
-		pStyle.up = Icons.getImage("ui/highscore/personal.png").getDrawable();
-		pStyle.down = Icons.getImage("ui/highscore/personaldisable.png").getDrawable();
+		pStyle.up = new Image(new Texture(Gdx.files.internal("ui/highscore/personal.png"))).getDrawable();
+		pStyle.down = new Image(new Texture(Gdx.files.internal("ui/highscore/personaldisable.png"))).getDrawable();
 
 		personalButton = new ImageButton(pStyle);
 		personalButton.addListener(new ClickListener() {
@@ -93,9 +93,9 @@ public class HighScoresScreen extends AbstractScreen {
 // personalButton.setChecked(true);
 
 		ImageButtonStyle fStyle = new ImageButtonStyle();
-		fStyle.up = Icons.getImage("ui/highscore/friends.png").getDrawable();
-		fStyle.down = Icons.getImage("ui/highscore/friendsdisable.png").getDrawable();
-		fStyle.disabled = Icons.getImage("ui/highscore/friendsdisable.png").getDrawable();
+		fStyle.up = new Image(new Texture(Gdx.files.internal("ui/highscore/friends.png"))).getDrawable();
+		fStyle.down = new Image(new Texture(Gdx.files.internal("ui/highscore/friendsdisable.png"))).getDrawable();
+		fStyle.disabled = new Image(new Texture(Gdx.files.internal("ui/highscore/friendsdisable.png"))).getDrawable();
 
 		friendsButton = new ImageButton(fStyle);
 		friendsButton.addListener(new ClickListener() {
@@ -108,8 +108,8 @@ public class HighScoresScreen extends AbstractScreen {
 		});
 
 		ImageButtonStyle bStyle = new ImageButtonStyle();
-		bStyle.up = Icons.getImage("ui/highscore/back.png").getDrawable();
-		bStyle.down = Icons.getImage("ui/highscore/back_pressed.png").getDrawable();
+		bStyle.up = new Image(new Texture(Gdx.files.internal("ui/highscore/back.png"))).getDrawable();
+		bStyle.down = new Image(new Texture(Gdx.files.internal("ui/highscore/back_pressed.png"))).getDrawable();
 
 		ImageButton backButton = new ImageButton(bStyle);
 		backButton.addListener(new ClickListener() {
@@ -119,7 +119,7 @@ public class HighScoresScreen extends AbstractScreen {
 			}
 		});
 
-		Image panel = Icons.getImage("ui/highscore/window.png");
+		Image panel = new Image(new Texture(Gdx.files.internal("ui/highscore/window.png")));
 		panel.setScale(1);
 		panel.setSize(Constants.WIDTH, Constants.HEIGHT);
 		table.setBackground(panel.getDrawable());

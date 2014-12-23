@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton.ImageButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
+import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 public class CoinLabel extends Actor {
@@ -23,6 +24,7 @@ public class CoinLabel extends Actor {
 
 	public CoinLabel() {
 		BitmapFont numbers = new BitmapFont(Gdx.files.internal("ui/shop/numbers.fnt"));
+		
 		LabelStyle labelStyle = new LabelStyle();
 		labelStyle.font = numbers;
 		labelStyle.fontColor = Color.WHITE;
@@ -32,10 +34,10 @@ public class CoinLabel extends Actor {
 		labelStyle.background = background.getDrawable();
 
 		coins = new Label(" 420", labelStyle);
-		coins.setWidth(Icons.getImage("shop/jbscoin.png").getWidth());
-		coins.setHeight(Icons.getImage("shop/jbscoin.png").getHeight());
+		coins.setWidth(bgTex.getWidth());
+		coins.setHeight(bgTex.getHeight());
 		
-		System.out.println(coins.getWidth());
+		
 
 		Texture coinTex = new Texture(Gdx.files.internal("shop/coin.png"));
 		coinTex.setFilter(TextureFilter.Linear, TextureFilter.Linear);
@@ -43,8 +45,8 @@ public class CoinLabel extends Actor {
 		coinImage.setScale(1);
 
 		ImageButtonStyle coinButtonStyle = new ImageButtonStyle();
-		coinButtonStyle.up = Icons.getImage("shop/add.png").getDrawable();
-		coinButtonStyle.down = Icons.getImage("shop/add_pressed.png").getDrawable();
+		coinButtonStyle.up = new Image(new Texture(Gdx.files.internal("shop/add.png"))).getDrawable();
+		coinButtonStyle.down = new Image(new Texture(Gdx.files.internal("shop/add_pressed.png"))).getDrawable();
 
 		coinButton = new ImageButton(coinButtonStyle);
 		coinButton.addListener(new ClickListener() {
@@ -61,22 +63,22 @@ public class CoinLabel extends Actor {
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
 		super.draw(batch, parentAlpha);
-		
+
 		if (Gdx.input.getX() > getX() + coinButton.getX()
 				&& Gdx.input.getX() < getX() + coinButton.getX() + coinButton.getWidth()) {
-			if (Constants.HEIGHT - Gdx.input.getY() > getY() / Constants.SCALE
-					&& Constants.HEIGHT - Gdx.input.getY() < getY() / Constants.SCALE + coinButton.getHeight()) {
+			if (Constants.HEIGHT - Gdx.input.getY() > coinButton.getY()
+					&& Constants.HEIGHT - Gdx.input.getY() < coinButton.getY() + coinButton.getHeight()) {
 				if (Gdx.input.isButtonPressed(Buttons.LEFT)) {
 					System.out.println("hi");
 				}
 			}
 		}
-
+		coins.setText(" " + String.valueOf(GamePrefs.prefs.getInteger("coins")));
 		coins.setPosition(getX() + coinImage.getWidth() - 20, getY() + coinImage.getHeight() / 2
 				- coins.getHeight() / 2 - 3);
 		coinImage.setPosition(getX(), getY());
-		coinButton.setPosition(getX() + coinImage.getWidth() - coinButton.getWidth(), getY());
-
+		coinButton.setPosition(getX() + coinImage.getWidth() - coinButton.getWidth(), getY() - coinButton.getHeight() / 5);
+		
 		coins.draw(batch, parentAlpha);
 		coinImage.draw(batch, parentAlpha);
 		coinButton.draw(batch, parentAlpha);

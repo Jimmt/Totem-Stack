@@ -18,17 +18,19 @@ public class CoinsDialog extends Dialog {
 		Image panel = new Image(new Texture(Gdx.files.internal("blank.png")));
 		setBackground(panel.getDrawable());
 		coinLabel = new CoinLabel();
+		coinLabel.setPosition(0,  0);
 		//
-		setSize(305, coinLabel.coinImage.getHeight() + 7);
 		
 		
 		
-		getContentTable().add(coinLabel).expand().left().bottom();
+		
+//		getContentTable().add(coinLabel).expand().left().bottom();
 	}
 	
 	@Override
 	public void draw(Batch batch, float parentAlpha){
 		super.draw(batch, parentAlpha);
-
+		coinLabel.setPosition(getX(),  getY());
+		coinLabel.draw(batch, parentAlpha);
 	}
 }

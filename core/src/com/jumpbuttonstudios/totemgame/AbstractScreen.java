@@ -6,10 +6,13 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
@@ -23,12 +26,14 @@ public class AbstractScreen implements Screen {
 	protected OrthographicCamera camera;
 	protected Skin skin;
 	protected Stage hudStage;
+	protected Image black;
 	protected TotemGameComparator comparator;
 	protected static InputMultiplexer multiplexer;
 	protected boolean paused;
 	private float step = 1 / 60f;
 	private float slowTime = 0, slowCap = 30;
 	private boolean slowChanged;
+	private PauseDialog pauseDialog;
 
 	public AbstractScreen(TotemGame game) {
 		this.game = game;
@@ -43,6 +48,14 @@ public class AbstractScreen implements Screen {
 		camera = (OrthographicCamera) stage.getCamera();
 		multiplexer = new InputMultiplexer(stage, hudStage);
 		Gdx.input.setInputProcessor(multiplexer);
+
+		black = new Image(new Texture(Gdx.files.internal("black.png")));
+		black.setSize(Constants.WIDTH, Constants.HEIGHT);
+		black.setColor(black.getColor().r, black.getColor().g, black.getColor().b, 0.65f);
+
+		pauseDialog = new PauseDialog(getSkin(), this);
+		pauseDialog.show(hudStage);
+		pauseDialog.setVisible(false);
 	}
 
 	public void setStep(float step) {
@@ -119,20 +132,34 @@ public class AbstractScreen implements Screen {
 
 	}
 
-	@Override
-	public void pause() {
-		System.out.println("pause");
+	public void pause(boolean showDialog) {
+		paused = !paused;
+		black.setVisible(paused);
+		black.setPosition(camera.position.x - Constants.WIDTH / 2, camera.position.y
+				- Constants.HEIGHT / 2);
+		if (!stage.getActors().contains(black, false)) {
+			stage.getActors().removeValue(black, false);
+		}
+		stage.addActor(black);
 
+		if (showDialog) {
+			pauseDialog.setVisible(true);
+		}
 	}
 
 	@Override
 	public void resume() {
-		System.out.println("resume");
 
 	}
 
 	@Override
 	public void dispose() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void pause() {
 		// TODO Auto-generated method stub
 
 	}

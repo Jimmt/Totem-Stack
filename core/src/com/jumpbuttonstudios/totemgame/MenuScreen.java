@@ -134,8 +134,10 @@ public class MenuScreen extends AbstractScreen {
 		loginDialog.setPosition(Constants.WIDTH / 2 - loginDialog.getWidth() / 2, Constants.HEIGHT
 				/ 2 - loginDialog.getHeight() / 2);
 		loginDialog.setVisible(false);
+		
+		
 
-		InputMultiplexer multiplexer = new InputMultiplexer(hudStage, stage);
+		InputMultiplexer multiplexer = new InputMultiplexer(hudTable.optionsDialog.xStage, hudStage, stage);
 
 		Gdx.input.setInputProcessor(multiplexer);
 

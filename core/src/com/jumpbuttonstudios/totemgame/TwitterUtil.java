@@ -36,6 +36,7 @@ public class TwitterUtil {
 		}
 		
 		Gdx.net.openURI(requestToken.getAuthorizationURL());
+		
 	}
 
 	public static void postFinal(String text) {

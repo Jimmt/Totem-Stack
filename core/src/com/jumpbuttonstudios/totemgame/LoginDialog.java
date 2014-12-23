@@ -53,8 +53,8 @@ public class LoginDialog extends Dialog {
 
 		ImageButtonStyle signInStyle = new ImageButtonStyle();
 
-		signInStyle.up = Icons.getImage("login/signin.png").getDrawable();
-		signInStyle.down = Icons.getImage("login/signin_pressed.png").getDrawable();
+		signInStyle.up = new Image(new Texture(Gdx.files.internal("login/signin.png"))).getDrawable();
+		signInStyle.down = new Image(new Texture(Gdx.files.internal("login/signin_pressed.png"))).getDrawable();
 
 		ImageButton signIn = new ImageButton(signInStyle);
 		signIn.addListener(new ClickListener() {
@@ -85,8 +85,8 @@ public class LoginDialog extends Dialog {
 		});
 
 		ImageButtonStyle registerStyle = new ImageButtonStyle();
-		registerStyle.up = Icons.getImage("login/register.png").getDrawable();
-		registerStyle.down = Icons.getImage("login/register_pressed.png").getDrawable();
+		registerStyle.up = new Image(new Texture(Gdx.files.internal("login/register.png"))).getDrawable();
+		registerStyle.down = new Image(new Texture(Gdx.files.internal("login/register_pressed.png"))).getDrawable();
 
 		ImageButton register = new ImageButton(registerStyle);
 		register.addListener(new ClickListener() {
@@ -98,7 +98,7 @@ public class LoginDialog extends Dialog {
 		});
 
 		ImageButtonStyle xStyle = new ImageButtonStyle();
-		xStyle.up = Icons.getImage("ui/options/close.png").getDrawable();
+		xStyle.up = new Image(new Texture(Gdx.files.internal("ui/options/close.png"))).getDrawable();
 		xb = new ImageButton(xStyle);
 		xb.addListener(new ClickListener() {
 			@Override

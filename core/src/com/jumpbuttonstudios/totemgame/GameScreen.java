@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -25,14 +26,11 @@ public class GameScreen extends AbstractScreen {
 	boolean gameOver;
 	Array<ParticleEffect> particles;
 	Stage particleStage;
-	Image black;
 	FitViewport viewport;
 	Array<Totem> removeTotems = new Array<Totem>();
 
 	public GameScreen(TotemGame game) {
 		super(game);
-		
-		
 
 		particleStage = new Stage();
 
@@ -59,9 +57,7 @@ public class GameScreen extends AbstractScreen {
 		sr = new ShapeRenderer();
 		spawner.newTotem();
 
-		black = new Image(new Texture(Gdx.files.internal("black.png")));
 		black.setSize(Constants.SCLWIDTH, Constants.SCLHEIGHT * 2);
-		black.setColor(black.getColor().r, black.getColor().g, black.getColor().b, 0.65f);
 
 		multiplexer = new InputMultiplexer(stage, hudStage);
 
@@ -83,28 +79,19 @@ public class GameScreen extends AbstractScreen {
 			}
 
 			GameOverDialog god = new GameOverDialog(score, getSkin(), this, game);
-			god.setPosition(Constants.WIDTH / 2 - god.getWidth() / 2,
-					Constants.HEIGHT / 2 - god.getHeight() / 2 - 90);
+			god.setPosition(Constants.WIDTH / 2 - god.getWidth() / 2, 0);
+			
+// god.setPosition(Constants.WIDTH / 2 - god.getWidth() / 2,
+// Constants.HEIGHT / 2 - god.getHeight() / 2 - 90);
 			hudStage.addActor(god);
 
+// god.addAction(Actions.moveB);
+			god.addAction(Actions.moveBy(0, 100, 1.0f));
+			
 			gameOver = true;
 
 			TotemGame.soundManager.play("lose");
 		}
-	}
-
-	@Override
-	public void pause() {
-//		super.pause();
-		paused = !paused;
-		black.setVisible(paused);
-		black.setPosition(camera.position.x - Constants.SCLWIDTH / 2, camera.position.y
-				- Constants.SCLHEIGHT / 2);
-		if (!stage.getActors().contains(black, false)) {
-			stage.getActors().removeValue(black, false);
-		}
-		stage.addActor(black);
-
 	}
 
 	/**
@@ -136,11 +123,11 @@ public class GameScreen extends AbstractScreen {
 // sr.end();
 // }
 
-		for(int i = 0; i < removeTotems.size; i++){
+		for (int i = 0; i < removeTotems.size; i++) {
 			world.destroyBody(removeTotems.get(i).body);
 			removeTotems.removeIndex(i);
 		}
-		
+
 		if (spawner.totems.size > 1 && !gameOver) {
 			if (spawner.totems.get(spawner.totems.size - 1).getY() < spawner.totems.get(
 					spawner.totems.size - 2).getY()
@@ -148,7 +135,7 @@ public class GameScreen extends AbstractScreen {
 				if (spawner.totems.get(spawner.totems.size - 1).getRectangle()
 						.overlaps(spawner.totems.get(spawner.totems.size - 2).getRectangle())) {
 					gameOver();
-					
+
 				}
 
 			}
@@ -156,7 +143,7 @@ public class GameScreen extends AbstractScreen {
 
 		if (contactListener.getGroundTotems().size > 1 && !gameOver && spawner.totems.size > 1) {
 			gameOver();
-			
+
 		}
 
 		if (gameOver) {

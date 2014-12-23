@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 
 public class GamePrefs {
-	static Preferences prefs;
+	public static Preferences prefs;
 
 	public static void initialize() {
 		prefs = Gdx.app.getPreferences("settings");
@@ -17,13 +17,16 @@ public class GamePrefs {
 			prefs.putInteger("freezeUses", 0);
 			prefs.putInteger("slowUses", 0);
 			prefs.putInteger("windUses", 0);
+			
 			prefs.flush();
 		}
 		//testing
+		prefs.putInteger("coins", 0);
 		prefs.putInteger("retryUses", 99);
 		prefs.putInteger("freezeUses", 99);
 		prefs.putInteger("slowUses", 99);
 		prefs.putInteger("windUses", 99);
+		
 		prefs.flush();
 	}
 

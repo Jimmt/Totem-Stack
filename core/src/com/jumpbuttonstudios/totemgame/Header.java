@@ -2,10 +2,10 @@ package com.jumpbuttonstudios.totemgame;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
@@ -23,8 +23,8 @@ public class Header extends Actor {
 		this.avatar = avatar;
 		this.username = username;
 
-		border = Icons.getImage("login/avatar.png");
-		background = Icons.getImage("login/welcomeback.png");
+		border = new Image(new Texture(Gdx.files.internal("login/avatar.png")));
+		background = new Image(new Texture(Gdx.files.internal("login/welcomeback.png")));
 		avatar.setSize(avatar.getWidth() * 0.5f, avatar.getHeight() * 0.5f);
 		avatar.setPosition(10 + 15, Constants.HEIGHT - avatar.getHeight() - 10 - 5);
 		border.setScale(1.0f);

@@ -23,7 +23,7 @@ public class ShopDialog extends Dialog {
 	Array<Image> images = new Array<Image>();
 	Array<ImageButton> upgradeButtons = new Array<ImageButton>();
 	boolean positionSet, changed;
-	Image text = Icons.getImage("ui/shop/retryinfo.png");
+	Image text = new Image(new Texture(Gdx.files.internal("ui/shop/retryinfo.png")));
 	ImageButton backButton, buyCoinButton;
 	Skin skin;
 	GameScreen gs;
@@ -47,13 +47,13 @@ public class ShopDialog extends Dialog {
 		String[] buttonNames = { "retry", "freeze", "slow", "wind" };
 
 		ImageButtonStyle buyCoinStyle = new ImageButtonStyle();
-		buyCoinStyle.up = Icons.getImage("ui/shop/buyjbs.png").getDrawable();
-		buyCoinStyle.down = Icons.getImage("ui/shop/buyjbs_pressed.png").getDrawable();
+		buyCoinStyle.up = new Image(new Texture(Gdx.files.internal("ui/shop/buyjbs.png"))).getDrawable();
+		buyCoinStyle.down = new Image(new Texture(Gdx.files.internal("ui/shop/buyjbs_pressed.png"))).getDrawable();
 		buyCoinButton = new ImageButton(buyCoinStyle);
 
 		ImageButtonStyle backStyle = new ImageButtonStyle();
-		backStyle.up = Icons.getImage("ui/highscore/back.png").getDrawable();
-		backStyle.down = Icons.getImage("ui/highscore/back_pressed.png").getDrawable();
+		backStyle.up = new Image(new Texture(Gdx.files.internal("ui/highscore/back.png"))).getDrawable();
+		backStyle.down = new Image(new Texture(Gdx.files.internal("ui/highscore/back_pressed.png"))).getDrawable();
 		backButton = new ImageButton(backStyle);
 
 
@@ -63,7 +63,7 @@ public class ShopDialog extends Dialog {
 
 		CoinLabel coinLabel = new CoinLabel();
 
-		getContentTable().add(Icons.getImage("blank.png")).expand().bottom().left().colspan(4).padBottom(coinLabel.coins.getHeight());
+		getContentTable().add(new Image(new Texture(Gdx.files.internal("blank.png")))).expand().bottom().left().colspan(4).padBottom(coinLabel.coins.getHeight());
 
 		getContentTable().row();
 
@@ -102,8 +102,8 @@ public class ShopDialog extends Dialog {
 
 		for (int i = 0; i < 4; i++) {
 			ImageButtonStyle ibs = new ImageButtonStyle();
-			ibs.up = Icons.getImage("shop/button_normal.png").getDrawable();
-			ibs.down = Icons.getImage("shop/button_pressed.png").getDrawable();
+			ibs.up = new Image(new Texture(Gdx.files.internal("shop/button_normal.png"))).getDrawable();
+			ibs.down = new Image(new Texture(Gdx.files.internal("shop/button_pressed.png"))).getDrawable();
 
 			ImageButton button = new ImageButton(ibs);
 
@@ -145,7 +145,7 @@ public class ShopDialog extends Dialog {
 				TotemGame.soundManager.play("button");
 				setVisible(false);
 				if (gs != null) {
-					gs.pause();
+					gs.pause(false);
 				}
 			}
 		});
