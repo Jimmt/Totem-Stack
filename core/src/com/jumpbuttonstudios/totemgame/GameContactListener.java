@@ -179,6 +179,11 @@ public class GameContactListener implements ContactListener {
 
 			if (((Totem) b).equals(game.spawner.currentTotem)) {
 				createTotem();
+				
+				if(game.spawner.pointChecker.checkingFirst){
+					game.gameOver();
+				}
+				
 				if (!groundTotems.contains((Totem) b, false)) {
 					groundTotems.add((Totem) b);
 				}

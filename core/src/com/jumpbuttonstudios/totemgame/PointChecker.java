@@ -11,7 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
 public class PointChecker extends Actor {
-	private boolean checkingFirst = true;
+	boolean checkingFirst = true;
 	Rectangle onePointLeft, onePointRight;
 	Rectangle twoPointLeft, twoPointRight;
 	Rectangle threePoint;
@@ -80,6 +80,9 @@ public class PointChecker extends Actor {
 		} else {
 			
 		}
+		
+		
+		
 
 	}
 

@@ -152,11 +152,12 @@ public class GameOverDialog extends Dialog {
 						game.setScreen(new GameScreen(game));
 					}
 				});
+		final GameOverDialog dialog = this;
 		imageButtons.get(1).addListener(new ClickListener() { // highscore
 					@Override
 					public void clicked(InputEvent event, float x, float y) {
 						super.clicked(event, x, y);
-						game.setScreen(new HighScoresScreen(game));
+						game.setScreen(new HighScoresScreen(game, gs, dialog));
 						TotemGame.soundManager.play("button");
 					}
 				});

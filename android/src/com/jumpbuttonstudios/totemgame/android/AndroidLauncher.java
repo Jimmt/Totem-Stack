@@ -33,9 +33,9 @@ public class AndroidLauncher extends AndroidApplication implements IabInterface 
 				}
 				// Hooray, IAB is fully set up!
 				Log.d("IAB", "Billing Success: " + result);
-				buyCoins(123);
+				removeAds();
 			}
-			
+
 		});
 
 		game = new TotemGame();
@@ -52,20 +52,42 @@ public class AndroidLauncher extends AndroidApplication implements IabInterface 
 	}
 
 	@Override
-	public void buyCoins(final int amount) {
-
-		mHelper.launchPurchaseFlow(this, SKU_BUY_COINS, RC_REQUEST,
+	public void removeAds() {
+		mHelper.launchPurchaseFlow(this, SKU_REMOVE_ADS, RC_REQUEST,
 				new IabHelper.OnIabPurchaseFinishedListener() {
-			
+
 					@Override
 					public void onIabPurchaseFinished(IabResult result, Purchase info) {
 						test = true;
-						
-//						if(info.getSku().equals(SKU_BUY_COINS)){
-							Log.d("IAB", info.getSku()); //info is null
+
+						if (info.getSku().equals(SKU_REMOVE_ADS)) {
+
+							Log.d("IAB", info.getSku()); 
+							Log.d("IAB", "Removing ads");
+
+						}
+					}
+				}, "HANDLE_PAYLOADS");
+	}
+
+	@Override
+	public void buyCoins(final int amount) {
+
+		mHelper.launchPurchaseFlow(this, SKU_BUY_COINS_500, RC_REQUEST,
+				new IabHelper.OnIabPurchaseFinishedListener() {
+
+					@Override
+					public void onIabPurchaseFinished(IabResult result, Purchase info) {
+						test = true;
+
+// if(info.getSku().equals(SKU_BUY_COINS)){
+						if (amount == 500) {
+							Log.d("IAB", info.getSku()); // info is null
 							Log.d("IAB", "Buying " + amount + " coins");
-							GamePrefs.putInteger("coins", GamePrefs.prefs.getInteger("coins") + amount);
-//						}
+							GamePrefs.putInteger("coins", GamePrefs.prefs.getInteger("coins")
+									+ amount);
+						}
+// }
 					}
 				}, "HANDLE_PAYLOADS");
 

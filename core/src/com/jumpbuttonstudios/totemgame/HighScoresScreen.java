@@ -18,6 +18,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.jumpbuttonstudio.Friend;
 import com.jumpbuttonstudio.HighscoreResult;
 
+
 public class HighScoresScreen extends AbstractScreen {
 	private int length = 15;
 	private String[] globalNames = new String[length];
@@ -29,28 +30,34 @@ public class HighScoresScreen extends AbstractScreen {
 	private ImageButton globalButton;
 	private ImageButton personalButton;
 	private ImageButton friendsButton;
+	private GameOverDialog gameOverDialog;
+	private GameScreen gs;
 
-	public HighScoresScreen(TotemGame game) {
+	public HighScoresScreen(TotemGame game, GameScreen gs, GameOverDialog gameOverDialog) {
 		super(game);
-
+		this.gameOverDialog = gameOverDialog;
+		this.gs = gs;
 	}
 
 	@Override
 	public void show() {
 		super.show();
-		
+
 		Table table = super.getTable();
 		table.setFillParent(true);
 
 		Table scrollTable = new Table();
-//		scrollTable.setFillParent(true);
+// scrollTable.setFillParent(true);
 
 		HighScores.setScoreLength(length);
 
 		ImageButtonStyle gStyle = new ImageButtonStyle();
-		gStyle.up = new Image(new Texture(Gdx.files.internal("ui/highscore/global.png"))).getDrawable();
-		gStyle.down = new Image(new Texture(Gdx.files.internal("ui/highscore/globaldisable.png"))).getDrawable();
-		gStyle.disabled = new Image(new Texture(Gdx.files.internal("ui/highscore/globaldisable.png"))).getDrawable();
+		gStyle.up = new Image(new Texture(Gdx.files.internal("ui/highscore/global.png")))
+				.getDrawable();
+		gStyle.down = new Image(new Texture(Gdx.files.internal("ui/highscore/globaldisable.png")))
+				.getDrawable();
+		gStyle.disabled = new Image(new Texture(
+				Gdx.files.internal("ui/highscore/globaldisable.png"))).getDrawable();
 
 		globalButton = new ImageButton(gStyle);
 		globalButton.addListener(new ClickListener() {
@@ -71,8 +78,10 @@ public class HighScoresScreen extends AbstractScreen {
 		HighScores.read();
 
 		ImageButtonStyle pStyle = new ImageButtonStyle();
-		pStyle.up = new Image(new Texture(Gdx.files.internal("ui/highscore/personal.png"))).getDrawable();
-		pStyle.down = new Image(new Texture(Gdx.files.internal("ui/highscore/personaldisable.png"))).getDrawable();
+		pStyle.up = new Image(new Texture(Gdx.files.internal("ui/highscore/personal.png")))
+				.getDrawable();
+		pStyle.down = new Image(new Texture(Gdx.files.internal("ui/highscore/personaldisable.png")))
+				.getDrawable();
 
 		personalButton = new ImageButton(pStyle);
 		personalButton.addListener(new ClickListener() {
@@ -93,9 +102,12 @@ public class HighScoresScreen extends AbstractScreen {
 // personalButton.setChecked(true);
 
 		ImageButtonStyle fStyle = new ImageButtonStyle();
-		fStyle.up = new Image(new Texture(Gdx.files.internal("ui/highscore/friends.png"))).getDrawable();
-		fStyle.down = new Image(new Texture(Gdx.files.internal("ui/highscore/friendsdisable.png"))).getDrawable();
-		fStyle.disabled = new Image(new Texture(Gdx.files.internal("ui/highscore/friendsdisable.png"))).getDrawable();
+		fStyle.up = new Image(new Texture(Gdx.files.internal("ui/highscore/friends.png")))
+				.getDrawable();
+		fStyle.down = new Image(new Texture(Gdx.files.internal("ui/highscore/friendsdisable.png")))
+				.getDrawable();
+		fStyle.disabled = new Image(new Texture(
+				Gdx.files.internal("ui/highscore/friendsdisable.png"))).getDrawable();
 
 		friendsButton = new ImageButton(fStyle);
 		friendsButton.addListener(new ClickListener() {
@@ -108,14 +120,26 @@ public class HighScoresScreen extends AbstractScreen {
 		});
 
 		ImageButtonStyle bStyle = new ImageButtonStyle();
-		bStyle.up = new Image(new Texture(Gdx.files.internal("ui/highscore/back.png"))).getDrawable();
-		bStyle.down = new Image(new Texture(Gdx.files.internal("ui/highscore/back_pressed.png"))).getDrawable();
+		bStyle.up = new Image(new Texture(Gdx.files.internal("ui/highscore/back.png")))
+				.getDrawable();
+		bStyle.down = new Image(new Texture(Gdx.files.internal("ui/highscore/back_pressed.png")))
+				.getDrawable();
 
 		ImageButton backButton = new ImageButton(bStyle);
 		backButton.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				game.setScreen(new MenuScreen(game));
+				if (gameOverDialog != null) {
+					game.setScreen(gs);
+					
+					GameOverDialog god = new GameOverDialog(gameOverDialog.score, getSkin(), gs, game);
+					god.setKeepWithinStage(false);
+					god.setPosition(Constants.WIDTH / 2 - god.getWidth() / 2, Constants.HEIGHT);
+					gs.hudStage.addActor(gameOverDialog);
+					Gdx.input.setInputProcessor(gs.hudStage);
+				} else {
+					game.setScreen(new MenuScreen(game));
+				}
 			}
 		});
 
@@ -128,20 +152,19 @@ public class HighScoresScreen extends AbstractScreen {
 		table.add(friendsButton).width(Constants.WIDTH / 3).colspan(1);
 		table.row();
 
-		if(JBSApi.api != null){
-			
-		
-		if (!(JBSApi.api.isConnected() && JBSApi.api.isAuthenticated())) {
-			globalButton.setDisabled(true);
-			friendsButton.setDisabled(true);
-		}
-		if (!JBSApi.loggedIn) {
-			friendsButton.setDisabled(true);
-		}
+		if (JBSApi.api != null) {
+
+			if (!(JBSApi.api.isConnected() && JBSApi.api.isAuthenticated())) {
+				globalButton.setDisabled(true);
+				friendsButton.setDisabled(true);
+			}
+			if (!JBSApi.loggedIn) {
+				friendsButton.setDisabled(true);
+			}
 		}
 
 		BitmapFont font = new BitmapFont(Gdx.files.internal("ui/highscore/font.fnt"));
-//		font.getData().getGlyph('.').yoffset = 30;
+// font.getData().getGlyph('.').yoffset = 30;
 
 		for (int i = 0; i < length; i++) {
 			scrollTable.row();
@@ -158,8 +181,8 @@ public class HighScoresScreen extends AbstractScreen {
 			scrollTable.add(scoreLabels[i]).padTop(5f).colspan(2).expandX().right().padRight(25f);
 		}
 
-//		table.debug();
-//		scrollTable.debug();
+// table.debug();
+// scrollTable.debug();
 
 		ScrollPane scrollPane = new ScrollPane(scrollTable, getSkin());
 		scrollPane.setScrollingDisabled(true, false);

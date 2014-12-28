@@ -93,7 +93,7 @@ public class MenuScreen extends AbstractScreen {
 		highscoresButton.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				game.setScreen(new HighScoresScreen(game));
+				game.setScreen(new HighScoresScreen(game, null, null));
 				TotemGame.soundManager.play("button");
 			}
 
