@@ -7,6 +7,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
@@ -31,9 +32,13 @@ public class Totem extends Box2DActor {
 		bodyDef.angularDamping = 1.0f;
 
 		fixtureDef.restitution = 0.0f;
-		fixtureDef.density = 1.0f;
+		fixtureDef.density = 5.0f;
 		fixtureDef.friction = 1.0f;
 
+		//shape = new PolygonShape();
+		//shape.setAsBox(((getWidth()-2)*Constants.SCALE) / 2, ((getHeight()-2)*Constants.SCALE) / 2);
+		//fixtureDef.shape = shape;
+		
 		createBody();
 		body.setUserData(this);
 		body.setTransform(x, y, 0);
@@ -42,7 +47,7 @@ public class Totem extends Box2DActor {
 
 		rect = new Rectangle(x, y, getWidth(), getHeight());
 		
-		parachute.setPosition(getX() - 25f * Constants.SCALE, getY() + getHeight() + 3f
+		parachute.setPosition(getX() - 25f * Constants.SCALE, getY() + getHeight() -3f
 				* Constants.SCALE);
 		
 		freeze.setPosition(getX() + getWidth() / 2 - freeze.getWidth() / 2 * Constants.SCALE,
@@ -107,7 +112,7 @@ public class Totem extends Box2DActor {
 					+ getHeight() - 52f * Constants.SCALE);
 		}
 
-		parachute.setPosition(getX() - 25f * Constants.SCALE, getY() + getHeight() + 3f
+		parachute.setPosition(getX() - 25f * Constants.SCALE, getY() + getHeight() -3f
 				* Constants.SCALE);
 		
 		parachute.setRotation(getRotation());

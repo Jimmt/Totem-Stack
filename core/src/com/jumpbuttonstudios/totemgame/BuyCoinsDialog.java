@@ -1,7 +1,5 @@
 package com.jumpbuttonstudios.totemgame;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.ButtonGroup;
@@ -28,17 +26,19 @@ public class BuyCoinsDialog extends Dialog {
 		int[] jbsNumbers = { 500, 1750, 4000 };
 		int[] dollarNumbers = { 1, 3, 7 };
 
-		setBackground(new Image(new Texture(Gdx.files.internal("ui/shop/window01.png"))).getDrawable());
-		setWidth(new Image(new Texture(Gdx.files.internal("ui/shop/window01.png"))).getWidth());
-		setHeight(new Image(new Texture(Gdx.files.internal("ui/shop/window01.png"))).getHeight());
+		//lots of inefficient redundancy used to be here!
+		Image window01 = new Image( Icons.getTex("ui/shop/window01.png") );
+		setBackground(window01.getDrawable());
+		setWidth(window01.getWidth());
+		setHeight(window01.getHeight());
 
 		ImageButtonStyle buttonStyle = new ImageButtonStyle();
-		buttonStyle.up = new Image(new Texture(Gdx.files.internal("ui/options/close.png"))).getDrawable();
+		buttonStyle.up = new Image(Icons.getTex("ui/options/close.png")).getDrawable();
 		x = new ImageButton(buttonStyle);
 
 		ImageButtonStyle buyStyle = new ImageButtonStyle();
-		buyStyle.up = new Image(new Texture(Gdx.files.internal("ui/shop/buyitem.png"))).getDrawable();
-		buyStyle.down = new Image(new Texture(Gdx.files.internal("ui/shop/buyitem_pressed.png"))).getDrawable();
+		buyStyle.up = new Image(Icons.getTex("ui/shop/buyitem.png")).getDrawable();
+		buyStyle.down = new Image(Icons.getTex("ui/shop/buyitem_pressed.png")).getDrawable();
 		buyButton = new ImageButton(buyStyle);
 		
 		buyButton.addListener(new ClickListener() {
@@ -54,10 +54,11 @@ public class BuyCoinsDialog extends Dialog {
 
 		ButtonGroup group = new ButtonGroup();
 
+		//Loading the same textures within a loop without cache = pointless lag!
 		for (int i = 0; i < 3; i++) {
 			ImageButtonStyle style = new ImageButtonStyle();
-			style.up = new Image(new Texture(Gdx.files.internal("ui/shop/unselected.png"))).getDrawable();
-			style.checked = new Image(new Texture(Gdx.files.internal("ui/shop/selected.png"))).getDrawable();
+			style.up = new Image(Icons.getTex("ui/shop/unselected.png")).getDrawable();
+			style.checked = new Image(Icons.getTex("ui/shop/selected.png")).getDrawable();
 			ImageButton button = new ImageButton(style);
 			group.add(button);
 			getContentTable().add(button).padLeft(8f);
@@ -69,16 +70,19 @@ public class BuyCoinsDialog extends Dialog {
 		getContentTable().row();
 		getContentTable().add(buyButton).colspan(4).padTop(30f).padBottom(15f);
 
+		//TODO textures should probably be in an atlas
+		//3 textures loaded 3 times from disk = 9 times lag
+		//for now caching works
 		for (int i = 0; i < 3; i++) {
-			Image img = new Image(new Texture(Gdx.files.internal("ui/shop/jbscoin_000" + i + "_Layer-" + (3 - i) + ".png")));
+			Image img = new Image(Icons.getTex("ui/shop/jbscoin_000" + i + "_Layer-" + (3 - i) + ".png"));
 			img.setScale(1);
 			coinImages[3 - i - 1] = img;
 
-			img = new Image(new Texture(Gdx.files.internal("ui/shop/" + dollarNumbers[i] + "dollar.png")));
+			img = new Image(Icons.getTex("ui/shop/" + dollarNumbers[i] + "dollar.png"));
 			img.setScale(1);
 			dollarImages[i] = img;
 
-			img = new Image(new Texture(Gdx.files.internal("ui/shop/" + jbsNumbers[i] + "jbs.png")));
+			img = new Image(Icons.getTex("ui/shop/" + jbsNumbers[i] + "jbs.png"));
 			img.setScale(1);
 			textImages[i] = img;
 		}

@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
@@ -15,7 +14,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.CheckBox.CheckBoxStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton.ImageButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
@@ -46,13 +44,13 @@ public class OptionsDialog extends Dialog {
 
 		BitmapFont font = new BitmapFont(Gdx.files.internal("ui/highscore/font.fnt"));
 
-		panel = new Image(new Texture(Gdx.files.internal("ui/options/windowblank.png")));
+		panel = new Image(Icons.getTex("ui/options/windowblank.png"));
 		setBackground(panel.getDrawable());
 
 		CheckBoxStyle checkBoxStyle = new CheckBoxStyle();
 		checkBoxStyle.checkboxOn = new Image(new Texture(
 				Gdx.files.internal("ui/options/checkbg.png"))).getDrawable();
-		checkBoxStyle.checkboxOff = new Image(new Texture(Gdx.files.internal("ui/options/xbg.png")))
+		checkBoxStyle.checkboxOff = new Image(Icons.getTex("ui/options/xbg.png"))
 				.getDrawable();
 		checkBoxStyle.font = font;
 
@@ -77,7 +75,7 @@ public class OptionsDialog extends Dialog {
 		tiltControl.setChecked(!GamePrefs.prefs.getBoolean("tap"));
 
 		ImageButtonStyle buttonStyle = new ImageButtonStyle();
-		Texture closeTex = new Texture(Gdx.files.internal("ui/options/close.png"));
+		Texture closeTex = Icons.getTex("ui/options/close.png");
 		closeTex.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		buttonStyle.up = new Image(closeTex).getDrawable();
 		x = new ImageButton(buttonStyle);
@@ -86,10 +84,10 @@ public class OptionsDialog extends Dialog {
 
 		setupListeners();
 
-		tap = new Image(new Texture(Gdx.files.internal("ui/options/tap.png")));
+		tap = new Image(Icons.getTex("ui/options/tap.png"));
 		tap.setScale(1f);
 		tap.setOrigin(tap.getWidth() / 2, tap.getHeight() / 2);
-		tilt = new Image(new Texture(Gdx.files.internal("ui/options/tilt.png")));
+		tilt = new Image(Icons.getTex("ui/options/tilt.png"));
 		tilt.setScale(1);
 		tilt.setOrigin(tilt.getWidth() / 2, tilt.getHeight() / 2);
 		getContentTable().align(Align.left).padLeft(30f);

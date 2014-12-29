@@ -13,18 +13,18 @@ public class Background {
 
 	public Background(Stage stage, World world) {
 		
-		sky = new Image(new Texture(Gdx.files.internal("bg/skygradient.png")));
+		sky = new Image(Icons.getTex("bg/skygradient.png"));
 		sky.setScale(Constants.SCALE);
 		stage.addActor(sky);
 		sky.setHeight(740 + Zone.RAIN.getY() / Constants.SCALE);
 		sky.setWidth(Constants.WIDTH);	
 		
-		mountains = new Image(new Texture(Gdx.files.internal("bg/mountain.png")));
+		mountains = new Image(Icons.getTex("bg/mountain.png"));
 		mountains.setScale(Constants.SCALE);
 		mountains.setWidth(Constants.WIDTH);
 		
 		stage.addActor(mountains);
-		rocks = new Image(new Texture(Gdx.files.internal("bg/bigrock.png")));
+		rocks = new Image(Icons.getTex("bg/bigrock.png"));
 		rocks.setScale(Constants.SCALE);
 		rocks.setY(230f * Constants.SCALE);
 		rocks.setWidth(Constants.WIDTH);

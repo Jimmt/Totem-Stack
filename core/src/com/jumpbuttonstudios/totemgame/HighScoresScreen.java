@@ -165,20 +165,28 @@ public class HighScoresScreen extends AbstractScreen {
 
 		BitmapFont font = new BitmapFont(Gdx.files.internal("ui/highscore/font.fnt"));
 // font.getData().getGlyph('.').yoffset = 30;
+		
+		LabelStyle style = new LabelStyle();
+		style.font = font;
+		style.fontColor = Color.WHITE;
+		
+		//Headers
+		table.add(new Label("#",style)).padTop(5f).left().padLeft(15f);
+		table.add(new Label("Av",style)).left().width(40).height(40);
+		table.add(new Label("Name",style)).padTop(5f).left().padLeft(15f);
+		table.add(new Label("Score",style)).padTop(5f).colspan(2).expandX().right().padRight(75f);
+		table.row();
 
 		for (int i = 0; i < length; i++) {
 			scrollTable.row();
-			LabelStyle style = new LabelStyle();
-			style.font = font;
-			style.fontColor = Color.WHITE;
 			numberLabels[i] = new Label(String.valueOf(i + 1) + ".", style);
 			scoreLabels[i] = new Label(String.valueOf(HighScores.scores[i]), style);
-			nameLabels[i] = new Label("", style);
-			avatars[i] = new Image();
-			scrollTable.add(numberLabels[i]).padTop(5f).left().padLeft(5f);
-			scrollTable.add(avatars[i]).padTop(5f).left().width(40).height(40).padTop(5f).bottom();
-			scrollTable.add(nameLabels[i]).padTop(5f).left().padLeft(15f);
-			scrollTable.add(scoreLabels[i]).padTop(5f).colspan(2).expandX().right().padRight(25f);
+			nameLabels[i] = new Label("N/A", style);
+			avatars[i] = new Image(Icons.getTex("black.png")); //replace with default avatar
+			scrollTable.add(numberLabels[i]).padTop(5f).left().padLeft(15f);
+			scrollTable.add(avatars[i]).padTop(5f).left().width(40).height(40).padLeft(15f).bottom();
+			scrollTable.add(nameLabels[i]).padTop(5f).left().padLeft(80f);
+			scrollTable.add(scoreLabels[i]).padTop(5f).colspan(2).expandX().right().padRight(75f);
 		}
 
 // table.debug();

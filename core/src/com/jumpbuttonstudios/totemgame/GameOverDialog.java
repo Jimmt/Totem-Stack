@@ -66,9 +66,9 @@ public class GameOverDialog extends Dialog {
 
 		for (int i = 0; i < paths.length; i++) {
 			ImageButtonStyle style = new ImageButtonStyle();
-			style.imageUp = new Image(new Texture(Gdx.files.internal(paths[i]))).getDrawable();
+			style.imageUp = new Image(Icons.getTex(paths[i])).getDrawable();
 			String pressed = paths[i].substring(0, paths[i].length() - 4) + "_pressed.png";
-			style.imageDown = new Image(new Texture(Gdx.files.internal(pressed))).getDrawable();
+			style.imageDown = new Image(Icons.getTex(pressed)).getDrawable();
 			ImageButton imageButton = new ImageButton(style);
 			imageButtons.add(imageButton);
 
@@ -76,22 +76,22 @@ public class GameOverDialog extends Dialog {
 
 		setupListeners();
 
-		Image panel = new Image(new Texture(Gdx.files.internal("gameover/window.png")));
+		Image panel = new Image(Icons.getTex("gameover/window.png"));
 		setBackground(panel.getDrawable());
 
 		panel.setSize(Constants.WIDTH, Constants.HEIGHT - 80);
 		setSize(panel.getWidth(), panel.getHeight());
 
-		gameOver = new Image(new Texture(Gdx.files.internal("gameover/gameover.png")));
+		gameOver = new Image(Icons.getTex("gameover/gameover.png"));
 		gameOver.setPosition(Constants.WIDTH / 2 - gameOver.getWidth() / 2, Constants.HEIGHT);
 		gameOver.setScaling(Scaling.fill);
 		getContentTable().add(gameOver);
 		getContentTable().row();
 
 		ImageButtonStyle removeAdStyle = new ImageButtonStyle();
-		removeAdStyle.up = new Image(new Texture(Gdx.files.internal("ui/paused/removead.png")))
+		removeAdStyle.up = new Image(Icons.getTex("ui/paused/removead.png"))
 				.getDrawable();
-		removeAdStyle.down = new Image(new Texture(Gdx.files.internal("ui/paused/removead.png")))
+		removeAdStyle.down = new Image(Icons.getTex("ui/paused/removead.png"))
 				.getDrawable();
 		ImageButton removeAds = new ImageButton(removeAdStyle);
 		removeAds.addListener(new ClickListener() {
@@ -104,7 +104,7 @@ public class GameOverDialog extends Dialog {
 
 		BitmapFont font = new BitmapFont(Gdx.files.internal("ui/top/scoreFont.fnt"));
 
-		yourScore = new Image(new Texture(Gdx.files.internal("gameover/yourScoreBox.png")));
+		yourScore = new Image(Icons.getTex("gameover/yourScoreBox.png"));
 		LabelStyle style = new LabelStyle();
 		style.font = font;
 		style.fontColor = Color.WHITE;
@@ -157,7 +157,7 @@ public class GameOverDialog extends Dialog {
 					@Override
 					public void clicked(InputEvent event, float x, float y) {
 						super.clicked(event, x, y);
-						game.setScreen(new HighScoresScreen(game, gs, dialog));
+						game.setScreen(new HighScoresScreen(game,gs,dialog));
 						TotemGame.soundManager.play("button");
 					}
 				});

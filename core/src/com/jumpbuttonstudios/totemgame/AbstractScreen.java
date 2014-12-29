@@ -6,16 +6,13 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 public class AbstractScreen implements Screen {
 	private Table table;
@@ -49,7 +46,7 @@ public class AbstractScreen implements Screen {
 		multiplexer = new InputMultiplexer(stage, hudStage);
 		Gdx.input.setInputProcessor(multiplexer);
 
-		black = new Image(new Texture(Gdx.files.internal("black.png")));
+		black = new Image(Icons.getTex("black.png"));
 		black.setSize(Constants.WIDTH, Constants.HEIGHT);
 		black.setColor(black.getColor().r, black.getColor().g, black.getColor().b, 0.65f);
 
@@ -67,8 +64,12 @@ public class AbstractScreen implements Screen {
 	public void render(float delta) {
 
 		Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
-
+		Gdx.gl.glClear(
+				GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT |
+				//for android MSAA filtering
+				(Gdx.graphics.getBufferFormat().coverageSampling?GL20.GL_COVERAGE_BUFFER_BIT_NV:0)
+			);
+		
 		stage.act(delta);
 		hudStage.act(delta);
 		stage.draw();

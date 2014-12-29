@@ -1,9 +1,12 @@
 package com.jumpbuttonstudios.totemgame;
 
+import java.util.HashMap;
+
+import com.badlogic.gdx.Files.FileType;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Array;
@@ -99,8 +102,39 @@ public class Icons {
 
 	public static FileHandle listFile = Gdx.files.local("file.txt");
 
+	static HashMap<String,Texture> textureCache = new HashMap<String,Texture>();
+	
+	/**
+	 * returns a new texture from internal file system or a cached texture
+	 * if its already been loaded
+	 * @param path the file path to load
+	 * @param fileType the file path resolver to load with
+	 * @return
+	 */
+	public static Texture getTex( String path, FileType fileType ) {
+		if(textureCache.containsKey(path))
+			return textureCache.get(path);
+
+		Texture tex = new Texture(Gdx.files.getFileHandle(path, fileType));
+		tex.setFilter(TextureFilter.Linear,TextureFilter.Linear);
+		textureCache.put(path, tex);
+		return tex;
+	}
+	/**
+	 * returns a new texture from internal file system or a cached texture
+	 * if its already been loaded
+	 * @param path the file path to load
+	 * @return
+	 */
+	public static Texture getTex( String path ) {
+		return getTex( path, FileType.Internal );
+	}
+	
 	public static Image returnImage(String path) {
-		Image i = new Image(new Texture(Gdx.files.internal(path)));
+		Texture tex = new Texture(Gdx.files.internal(path));
+		//this is how you smooth textures with AA
+		tex.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+		Image i = new Image( tex );
 		i.setScale(Constants.SCALE);
 		return i;
 	}

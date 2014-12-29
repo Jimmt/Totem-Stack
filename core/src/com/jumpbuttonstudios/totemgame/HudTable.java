@@ -1,20 +1,15 @@
 package com.jumpbuttonstudios.totemgame;
 
-import com.badlogic.gdx.Application.ApplicationType;
-import com.badlogic.gdx.Input.Buttons;
-import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton.ImageButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 public class HudTable extends Table {
@@ -44,30 +39,30 @@ public class HudTable extends Table {
 		LabelStyle style = new LabelStyle();
 		style.font = new BitmapFont(Gdx.files.internal("ui/top/scoreFont.fnt"));
 
-		header = new Image(new Texture(Gdx.files.internal("ui/top/header.png")));
+		header = new Image(Icons.getTex("ui/top/header.png"));
 		header.setY(Constants.HEIGHT - header.getHeight());
 
 		game.hudStage.addActor(header);
 
 		for (int i = 0; i < buttons.length; i++) {
 			ImageButtonStyle ibstyle = new ImageButtonStyle();
-			ibstyle.imageUp = new Image(new Texture(Gdx.files.internal("ui/top/" + paths[i]
-					+ ".png"))).getDrawable();
-			ibstyle.imageDown = new Image(new Texture(Gdx.files.internal("ui/top/" + paths[i]
-					+ "_pressed.png"))).getDrawable();
+			ibstyle.imageUp = new Image(Icons.getTex("ui/top/" + paths[i]
+					+ ".png")).getDrawable();
+			ibstyle.imageDown = new Image(Icons.getTex("ui/top/" + paths[i]
+					+ "_pressed.png")).getDrawable();
 			buttons[i] = new ImageButton(ibstyle);
 
 		}
 
 		soundOnStyle = new ImageButtonStyle();
-		soundOnStyle.up = new Image(new Texture("ui/top/soundon.png")).getDrawable();
-		soundOnStyle.down = new Image(new Texture("ui/top/soundon_pressed.png")).getDrawable();
+		soundOnStyle.up = new Image(Icons.getTex("ui/top/soundon.png")).getDrawable();
+		soundOnStyle.down = new Image(Icons.getTex("ui/top/soundon_pressed.png")).getDrawable();
 
 		sound = new ImageButton(soundOnStyle);
 
 		soundOffStyle = new ImageButtonStyle();
-		soundOffStyle.up = new Image(new Texture("ui/top/soundoff.png")).getDrawable();
-		soundOffStyle.down = new Image(new Texture("ui/top/soundoff_pressed.png")).getDrawable();
+		soundOffStyle.up = new Image(Icons.getTex("ui/top/soundoff.png")).getDrawable();
+		soundOffStyle.down = new Image(Icons.getTex("ui/top/soundoff_pressed.png")).getDrawable();
 
 		Table left = new Table();
 		Table right = new Table();
@@ -93,12 +88,10 @@ public class HudTable extends Table {
 
 		if (game instanceof GameScreen) {
 
-			Table bottom = new Table();
+			//Table bottom = new Table(); // not used?
 			ImageButtonStyle ibs = new ImageButtonStyle();
-			ibs.imageUp = new Image(new Texture(Gdx.files.internal("ui/gameplay/left.png")))
-					.getDrawable();
-			ibs.imageDown = new Image(
-					new Texture(Gdx.files.internal("ui/gameplay/leftclicked.png"))).getDrawable();
+			ibs.imageUp = new Image(Icons.getTex("ui/gameplay/left.png")).getDrawable();
+			ibs.imageDown = new Image(Icons.getTex("ui/gameplay/leftclicked.png")).getDrawable();
 			leftButton = new ImageButton(ibs);
 			leftButton.addListener(new ClickListener() {
 				@Override
@@ -124,10 +117,8 @@ public class HudTable extends Table {
 			leftButton.setPosition(0, 0);
 
 			ImageButtonStyle ibs2 = new ImageButtonStyle();
-			ibs2.imageUp = new Image(new Texture(Gdx.files.internal("ui/gameplay/right.png")))
-					.getDrawable();
-			ibs2.imageDown = new Image(new Texture(
-					Gdx.files.internal("ui/gameplay/rightclicked.png"))).getDrawable();
+			ibs2.imageUp = new Image(Icons.getTex("ui/gameplay/right.png")).getDrawable();
+			ibs2.imageDown = new Image(Icons.getTex("ui/gameplay/rightclicked.png")).getDrawable();
 			rightButton = new ImageButton(ibs2);
 			rightButton.addListener(new ClickListener() {
 				@Override

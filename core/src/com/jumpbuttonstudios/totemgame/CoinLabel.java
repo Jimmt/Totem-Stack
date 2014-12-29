@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -14,7 +13,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton.ImageButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
-import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 public class CoinLabel extends Actor {
@@ -28,8 +26,7 @@ public class CoinLabel extends Actor {
 		LabelStyle labelStyle = new LabelStyle();
 		labelStyle.font = numbers;
 		labelStyle.fontColor = Color.WHITE;
-		Texture bgTex = new Texture(Gdx.files.internal("shop/jbscoin.png"));
-		bgTex.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+		Texture bgTex = Icons.getTex("shop/jbscoin.png");
 		Image background = new Image(bgTex);
 		labelStyle.background = background.getDrawable();
 
@@ -37,16 +34,14 @@ public class CoinLabel extends Actor {
 		coins.setWidth(bgTex.getWidth());
 		coins.setHeight(bgTex.getHeight());
 		
-		
 
-		Texture coinTex = new Texture(Gdx.files.internal("shop/coin.png"));
-		coinTex.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+		Texture coinTex = Icons.getTex("shop/coin.png");
 		coinImage = new Image(coinTex);
 		coinImage.setScale(1);
 
 		ImageButtonStyle coinButtonStyle = new ImageButtonStyle();
-		coinButtonStyle.up = new Image(new Texture(Gdx.files.internal("shop/add.png"))).getDrawable();
-		coinButtonStyle.down = new Image(new Texture(Gdx.files.internal("shop/add_pressed.png"))).getDrawable();
+		coinButtonStyle.up = new Image(Icons.getTex("shop/add.png")).getDrawable();
+		coinButtonStyle.down = new Image(Icons.getTex("shop/add_pressed.png")).getDrawable();
 
 		coinButton = new ImageButton(coinButtonStyle);
 		coinButton.addListener(new ClickListener() {

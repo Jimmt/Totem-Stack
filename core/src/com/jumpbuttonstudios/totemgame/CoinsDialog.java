@@ -1,10 +1,6 @@
 package com.jumpbuttonstudios.totemgame;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -15,7 +11,7 @@ public class CoinsDialog extends Dialog {
 	public CoinsDialog(String text, Skin skin) {
 		super(text, skin);
 		
-		Image panel = new Image(new Texture(Gdx.files.internal("blank.png")));
+		Image panel = new Image(Icons.getTex("blank.png"));
 		setBackground(panel.getDrawable());
 		coinLabel = new CoinLabel();
 		coinLabel.setPosition(0,  0);

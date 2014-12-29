@@ -18,7 +18,7 @@ public class Box2DActor extends Image {
 	float width, height;
 
 	public Box2DActor(String path, float width, float height, World world) {
-		super(new Texture(Gdx.files.internal(path)));
+		super(Icons.getTex(path));
 
 		this.width = width;
 		this.height = height;
@@ -35,7 +35,7 @@ public class Box2DActor extends Image {
 	}
 
 	public Box2DActor(String path, World world) {
-		super(new Texture(Gdx.files.internal(path)));
+		super(Icons.getTex(path));
 
 		this.width = getWidth() * Constants.SCALE;
 		this.height = getHeight() * Constants.SCALE;

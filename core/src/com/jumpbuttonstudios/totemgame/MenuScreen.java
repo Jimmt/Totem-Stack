@@ -2,13 +2,7 @@ package com.jumpbuttonstudios.totemgame;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
-import com.badlogic.gdx.Net.HttpMethods;
-import com.badlogic.gdx.Net.HttpRequest;
-import com.badlogic.gdx.Net.HttpResponse;
-import com.badlogic.gdx.Net.HttpResponseListener;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.net.HttpStatus;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
@@ -53,28 +47,28 @@ public class MenuScreen extends AbstractScreen {
 		table.setFillParent(true);
 
 		ImageButtonStyle startStyle = new ImageButtonStyle();
-		tmp = new Image(tex = new Texture(Gdx.files.internal("login/start.png")));
+		tmp = new Image(tex = Icons.getTex("login/start.png"));
 		startStyle.imageUp = tmp.getDrawable();
-		tmp = new Image(tex = new Texture(Gdx.files.internal("login/start_clicked.png")));
+		tmp = new Image(tex = Icons.getTex("login/start_clicked.png"));
 		tmp.setSize(tmp.getWidth() * 2, tmp.getHeight() * 2);
 		startStyle.imageDown = tmp.getDrawable();
 
 		ImageButtonStyle highscoresStyle = new ImageButtonStyle();
-		tmp = new Image(tex = new Texture(Gdx.files.internal("login/highscore.png")));
+		tmp = new Image(tex = Icons.getTex("login/highscore.png"));
 		highscoresStyle.imageUp = tmp.getDrawable();
-		tmp = new Image(tex = new Texture(Gdx.files.internal("login/highscore_clicked.png")));
+		tmp = new Image(tex = Icons.getTex("login/highscore_clicked.png"));
 		highscoresStyle.imageDown = tmp.getDrawable();
 
 		loginStyle = new ImageButtonStyle();
-		tmp = new Image(tex = new Texture(Gdx.files.internal("login/login.png")));
+		tmp = new Image(tex = Icons.getTex("login/login.png"));
 		loginStyle.imageUp = tmp.getDrawable();
-		tmp = new Image(tex = new Texture(Gdx.files.internal("login/login_clicked.png")));
+		tmp = new Image(tex = Icons.getTex("login/login_clicked.png"));
 		loginStyle.imageDown = tmp.getDrawable();
 
 		logoutStyle = new ImageButtonStyle();
-		tmp = new Image(tex = new Texture(Gdx.files.internal("login/logout.png")));
+		tmp = new Image(tex = Icons.getTex("login/logout.png"));
 		logoutStyle.imageUp = tmp.getDrawable();
-		tmp = new Image(tex = new Texture(Gdx.files.internal("login/logout_clicked.png")));
+		tmp = new Image(tex = Icons.getTex("login/logout_clicked.png"));
 		logoutStyle.imageDown = tmp.getDrawable();
 
 		startButton = new ImageButton(startStyle);
@@ -114,7 +108,7 @@ public class MenuScreen extends AbstractScreen {
 
 		});
 
-		Image background = new Image(new Texture(Gdx.files.internal("bg/net.png")));
+		Image background = new Image(Icons.getTex("bg/net.png"));
 		background.setWidth(Constants.WIDTH);
 		stage.addActor(background);
 
