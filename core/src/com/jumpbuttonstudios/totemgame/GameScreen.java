@@ -138,6 +138,12 @@ public class GameScreen extends AbstractScreen {
 			}
 		}
 
+		if (score < 150) {
+			spawner.totemScale = 1 - score / 300f;
+		} else {
+			spawner.totemScale = 0.5f;
+		}
+
 		if (contactListener.getGroundTotems().size > 1 && !gameOver && spawner.totems.size > 1) {
 			gameOver();
 

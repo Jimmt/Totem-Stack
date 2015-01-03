@@ -11,15 +11,15 @@ public class IceTotem extends Totem {
 	boolean unfreeze;
 	boolean freezeTotem;
 
-	public IceTotem(float x, float y, World world, Stage particleStage) {
-		super(x, y, world);
+	public IceTotem(float x, float y, float scale, World world, Stage particleStage) {
+		super(x, y, scale, world);
 
 		this.particleStage = particleStage;
 
 		Image img = Icons.getImage("totem/ice/ice.png");
 		setDrawable(img.getDrawable());
-		width = img.getWidth() * Constants.SCALE;
-		height = img.getHeight() * Constants.SCALE;
+		width = img.getWidth() * Constants.SCALE * scale;
+		height = img.getHeight() * Constants.SCALE * scale;
 		setSize(width, height);
 
 	}

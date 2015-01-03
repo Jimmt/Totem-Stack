@@ -19,13 +19,15 @@ public class Totem extends Box2DActor {
 	protected Image freeze;
 	boolean isFrozen = false, enableParachute = true;
 
-	public Totem(float x, float y, World world) {
-		super("totem/0" + MathUtils.random(3) + ".png", world);
+	public Totem(float x, float y, float scale, World world) {
+		super("totem/0" + MathUtils.random(3) + ".png", scale, world);
 
+		
 		random = MathUtils.random(3);
 
 		parachute = new Image(new Texture(Gdx.files.internal("totem/parachute.png")));
 		parachute.setScale(Constants.SCALE);
+		parachute.setSize(parachute.getWidth() * scale, parachute.getHeight() * scale);
 		freeze = Icons.returnImage("totem/ice/freeze.png");
 
 		bodyDef.type = BodyType.DynamicBody;
@@ -112,7 +114,7 @@ public class Totem extends Box2DActor {
 					+ getHeight() - 52f * Constants.SCALE);
 		}
 
-		parachute.setPosition(getX() - 25f * Constants.SCALE, getY() + getHeight() -3f
+		parachute.setPosition(getX() - 0.15f * parachute.getWidth() * Constants.SCALE, getY() + getHeight() -3f
 				* Constants.SCALE);
 		
 		parachute.setRotation(getRotation());

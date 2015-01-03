@@ -26,7 +26,7 @@ public class TotemSpawner extends Actor {
 	float windChangeTime = 999f, windChangeCap = 15f;
 	float nextLightningTime = 999f, lightningCap = 3f;
 	long nextGoldSpawn;
-	float cloudSpawnTime = 999f, cloudSpawnCap;
+	float cloudSpawnTime = 999f, cloudSpawnCap, totemScale = 1f;
 	Array<Cloud> clouds = new Array<Cloud>();
 	Zone zone = Zone.LOWER;
 	Array<Image> stars;
@@ -241,14 +241,14 @@ public class TotemSpawner extends Actor {
 
 					Totem t;
 					if (freezeTotem) {
-						t = new IceTotem(0.5f * Constants.SCLWIDTH, spawnY, game.world,
+						t = new IceTotem(0.5f * Constants.SCLWIDTH, spawnY, totemScale, game.world,
 								game.particleStage);
 						freezeTotem = false;
 
 					} else if (TimeUtils.millis() > nextGoldSpawn && totems.size > 3) {
 						nextGoldSpawn += TimeUtils.millis() + MathUtils.random(90000);
 
-						t = new GoldTotem(0.5f * Constants.SCLWIDTH, spawnY + 0.5f, game.world,
+						t = new GoldTotem(0.5f * Constants.SCLWIDTH, spawnY + 0.5f, totemScale, game.world,
 								game.particleStage);
 					} else {
 // t = new GoldTotem(0.5f * Constants.SCLWIDTH, spawnY, game.world,
@@ -266,7 +266,7 @@ public class TotemSpawner extends Actor {
 // t = new Totem(0.5f * Constants.SCLWIDTH, spawnY, game.world);
 // }
 						t = new Totem(MathUtils.random(Constants.SCLWIDTH / 2 - randomMagnitude,
-								Constants.SCLWIDTH / 2 + randomMagnitude), spawnY + 0.5f,
+								Constants.SCLWIDTH / 2 + randomMagnitude), spawnY + 0.5f, totemScale,
 								game.world);
 
 					}

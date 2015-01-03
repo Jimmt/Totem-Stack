@@ -11,15 +11,15 @@ public class GoldTotem extends Totem {
 	Stage particleStage;
 	Image aura, noAura;
 
-	public GoldTotem(float x, float y, World world, Stage particleStage) {
-		super(x, y, world);
+	public GoldTotem(float x, float y, float scale, World world, Stage particleStage) {
+		super(x, y, scale, world);
 
 		this.particleStage = particleStage;
 
 		aura = Icons.getImage("totem/special/specialshine.png");
 		setDrawable(aura.getDrawable());
-		width = aura.getWidth() * Constants.SCALE;
-		height = aura.getHeight() * Constants.SCALE;
+		width = aura.getWidth() * Constants.SCALE * scale;
+		height = aura.getHeight() * Constants.SCALE * scale;
 		setSize(width, height);
 
 	}

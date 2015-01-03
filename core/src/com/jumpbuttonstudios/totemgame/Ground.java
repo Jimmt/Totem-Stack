@@ -1,14 +1,15 @@
 package com.jumpbuttonstudios.totemgame;
 
+
+
 import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 
 public class Ground extends Box2DActor {
 	float boxHeight;
 
 	public Ground(String path, World world) {
-		super(path, world);
+		super(path, 1, world);
 
 		boxHeight = 93 * Constants.SCALE;
 
@@ -19,6 +20,7 @@ public class Ground extends Box2DActor {
 		fixtureDef.shape = shape;
 		createBody();
 		body.setUserData(this);
+	
 	}
 
 	@Override

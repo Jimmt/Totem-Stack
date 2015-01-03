@@ -34,11 +34,11 @@ public class Box2DActor extends Image {
 		setSize(width, height);
 	}
 
-	public Box2DActor(String path, World world) {
+	public Box2DActor(String path, float scale, World world) {
 		super(Icons.getTex(path));
 
-		this.width = getWidth() * Constants.SCALE;
-		this.height = getHeight() * Constants.SCALE;
+		this.width = getWidth() * Constants.SCALE * scale;
+		this.height = getHeight() * Constants.SCALE * scale;
 
 		this.world = world;
 
