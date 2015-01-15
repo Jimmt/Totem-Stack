@@ -4,17 +4,18 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Interpolation.PowIn;
 import com.badlogic.gdx.math.Interpolation.PowOut;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 public class GameScreen extends AbstractScreen {
 	Background background;
 	TotemSpawner spawner;
-	PointChecker pointChecker;
 	GameContactListener contactListener;
 	ShapeRenderer sr;
 	HudTable hudTable;
@@ -36,7 +37,8 @@ public class GameScreen extends AbstractScreen {
 		stage.setViewport(viewport);
 		viewport.update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
 
-		hudStage = new Stage();
+		StretchViewport stretchPort = new StretchViewport(Constants.WIDTH, Constants.HEIGHT);
+		hudStage = new Stage(stretchPort);
 		hudTable = new HudTable(getSkin(), this);
 		hudTable.setTransform(true);
 		hudTable.setFillParent(true);
@@ -102,23 +104,23 @@ public class GameScreen extends AbstractScreen {
 
 		contactListener.update(delta);
 
-// if (currentTotem != null) {
-// sr.setProjectionMatrix(camera.combined);
-// sr.begin(ShapeType.Line);
-// sr.box(pointChecker.onePointLeft.x, pointChecker.onePointLeft.y, 0,
-// pointChecker.onePointLeft.width, pointChecker.onePointLeft.height, 0);
-// sr.box(pointChecker.onePointRight.x, pointChecker.onePointRight.y, 0,
-// pointChecker.onePointRight.width, pointChecker.onePointRight.height, 0);
-// sr.box(pointChecker.twoPointLeft.x, pointChecker.twoPointLeft.y, 0,
-// pointChecker.twoPointLeft.width, pointChecker.twoPointLeft.height, 0);
-// sr.box(pointChecker.twoPointRight.x, pointChecker.twoPointRight.y, 0,
-// pointChecker.twoPointRight.width, pointChecker.twoPointRight.height, 0);
-// sr.box(pointChecker.threePoint.x, pointChecker.threePoint.y, 0,
-// pointChecker.threePoint.width, pointChecker.threePoint.height, 0);
-// sr.box(pointChecker.totemRect.x, pointChecker.totemRect.y, 0,
-// pointChecker.totemRect.width, pointChecker.totemRect.height, 0);
-// sr.end();
-// }
+//		if (spawner.pointChecker != null) {
+//			sr.setProjectionMatrix(camera.combined);
+//			sr.begin(ShapeType.Line);
+//			sr.box(spawner.pointChecker.onePointLeft.x, spawner.pointChecker.onePointLeft.y, 0,
+//					spawner.pointChecker.onePointLeft.width, spawner.pointChecker.onePointLeft.height, 0);
+//			sr.box(spawner.pointChecker.onePointRight.x, spawner.pointChecker.onePointRight.y, 0,
+//					spawner.pointChecker.onePointRight.width, spawner.pointChecker.onePointRight.height, 0);
+//			sr.box(spawner.pointChecker.twoPointLeft.x, spawner.pointChecker.twoPointLeft.y, 0,
+//					spawner.pointChecker.twoPointLeft.width, spawner.pointChecker.twoPointLeft.height, 0);
+//			sr.box(spawner.pointChecker.twoPointRight.x, spawner.pointChecker.twoPointRight.y, 0,
+//					spawner.pointChecker.twoPointRight.width, spawner.pointChecker.twoPointRight.height, 0);
+//			sr.box(spawner.pointChecker.threePoint.x, spawner.pointChecker.threePoint.y, 0,
+//					spawner.pointChecker.threePoint.width, spawner.pointChecker.threePoint.height, 0);
+//			sr.box(spawner.pointChecker.totemRect.x, spawner.pointChecker.totemRect.y, 0,
+//					spawner.pointChecker.totemRect.width, spawner.pointChecker.totemRect.height, 0);
+//			sr.end();
+//		}
 
 		for (int i = 0; i < removeTotems.size; i++) {
 			world.destroyBody(removeTotems.get(i).body);

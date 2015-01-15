@@ -127,11 +127,11 @@ public class GameOverDialog extends Dialog {
 		bestScoreLabel.setAlignment(Align.center);
 
 		getContentTable().add(scoreLabel).width(yourScore.getWidth()).height(yourScore.getHeight())
-				.expandX().center();
+				.fill().center();
 		getContentTable().row();
 		getContentTable().add(bestScoreLabel).width(bestScore.getWidth())
-				.height(bestScore.getHeight()).expandX().center();
-
+				.height(bestScore.getHeight()).fill().center();
+		
 		for (int i = 0; i < imageButtons.size; i++) {
 			getButtonTable().add(imageButtons.get(i)).width(imageButtons.get(i).getWidth())
 					.height(imageButtons.get(i).getHeight());

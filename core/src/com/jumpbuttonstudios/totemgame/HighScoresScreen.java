@@ -6,6 +6,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
@@ -18,7 +19,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.jumpbuttonstudio.Friend;
 import com.jumpbuttonstudio.HighscoreResult;
 
-
 public class HighScoresScreen extends AbstractScreen {
 	private int length = 15;
 	private String[] globalNames = new String[length];
@@ -27,11 +27,13 @@ public class HighScoresScreen extends AbstractScreen {
 	private Label[] nameLabels = new Label[length];
 	private Label[] scoreLabels = new Label[length];
 	private Image[] avatars = new Image[length];
+	private Group[] groups = new Group[length];
 	private ImageButton globalButton;
 	private ImageButton personalButton;
 	private ImageButton friendsButton;
 	private GameOverDialog gameOverDialog;
 	private GameScreen gs;
+	private boolean added;
 
 	public HighScoresScreen(TotemGame game, GameScreen gs, GameOverDialog gameOverDialog) {
 		super(game);
@@ -70,6 +72,7 @@ public class HighScoresScreen extends AbstractScreen {
 					scoreLabels[i].setText(String.valueOf(globalScores[i]));
 					avatars[i].setVisible(true);
 					nameLabels[i].setText(globalNames[i]);
+					groups[i].setVisible(true);
 				}
 			}
 
@@ -94,7 +97,7 @@ public class HighScoresScreen extends AbstractScreen {
 					scoreLabels[i].setText(String.valueOf(HighScores.scores[i]));
 					nameLabels[i].setText("");
 					avatars[i].setVisible(false);
-
+					groups[i].setVisible(false);
 				}
 			}
 
@@ -131,8 +134,9 @@ public class HighScoresScreen extends AbstractScreen {
 			public void clicked(InputEvent event, float x, float y) {
 				if (gameOverDialog != null) {
 					game.setScreen(gs);
-					
-					GameOverDialog god = new GameOverDialog(gameOverDialog.score, getSkin(), gs, game);
+
+					GameOverDialog god = new GameOverDialog(gameOverDialog.score, getSkin(), gs,
+							game);
 					god.setKeepWithinStage(false);
 					god.setPosition(Constants.WIDTH / 2 - god.getWidth() / 2, Constants.HEIGHT);
 					gs.hudStage.addActor(gameOverDialog);
@@ -165,28 +169,60 @@ public class HighScoresScreen extends AbstractScreen {
 
 		BitmapFont font = new BitmapFont(Gdx.files.internal("ui/highscore/font.fnt"));
 // font.getData().getGlyph('.').yoffset = 30;
-		
+
 		LabelStyle style = new LabelStyle();
 		style.font = font;
 		style.fontColor = Color.WHITE;
-		
-		//Headers
-		table.add(new Label("#",style)).padTop(5f).left().padLeft(15f);
-		table.add(new Label("Av",style)).left().width(40).height(40);
-		table.add(new Label("Name",style)).padTop(5f).left().padLeft(15f);
-		table.add(new Label("Score",style)).padTop(5f).colspan(2).expandX().right().padRight(75f);
+
+		// Headers
+		table.add(new Label("#", style)).padTop(5f).left().padLeft(15f);
+		table.add(new Label("Av", style)).left().width(40).height(40);
+		table.add(new Label("Name", style)).padTop(5f).left().padLeft(15f);
+		table.add(new Label("Score", style)).padTop(5f).colspan(2).expandX().right().padRight(75f);
 		table.row();
 
+		for (int i = 0; i < groups.length; i++) {
+			Image bg = null;
+			Group group = new Group();
+			groups[i] = group;
+			if (i == 0) {
+				bg = new Image(Icons.getTex("ui/highscore/rank1.png"));
+			} else {
+				bg = new Image(Icons.getTex("ui/highscore/ranks.png"));
+			}
+			avatars[i] = new Image(Icons.getTex("black.png")); // replace with
+			// default avatar
+			if (i == 0) {
+				bg.setPosition(-100, avatars[i].getHeight() / 2 - 70);
+				avatars[i].setPosition(0, -22 - 35);
+			} else {
+				bg.setPosition(-100, avatars[i].getHeight() / 2 - 70 / 2);
+				avatars[i].setPosition(0, -22);
+			}
+			groups[i].addActor(bg);
+			group.addActor(avatars[i]);
+			avatars[i].setSize(50, 50);
+			groups[i].setVisible(false);
+		}
+
 		for (int i = 0; i < length; i++) {
+			float padTop = 0;
+			if (i == 0) {
+				padTop = 70f;
+			}
 			scrollTable.row();
 			numberLabels[i] = new Label(String.valueOf(i + 1) + ".", style);
 			scoreLabels[i] = new Label(String.valueOf(HighScores.scores[i]), style);
-			nameLabels[i] = new Label("N/A", style);
-			avatars[i] = new Image(Icons.getTex("black.png")); //replace with default avatar
-			scrollTable.add(numberLabels[i]).padTop(5f).left().padLeft(15f);
-			scrollTable.add(avatars[i]).padTop(5f).left().width(40).height(40).padLeft(15f).bottom();
-			scrollTable.add(nameLabels[i]).padTop(5f).left().padLeft(80f);
-			scrollTable.add(scoreLabels[i]).padTop(5f).colspan(2).expandX().right().padRight(75f);
+			nameLabels[i] = new Label("", style);
+
+			scrollTable.add(numberLabels[i]).padTop(5f + padTop).left().padLeft(15f).padBottom(20f);
+
+			scrollTable.add(groups[i]);
+			groups[i].toBack();
+
+			scrollTable.add(nameLabels[i]).padTop(5f + padTop).left().padLeft(80f).padBottom(20f);
+			scrollTable.add(scoreLabels[i]).padTop(5f + padTop).colspan(2).expandX().right()
+					.padRight(75f).padBottom(20f);
 		}
 
 // table.debug();

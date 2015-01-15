@@ -48,32 +48,35 @@ public class PointChecker extends Actor {
 	@Override
 	public void act(float delta) {
 		super.act(delta);
+		
+		
 
 		if (totem != null && checkingFirst) {
 			totemRect.set(totem.getX() + totem.getWidth() / 2 - 0.01f / 2,
-					totem.getY() - totem.getHeight() / 2, 0.01f, totem.getHeight());
+					totem.getY() - totem.getHeight() / 2, 0.1f, totem.getHeight());
 
 			scoreX = totem.getX() + totem.getWidth();
 			scoreY = totem.getY() - totem.getHeight() / 2;
 
 			if (onePointLeft.overlaps(totemRect) || onePointRight.overlaps(totemRect)) {
+				
 				stage.addActor(Icons.getImage("ui/gameplay/+1.png"));
-				Icons.getImage("ui/gameplay/+1.png").setPosition(scoreX, scoreY);
-				Icons.getImage("ui/gameplay/+1.png").addAction(Actions.alpha(0, 0.5f));
+				Icons.normalPoints[0].setPosition(scoreX, scoreY);
+				Icons.normalPoints[0].addAction(Actions.sequence(Actions.alpha(1, 0.5f), Actions.alpha(0, 0.5f)));
 				checkingFirst = false;
 				game.score += 1;
 			} 
 			if (twoPointLeft.overlaps(totemRect) || twoPointRight.overlaps(totemRect)) {
 				stage.addActor(Icons.getImage("ui/gameplay/+2.png"));
-				Icons.getImage("ui/gameplay/+2.png").setPosition(scoreX, scoreY);
-				Icons.getImage("ui/gameplay/+2.png").addAction(Actions.alpha(0, 0.5f));
+				Icons.normalPoints[1].setPosition(scoreX, scoreY);
+				Icons.normalPoints[1].addAction(Actions.sequence(Actions.alpha(1, 0.5f), Actions.alpha(0, 0.5f)));
 				checkingFirst = false;
 				game.score += 2;
 			}
 			if (threePoint.overlaps(totemRect)) {
 				stage.addActor(Icons.getImage("ui/gameplay/+3.png"));
-				Icons.getImage("ui/gameplay/+3.png").setPosition(scoreX, scoreY);
-				Icons.getImage("ui/gameplay/+3.png").addAction(Actions.alpha(0, 0.5f));
+				Icons.normalPoints[2].setPosition(scoreX, scoreY);
+				Icons.normalPoints[2].addAction(Actions.sequence(Actions.alpha(1, 0.5f), Actions.alpha(0, 0.5f)));
 				checkingFirst = false;
 				game.score += 3;
 			}

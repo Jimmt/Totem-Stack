@@ -31,8 +31,8 @@ public class IceTotem extends Totem {
 	public void removeAura() {
 		noAura = Icons.getImage("totem/ice/icenormal.png");
 		setDrawable(noAura.getDrawable());
-		width = noAura.getWidth() * Constants.SCALE;
-		height = noAura.getHeight() * Constants.SCALE;
+		width = noAura.getWidth() * Constants.SCALE * scale;
+		height = noAura.getHeight() * Constants.SCALE * scale;
 		setSize(width, height);
 	}
 

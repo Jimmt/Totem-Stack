@@ -18,10 +18,12 @@ public class Totem extends Box2DActor {
 	protected Image parachute;
 	protected Image freeze;
 	boolean isFrozen = false, enableParachute = true;
+	float scale;
 
 	public Totem(float x, float y, float scale, World world) {
 		super("totem/0" + MathUtils.random(3) + ".png", scale, world);
 
+		this.scale = scale;
 		
 		random = MathUtils.random(3);
 

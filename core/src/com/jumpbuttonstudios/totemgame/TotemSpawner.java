@@ -92,6 +92,8 @@ public class TotemSpawner extends Actor {
 
 	@Override
 	public void act(float delta) {
+		
+		
 
 		rain.effect.setPosition(0, game.camera.position.y / Constants.SCALE + Constants.HEIGHT / 2);
 		lightning.effect.setPosition(game.camera.position.x / Constants.SCALE,
