@@ -256,7 +256,7 @@ public class HudTable extends Table {
 			public void clicked(InputEvent event, float x, float y) { // pause
 				TotemGame.soundManager.play("button");
 				game.pause(true);
-				game.pauseDialog.setVisible(game.paused);
+				
 			}
 
 		});

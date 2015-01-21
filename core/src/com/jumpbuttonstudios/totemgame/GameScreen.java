@@ -60,7 +60,8 @@ public class GameScreen extends AbstractScreen {
 		multiplexer = new InputMultiplexer(stage, hudStage);
 
 		Gdx.input.setInputProcessor(multiplexer);
-
+		
+		
 	}
 
 	@Override

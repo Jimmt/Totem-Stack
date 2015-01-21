@@ -145,6 +145,9 @@ public class AbstractScreen implements Screen {
 
 		if (showDialog) {
 			pauseDialog.setVisible(true);
+			hudStage.getActors().removeValue(pauseDialog, false);
+			hudStage.addActor(pauseDialog);
+			
 		}
 		
 		
