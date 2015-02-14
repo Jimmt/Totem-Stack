@@ -35,8 +35,9 @@ public class MenuScreen extends AbstractScreen {
 // } catch (IOException e) {
 // e.printStackTrace();
 // }
-
+		TotemGame.soundManager.setPlayMusic(GamePrefs.prefs.getBoolean("bgMusic"));
 		TotemGame.soundManager.setPlayEffects(GamePrefs.prefs.getBoolean("soundEffects"));
+		TotemGame.soundManager.loopMusic("menu", 1f);
 
 		loginDialog = new LoginDialog("", getSkin());
 		logoutDialog = new LogoutDialog("", getSkin());

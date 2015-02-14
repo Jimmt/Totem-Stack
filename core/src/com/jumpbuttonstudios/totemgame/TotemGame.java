@@ -32,6 +32,8 @@ public class TotemGame extends Game {
 		soundManager.loadSound("buy", Gdx.files.internal("sfx/ui/buy.wav"));
 		soundManager.loadSound("check", Gdx.files.internal("sfx/ui/check.wav"));
 		soundManager.loadSound("welcomeback", Gdx.files.internal("sfx/ui/welcomeback.wav"));
+		soundManager.loadMusic("menu", Gdx.files.internal("sfx/game/menumusic.mp3"));
+		soundManager.loadMusic("game", Gdx.files.internal("sfx/game/gamemusic.mp3"));
 
 		GamePrefs.initialize();
 		Icons.loadIcons();
@@ -57,7 +59,7 @@ public class TotemGame extends Game {
 	@Override
 	public void render() {
 		super.render();
-
+		soundManager.update((AbstractScreen) getScreen());
 	}
 
 	@Override

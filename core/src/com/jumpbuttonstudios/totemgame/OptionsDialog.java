@@ -50,8 +50,7 @@ public class OptionsDialog extends Dialog {
 		CheckBoxStyle checkBoxStyle = new CheckBoxStyle();
 		checkBoxStyle.checkboxOn = new Image(new Texture(
 				Gdx.files.internal("ui/options/checkbg.png"))).getDrawable();
-		checkBoxStyle.checkboxOff = new Image(Icons.getTex("ui/options/xbg.png"))
-				.getDrawable();
+		checkBoxStyle.checkboxOff = new Image(Icons.getTex("ui/options/xbg.png")).getDrawable();
 		checkBoxStyle.font = font;
 
 		LabelStyle labelStyle = new LabelStyle();
@@ -111,7 +110,7 @@ public class OptionsDialog extends Dialog {
 
 		xStage.addActor(tap);
 		xStage.addActor(tilt);
-		
+
 	}
 
 	@Override
@@ -126,11 +125,11 @@ public class OptionsDialog extends Dialog {
 	@Override
 	public void act(float delta) {
 		super.act(delta);
-		
+
 		tap.setPosition(getX() + tapControlLabel.getX() + tapControlLabel.getWidth() + 10, getY()
 				+ tapControlLabel.getY());
-		tilt.setPosition(getX() + tiltControlLabel.getX() + tiltControlLabel.getWidth() + 10, getY()
-				+ tiltControlLabel.getY());
+		tilt.setPosition(getX() + tiltControlLabel.getX() + tiltControlLabel.getWidth() + 10,
+				getY() + tiltControlLabel.getY());
 
 		x.setPosition(getX() + panel.getWidth() - x.getWidth(),
 				getY() + panel.getHeight() - x.getHeight() / 2 * 3);
@@ -163,6 +162,7 @@ public class OptionsDialog extends Dialog {
 			public void clicked(InputEvent event, float x, float y) {
 				TotemGame.soundManager.play("check");
 				GamePrefs.putBoolean("bgMusic", bgMusic.isChecked());
+				TotemGame.soundManager.setPlayMusic(bgMusic.isChecked());
 			}
 
 		});
@@ -198,7 +198,7 @@ public class OptionsDialog extends Dialog {
 			public void clicked(InputEvent event, float x, float y) {
 				TotemGame.soundManager.play("button");
 				setVisible(false);
-				
+
 				if (gs != null) {
 					gs.pause(false);
 				}
