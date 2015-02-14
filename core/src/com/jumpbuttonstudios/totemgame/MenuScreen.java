@@ -28,8 +28,6 @@ public class MenuScreen extends AbstractScreen {
 	public void show() {
 		super.show();
 
-		
-
 // try {
 // TwitterUtil.post("test");
 // } catch (TwitterException e) {
@@ -38,7 +36,7 @@ public class MenuScreen extends AbstractScreen {
 // e.printStackTrace();
 // }
 
-		
+		TotemGame.soundManager.setPlayEffects(GamePrefs.prefs.getBoolean("soundEffects"));
 
 		loginDialog = new LoginDialog("", getSkin());
 		logoutDialog = new LogoutDialog("", getSkin());
@@ -128,10 +126,9 @@ public class MenuScreen extends AbstractScreen {
 		loginDialog.setPosition(Constants.WIDTH / 2 - loginDialog.getWidth() / 2, Constants.HEIGHT
 				/ 2 - loginDialog.getHeight() / 2);
 		loginDialog.setVisible(false);
-		
-		
 
-		InputMultiplexer multiplexer = new InputMultiplexer(hudTable.optionsDialog.xStage, hudStage, stage);
+		InputMultiplexer multiplexer = new InputMultiplexer(hudTable.optionsDialog.xStage,
+				hudStage, stage);
 
 		Gdx.input.setInputProcessor(multiplexer);
 
@@ -148,7 +145,7 @@ public class MenuScreen extends AbstractScreen {
 
 		hudStage.draw();
 		hudStage.act(delta);
-		Table.drawDebug(stage);
+// Table.drawDebug(stage);
 
 		if (JBSApi.loggedIn) {
 			loginButton.setStyle(logoutStyle);

@@ -13,6 +13,7 @@ public class SoundManager {
 	public SoundManager() {
 		sounds = new ObjectMap<String, Sound>();
 	}
+	
 
 	public void play(String name) {
 		if (playEffects && masterPlay)

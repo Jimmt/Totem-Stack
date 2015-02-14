@@ -37,11 +37,13 @@ public class GameOverDialog extends Dialog {
 	float x, y, ratio;
 	Image yourScore, bestScore, gameOver;
 	Skin skin;
-	boolean moved;
+	boolean moved, submittedScore;
 
-	public GameOverDialog(int score, Skin skin, GameScreen gs, TotemGame game) {
+	public GameOverDialog(int score, Skin skin, GameScreen gs, TotemGame game,
+			boolean submittedScore) {
 		super("", skin);
 
+		this.submittedScore = submittedScore;
 		this.skin = skin;
 
 		sr = new ShapeRenderer();
@@ -89,10 +91,8 @@ public class GameOverDialog extends Dialog {
 		getContentTable().row();
 
 		ImageButtonStyle removeAdStyle = new ImageButtonStyle();
-		removeAdStyle.up = new Image(Icons.getTex("ui/paused/removead.png"))
-				.getDrawable();
-		removeAdStyle.down = new Image(Icons.getTex("ui/paused/removead.png"))
-				.getDrawable();
+		removeAdStyle.up = new Image(Icons.getTex("ui/paused/removead.png")).getDrawable();
+		removeAdStyle.down = new Image(Icons.getTex("ui/paused/removead.png")).getDrawable();
 		ImageButton removeAds = new ImageButton(removeAdStyle);
 		removeAds.addListener(new ClickListener() {
 			@Override
@@ -131,7 +131,7 @@ public class GameOverDialog extends Dialog {
 		getContentTable().row();
 		getContentTable().add(bestScoreLabel).width(bestScore.getWidth())
 				.height(bestScore.getHeight()).fill().center();
-		
+
 		for (int i = 0; i < imageButtons.size; i++) {
 			getButtonTable().add(imageButtons.get(i)).width(imageButtons.get(i).getWidth())
 					.height(imageButtons.get(i).getHeight());
@@ -157,7 +157,7 @@ public class GameOverDialog extends Dialog {
 					@Override
 					public void clicked(InputEvent event, float x, float y) {
 						super.clicked(event, x, y);
-						game.setScreen(new HighScoresScreen(game,gs,dialog));
+						game.setScreen(new HighScoresScreen(game, gs, dialog));
 						TotemGame.soundManager.play("button");
 					}
 				});
@@ -211,13 +211,15 @@ public class GameOverDialog extends Dialog {
 					}
 				});
 
-		if (JBSApi.api != null && JBSApi.loggedIn) {
-			JBSApi.api.submitHighscore(score);
-		}
-		HighScores.addScore(score);
+		if (!submittedScore) {
+			if (JBSApi.api != null && JBSApi.loggedIn) {
+				JBSApi.api.submitHighscore(score);
+			}
+			HighScores.addScore(score);
 
-		if (score >= GamePrefs.prefs.getInteger("bestScore")) {
-			GamePrefs.putInteger("bestScore", score);
+			if (score >= GamePrefs.prefs.getInteger("bestScore")) {
+				GamePrefs.putInteger("bestScore", score);
+			}
 		}
 	}
 
@@ -242,8 +244,8 @@ public class GameOverDialog extends Dialog {
 		if (!moved) {
 // if (getActions().size == 0) {
 			moved = true;
-			gameOver.addAction(Actions.sequence(Actions.moveBy(0, gameOver.getHeight() * 3), Actions.delay(1.35f),
-					Actions.moveBy(0, -gameOver.getHeight() * 3, 0.25f)));
+			gameOver.addAction(Actions.sequence(Actions.moveBy(0, gameOver.getHeight() * 3),
+					Actions.delay(1.35f), Actions.moveBy(0, -gameOver.getHeight() * 3, 0.25f)));
 // }
 		}
 

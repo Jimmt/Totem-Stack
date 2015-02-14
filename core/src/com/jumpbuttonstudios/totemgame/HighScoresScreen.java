@@ -51,7 +51,7 @@ public class HighScoresScreen extends AbstractScreen {
 		Table scrollTable = new Table();
 // scrollTable.setFillParent(true);
 
-		HighScores.setScoreLength(length);
+		length = HighScores.getScoreLength();
 
 		ImageButtonStyle gStyle = new ImageButtonStyle();
 		gStyle.up = new Image(new Texture(Gdx.files.internal("ui/highscore/global.png")))
@@ -94,10 +94,13 @@ public class HighScoresScreen extends AbstractScreen {
 				HighScores.read();
 				for (int i = 0; i < length; i++) {
 					numberLabels[i].setText(String.valueOf(i + 1) + ".");
-					scoreLabels[i].setText(String.valueOf(HighScores.scores[i]));
+
+					String score = i < HighScores.scores.size ? String.valueOf(HighScores.scores.get(i))
+							: "0";
+					scoreLabels[i].setText(score);
 					nameLabels[i].setText("");
 					avatars[i].setVisible(false);
-					groups[i].setVisible(false);
+// groups[i].setVisible(false);
 				}
 			}
 
@@ -136,7 +139,7 @@ public class HighScoresScreen extends AbstractScreen {
 					game.setScreen(gs);
 
 					GameOverDialog god = new GameOverDialog(gameOverDialog.score, getSkin(), gs,
-							game);
+							game, true);
 					god.setKeepWithinStage(false);
 					god.setPosition(Constants.WIDTH / 2 - god.getWidth() / 2, Constants.HEIGHT);
 					gs.hudStage.addActor(gameOverDialog);
@@ -212,7 +215,10 @@ public class HighScoresScreen extends AbstractScreen {
 			}
 			scrollTable.row();
 			numberLabels[i] = new Label(String.valueOf(i + 1) + ".", style);
-			scoreLabels[i] = new Label(String.valueOf(HighScores.scores[i]), style);
+			
+			String score = i < HighScores.scores.size ? String.valueOf(HighScores.scores.get(i))
+					: "0";
+			scoreLabels[i] = new Label(score, style);
 			nameLabels[i] = new Label("", style);
 
 			scrollTable.add(numberLabels[i]).padTop(5f + padTop).left().padLeft(15f).padBottom(20f);
@@ -236,6 +242,11 @@ public class HighScoresScreen extends AbstractScreen {
 		table.row();
 
 		table.add(backButton).colspan(7);
+
+		for (int i = 0; i < groups.length; i++) {
+			groups[i].setVisible(true);
+			avatars[i].setVisible(false);
+		}
 	}
 
 	public void getFriendsHighscores() {

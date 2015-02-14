@@ -111,7 +111,7 @@ public class OptionsDialog extends Dialog {
 
 		xStage.addActor(tap);
 		xStage.addActor(tilt);
-
+		
 	}
 
 	@Override
@@ -171,6 +171,7 @@ public class OptionsDialog extends Dialog {
 			public void clicked(InputEvent event, float x, float y) {
 				TotemGame.soundManager.play("check");
 				GamePrefs.putBoolean("soundEffects", soundEffects.isChecked());
+				TotemGame.soundManager.setPlayEffects(soundEffects.isChecked());
 			}
 
 		});
@@ -197,6 +198,7 @@ public class OptionsDialog extends Dialog {
 			public void clicked(InputEvent event, float x, float y) {
 				TotemGame.soundManager.play("button");
 				setVisible(false);
+				
 				if (gs != null) {
 					gs.pause(false);
 				}

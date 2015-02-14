@@ -97,7 +97,7 @@ public class ShopDialog extends Dialog {
 			group.add(button);
 			upgradeButtons.add(button);
 
-			getContentTable().add(button);
+			getContentTable().add(button).padLeft(5f);
 		}
 
 		getContentTable().row();
@@ -111,7 +111,7 @@ public class ShopDialog extends Dialog {
 
 			ImageButton button = new ImageButton(ibs);
 
-			getContentTable().add(button);
+			getContentTable().add(button).padLeft(5f);
 		}
 
 		for (int i = 0; i < coinNumbers.length; i++) {

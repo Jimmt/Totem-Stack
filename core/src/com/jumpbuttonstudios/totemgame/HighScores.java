@@ -10,33 +10,23 @@ import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.Sort;
 
 public class HighScores {
-	public static int[] scores = new int[15];
+	public static Array<Integer> scores = new Array<Integer>();
 	private static Json json;
+	private static int length = 15;
 
 	public static void init() {
-// scores = new int[10];
+
 	}
 
 	public static void addScore(int newScore) {
+		scores.add(newScore);
 
-		Integer[] conversion = new Integer[15];
-		for (int i = 0; i < scores.length; i++) {
-			conversion[i] = Integer.valueOf(scores[i]);
+		Sort.instance().sort(scores, Collections.reverseOrder());
+
+		for (int i = length; i < scores.size; i++) {
+			scores.removeIndex(i);
 		}
-
-		Arrays.sort(conversion, Collections.reverseOrder());
-
-		for (int i = 0; i < conversion.length; i++) {
-			scores[i] = Integer.valueOf(conversion[i]);
-		}
-
-		for (int i = 0; i < scores.length; i++) {
-			if (newScore > scores[i]) {
-				System.arraycopy(scores, i, scores, i + 1, scores.length - i - 1);
-				scores[i] = newScore;
-				break;
-			}
-		}
+		
 		write();
 	}
 
@@ -45,15 +35,12 @@ public class HighScores {
 		if (file.exists()) {
 			String scoresString = file.readString();
 			Json json = new Json();
-			Array<Integer> scoreList = json.fromJson(Array.class, Integer.class, file);
+			scores = json.fromJson(Array.class, Integer.class, file);
 
-			for (int i = 0; i < scoreList.size; i++) {
-				scores[i] = Integer.valueOf(scoreList.get(i));
-			}
 		} else {
 
-			for (int i = 0; i < scores.length; i++) {
-				scores[i] = 0;
+			for (int i = 0; i < length; i++) {
+				scores.add(0);
 			}
 		}
 	}
@@ -65,8 +52,12 @@ public class HighScores {
 		file.writeString(highScores, false);
 	}
 
-	public static void setScoreLength(int length) {
-		scores = new int[length];
+	public static int getScoreLength() {
+		return length;
+	}
+
+	public static void setScoreLength(int slength) {
+		length = slength;
 	}
 
 }

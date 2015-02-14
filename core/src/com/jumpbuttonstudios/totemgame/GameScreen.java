@@ -1,6 +1,7 @@
 package com.jumpbuttonstudios.totemgame;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -57,11 +58,11 @@ public class GameScreen extends AbstractScreen {
 
 // black.setSize(Constants.SCLWIDTH, Constants.SCLHEIGHT * 2);
 
-		multiplexer = new InputMultiplexer(stage, hudStage);
+		InputMultiplexer multiplexer = new InputMultiplexer(hudTable.optionsDialog.xStage,
+				hudStage, stage);
 
 		Gdx.input.setInputProcessor(multiplexer);
-		
-		
+
 	}
 
 	@Override
@@ -77,7 +78,7 @@ public class GameScreen extends AbstractScreen {
 				}
 			}
 
-			GameOverDialog god = new GameOverDialog(score, getSkin(), this, game);
+			GameOverDialog god = new GameOverDialog(score, getSkin(), this, game, false);
 			god.setKeepWithinStage(false);
 			god.setPosition(Constants.WIDTH / 2 - god.getWidth() / 2, Constants.HEIGHT);
 			hudStage.addActor(god);
@@ -105,23 +106,34 @@ public class GameScreen extends AbstractScreen {
 
 		contactListener.update(delta);
 
-//		if (spawner.pointChecker != null) {
-//			sr.setProjectionMatrix(camera.combined);
-//			sr.begin(ShapeType.Line);
-//			sr.box(spawner.pointChecker.onePointLeft.x, spawner.pointChecker.onePointLeft.y, 0,
-//					spawner.pointChecker.onePointLeft.width, spawner.pointChecker.onePointLeft.height, 0);
-//			sr.box(spawner.pointChecker.onePointRight.x, spawner.pointChecker.onePointRight.y, 0,
-//					spawner.pointChecker.onePointRight.width, spawner.pointChecker.onePointRight.height, 0);
-//			sr.box(spawner.pointChecker.twoPointLeft.x, spawner.pointChecker.twoPointLeft.y, 0,
-//					spawner.pointChecker.twoPointLeft.width, spawner.pointChecker.twoPointLeft.height, 0);
-//			sr.box(spawner.pointChecker.twoPointRight.x, spawner.pointChecker.twoPointRight.y, 0,
-//					spawner.pointChecker.twoPointRight.width, spawner.pointChecker.twoPointRight.height, 0);
-//			sr.box(spawner.pointChecker.threePoint.x, spawner.pointChecker.threePoint.y, 0,
-//					spawner.pointChecker.threePoint.width, spawner.pointChecker.threePoint.height, 0);
-//			sr.box(spawner.pointChecker.totemRect.x, spawner.pointChecker.totemRect.y, 0,
-//					spawner.pointChecker.totemRect.width, spawner.pointChecker.totemRect.height, 0);
-//			sr.end();
-//		}
+// if (spawner.pointChecker != null) {
+// sr.setProjectionMatrix(camera.combined);
+// sr.begin(ShapeType.Line);
+// sr.box(spawner.pointChecker.onePointLeft.x,
+// spawner.pointChecker.onePointLeft.y, 0,
+// spawner.pointChecker.onePointLeft.width,
+// spawner.pointChecker.onePointLeft.height, 0);
+// sr.box(spawner.pointChecker.onePointRight.x,
+// spawner.pointChecker.onePointRight.y, 0,
+// spawner.pointChecker.onePointRight.width,
+// spawner.pointChecker.onePointRight.height, 0);
+// sr.box(spawner.pointChecker.twoPointLeft.x,
+// spawner.pointChecker.twoPointLeft.y, 0,
+// spawner.pointChecker.twoPointLeft.width,
+// spawner.pointChecker.twoPointLeft.height, 0);
+// sr.box(spawner.pointChecker.twoPointRight.x,
+// spawner.pointChecker.twoPointRight.y, 0,
+// spawner.pointChecker.twoPointRight.width,
+// spawner.pointChecker.twoPointRight.height, 0);
+// sr.box(spawner.pointChecker.threePoint.x, spawner.pointChecker.threePoint.y,
+// 0,
+// spawner.pointChecker.threePoint.width,
+// spawner.pointChecker.threePoint.height, 0);
+// sr.box(spawner.pointChecker.totemRect.x, spawner.pointChecker.totemRect.y, 0,
+// spawner.pointChecker.totemRect.width, spawner.pointChecker.totemRect.height,
+// 0);
+// sr.end();
+// }
 
 		for (int i = 0; i < removeTotems.size; i++) {
 			world.destroyBody(removeTotems.get(i).body);
@@ -150,6 +162,10 @@ public class GameScreen extends AbstractScreen {
 		if (contactListener.getGroundTotems().size > 1 && !gameOver && spawner.totems.size > 1) {
 			gameOver();
 
+		}
+		
+		if(Gdx.input.isKeyPressed(Keys.Q) && !gameOver){
+			gameOver();
 		}
 
 		if (gameOver) {

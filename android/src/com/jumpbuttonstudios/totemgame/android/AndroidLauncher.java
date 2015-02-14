@@ -33,7 +33,7 @@ public class AndroidLauncher extends AndroidApplication implements IabInterface 
 				}
 				// Hooray, IAB is fully set up!
 				Log.d("IAB", "Billing Success: " + result);
-				removeAds();
+//				removeAds();
 			}
 
 		});

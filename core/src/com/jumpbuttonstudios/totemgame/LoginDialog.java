@@ -93,7 +93,7 @@ public class LoginDialog extends Dialog {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 				TotemGame.soundManager.play("button");
-
+				Gdx.net.openURI("https://www.jumpbuttonstudio.com/register/");
 			}
 		});
 
