@@ -62,7 +62,7 @@ public class ShopDialog extends Dialog {
 
 		ButtonGroup group = new ButtonGroup();
 
-		CoinLabel coinLabel = new CoinLabel();
+		CoinLabel coinLabel = new CoinLabel(skin, null);
 
 		getContentTable().add(new Image(new Texture(Gdx.files.internal("blank.png")))).expand()
 				.bottom().left().colspan(4).padBottom(coinLabel.coins.getHeight());

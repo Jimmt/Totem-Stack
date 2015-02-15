@@ -133,8 +133,9 @@ public class MenuScreen extends AbstractScreen {
 
 		Gdx.input.setInputProcessor(multiplexer);
 
-		coinsDialog = new CoinsDialog("", getSkin());
+		coinsDialog = new CoinsDialog("", getSkin(), hudStage);
 		hudStage.addActor(coinsDialog);
+		
 
 		coinsDialog.setY(hudTable.header.getY() - coinsDialog.getHeight());
 		coinsDialog.setModal(false);
@@ -146,6 +147,7 @@ public class MenuScreen extends AbstractScreen {
 
 		hudStage.draw();
 		hudStage.act(delta);
+		
 // Table.drawDebug(stage);
 
 		if (JBSApi.loggedIn) {

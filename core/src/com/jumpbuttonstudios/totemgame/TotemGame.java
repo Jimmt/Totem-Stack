@@ -12,8 +12,13 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class TotemGame extends Game {
 	public static SoundManager soundManager;
+	public static IabInterface iab;
 
 	String[] paths = {};
+	
+	public TotemGame(IabInterface iab){
+		this.iab = iab;
+	}
 
 	@Override
 	public void create() {

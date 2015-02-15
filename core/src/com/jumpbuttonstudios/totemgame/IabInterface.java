@@ -1,4 +1,4 @@
-package com.jumpbuttonstudios.totemgame.android;
+package com.jumpbuttonstudios.totemgame;
 
 public interface IabInterface {
 	

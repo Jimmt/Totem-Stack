@@ -6,6 +6,7 @@ import android.util.Log;
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import com.jumpbuttonstudios.totemgame.GamePrefs;
+import com.jumpbuttonstudios.totemgame.IabInterface;
 import com.jumpbuttonstudios.totemgame.TotemGame;
 import com.jumpbuttonstudios.totemgame.android.util.IabHelper;
 import com.jumpbuttonstudios.totemgame.android.util.IabResult;
@@ -38,7 +39,7 @@ public class AndroidLauncher extends AndroidApplication implements IabInterface 
 
 		});
 
-		game = new TotemGame();
+		game = new TotemGame((com.jumpbuttonstudios.totemgame.IabInterface) this);
 		AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
 		initialize(game, config);
 	}

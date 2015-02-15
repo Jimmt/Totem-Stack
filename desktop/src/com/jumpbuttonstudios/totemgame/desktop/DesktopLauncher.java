@@ -11,6 +11,6 @@ public class DesktopLauncher {
 		config.width = 800;
 		config.height = 890;
 
-		new LwjglApplication(new TotemGame(), config);
+		new LwjglApplication(new TotemGame(null), config);
 	}
-}
+}   
