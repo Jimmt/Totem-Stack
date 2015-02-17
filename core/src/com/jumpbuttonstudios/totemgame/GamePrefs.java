@@ -21,11 +21,16 @@ public class GamePrefs {
 			prefs.flush();
 		}
 		//testing
-		prefs.putInteger("coins", 0);
-		prefs.putInteger("retryUses", 99);
-		prefs.putInteger("freezeUses", 99);
-		prefs.putInteger("slowUses", 99);
-		prefs.putInteger("windUses", 99);
+//		prefs.putInteger("coins", 0);
+//		prefs.putInteger("retryUses", 99);
+//		prefs.putInteger("freezeUses", 99);
+//		prefs.putInteger("slowUses", 99);
+//		prefs.putInteger("windUses", 99);
+		
+//		prefs.putInteger("retryUses", 0);
+//		prefs.putInteger("freezeUses", 0);
+//		prefs.putInteger("slowUses", 0);
+//		prefs.putInteger("windUses", 0);
 		
 		prefs.flush();
 	}

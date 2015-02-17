@@ -131,8 +131,8 @@ public class OptionsDialog extends Dialog {
 		tilt.setPosition(getX() + tiltControlLabel.getX() + tiltControlLabel.getWidth() + 10,
 				getY() + tiltControlLabel.getY());
 
-		x.setPosition(getX() + panel.getWidth() - x.getWidth(),
-				getY() + panel.getHeight() - x.getHeight() / 2 * 3);
+		x.setPosition(getX() + panel.getWidth() - x.getWidth() / 5 * 4,
+				getY() + panel.getHeight() - x.getHeight() / 5 * 4);
 
 		xStage.act(delta);
 

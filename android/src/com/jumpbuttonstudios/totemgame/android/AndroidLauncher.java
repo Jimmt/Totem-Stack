@@ -34,7 +34,7 @@ public class AndroidLauncher extends AndroidApplication implements IabInterface 
 				}
 				// Hooray, IAB is fully set up!
 				Log.d("IAB", "Billing Success: " + result);
-//				removeAds();
+// removeAds();
 			}
 
 		});
@@ -63,7 +63,7 @@ public class AndroidLauncher extends AndroidApplication implements IabInterface 
 
 						if (info.getSku().equals(SKU_REMOVE_ADS)) {
 
-							Log.d("IAB", info.getSku()); 
+							Log.d("IAB", info.getSku());
 							Log.d("IAB", "Removing ads");
 
 						}
@@ -84,6 +84,18 @@ public class AndroidLauncher extends AndroidApplication implements IabInterface 
 // if(info.getSku().equals(SKU_BUY_COINS)){
 						if (amount == 500) {
 							Log.d("IAB", info.getSku()); // info is null
+							Log.d("IAB", "Buying " + amount + " coins");
+							GamePrefs.putInteger("coins", GamePrefs.prefs.getInteger("coins")
+									+ amount);
+						}
+						if (amount == 1750) {
+							Log.d("IAB", info.getSku()); 
+							Log.d("IAB", "Buying " + amount + " coins");
+							GamePrefs.putInteger("coins", GamePrefs.prefs.getInteger("coins")
+									+ amount);
+						}
+						if (amount == 4000) {
+							Log.d("IAB", info.getSku()); 
 							Log.d("IAB", "Buying " + amount + " coins");
 							GamePrefs.putInteger("coins", GamePrefs.prefs.getInteger("coins")
 									+ amount);

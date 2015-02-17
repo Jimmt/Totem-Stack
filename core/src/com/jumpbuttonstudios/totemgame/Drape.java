@@ -58,9 +58,10 @@ public class Drape extends ImageButton {
 	public void draw(Batch batch, float parentAlpha) {
 		super.draw(batch, parentAlpha);
 		
-		powerup.draw(batch, parentAlpha);
 		powerup.setPosition(getX() + getWidth() / 2 - powerup.getWidth() / 2, getY() + getHeight()
 				/ 5 * 3 - powerup.getHeight() / 2);
+		powerup.draw(batch, parentAlpha);
+		
 		
 		
 		text.setText(String.valueOf(count));

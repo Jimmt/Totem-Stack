@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.ButtonGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -41,8 +42,8 @@ public class ShopDialog extends Dialog {
 		setBackground(panel.getDrawable());
 		setSize(panel.getWidth(), panel.getHeight());
 
-		int[] coinNumbers = { 1, 2, 3, 5 };
-		String[] buttonNames = { "retry", "freeze", "slow", "wind" };
+		final int[] coinNumbers = { 100, 300, 200, 500 };
+		final String[] buttonNames = { "retry", "freeze", "slow", "wind" };
 
 		ImageButtonStyle buyCoinStyle = new ImageButtonStyle();
 		buyCoinStyle.up = new Image(new Texture(Gdx.files.internal("ui/shop/buyjbs.png")))
@@ -110,8 +111,31 @@ public class ShopDialog extends Dialog {
 					.getDrawable();
 
 			ImageButton button = new ImageButton(ibs);
+			final int index = i;
+			button.addListener(new ClickListener() {
+				@Override
+				public void clicked(InputEvent event, float x, float y) {
+					super.clicked(event, x, y);
+					TotemGame.soundManager.play("button");
 
-			getContentTable().add(button).padLeft(5f);
+					if (GamePrefs.prefs.getInteger("coins") >= coinNumbers[index]) {
+						GamePrefs.putInteger("coins", GamePrefs.prefs.getInteger("coins")
+								- coinNumbers[index]);
+						GamePrefs.putInteger(buttonNames[index] + "Uses", GamePrefs.prefs.getInteger(buttonNames[index] + "Uses") + 1);
+					}
+				}
+			});
+
+			Group imageButtonGroup = new Group();
+			imageButtonGroup.addActor(button);
+			button.setPosition(-button.getWidth() / 2, 0);
+			Image price = new Image(Icons.getTex("ui/shop/" + coinNumbers[i] + "coins.png"));
+			price.setTouchable(Touchable.disabled);
+			imageButtonGroup.addActor(price);
+			price.setPosition(-price.getWidth() / 2, price.getHeight() / 2);
+
+			getContentTable().add(imageButtonGroup).padLeft(5f).height(button.getWidth())
+					.height(button.getHeight());
 		}
 
 		for (int i = 0; i < coinNumbers.length; i++) {
