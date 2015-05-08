@@ -1,6 +1,7 @@
 package com.jumpbuttonstudio.totemgame;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -88,7 +89,6 @@ public class HudTable extends Table {
 		add(right).expand().right().top();
 
 // add(right);
-		debug();
 
 		if (game instanceof GameScreen) {
 
@@ -152,17 +152,10 @@ public class HudTable extends Table {
 		}
 
 		score = new Label("", style);
-
 		score.setPosition(Constants.WIDTH / 2 - 18, Constants.HEIGHT - 44);
-
 		game.hudStage.addActor(score);
 
-		if (game instanceof GameScreen) {
-			optionsDialog = new OptionsDialog("", game.getSkin(), game);
-		} else {
-			optionsDialog = new OptionsDialog("", game.getSkin(), game);
-		}
-
+		optionsDialog = new OptionsDialog("", game.getSkin(), game);
 		game.hudStage.addActor(optionsDialog);
 		optionsDialog.setPosition(Constants.WIDTH / 2 - optionsDialog.getWidth() / 2,
 				Constants.HEIGHT / 2 - optionsDialog.getHeight() / 2);
@@ -180,8 +173,8 @@ public class HudTable extends Table {
 		shopDialog.setVisible(false);
 
 		setupListeners();
+//		optionsDialog.debug();
 	}
-
 
 	@Override
 	public void setVisible(boolean vis) {

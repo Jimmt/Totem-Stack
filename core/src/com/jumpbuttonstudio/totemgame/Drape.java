@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -26,7 +27,7 @@ public class Drape extends ImageButton {
 		powerup.setSize(powerup.getWidth() / 2, powerup.getHeight() / 2);
 		
 		font = new BitmapFont(Gdx.files.internal("ui/shop/numbers.fnt"));
-		font.setScale(0.75f);
+		font.getData().setScale(0.75f);
 		
 		LabelStyle style = new LabelStyle();
 		style.font = font;

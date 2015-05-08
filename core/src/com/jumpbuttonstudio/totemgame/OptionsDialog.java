@@ -19,7 +19,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
-import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 public class OptionsDialog extends Dialog {
@@ -33,13 +32,12 @@ public class OptionsDialog extends Dialog {
 	Label tiltControlLabel, tapControlLabel, bgMusicLabel;
 
 	public OptionsDialog(String title, Skin skin, AbstractScreen gs) {
-		super(title, skin);
+		super("", skin);
 
 		this.gs = gs;
 
 		sr = new ShapeRenderer();
 
-		debug();
 
 		setTransform(true);
 
@@ -78,9 +76,10 @@ public class OptionsDialog extends Dialog {
 		Texture closeTex = Icons.getTex("ui/options/close.png");
 		closeTex.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		buttonStyle.up = new Image(closeTex).getDrawable();
-		x = new ImageButton(buttonStyle);
 		xStage = new Stage();
-		xStage.addActor(x);
+		x = new ImageButton(buttonStyle);
+		getTitleTable().setSkin(skin);
+		getTitleTable().add(x).padTop(x.getHeight() / 2);
 		setupListeners();
 
 		tap = new Image(Icons.getTex("ui/options/tap.png"));
@@ -89,7 +88,7 @@ public class OptionsDialog extends Dialog {
 		tilt = new Image(Icons.getTex("ui/options/tilt.png"));
 		tilt.setScale(1);
 		tilt.setOrigin(tilt.getWidth() / 2, tilt.getHeight() / 2);
-		getContentTable().align(Align.left).padLeft(30f);
+		getContentTable().align(com.badlogic.gdx.utils.Align.left).padLeft(30f);
 		getContentTable().add(bgMusic).padTop(Constants.HEIGHT / 8).left();
 		getContentTable().add(bgMusicLabel).padTop(Constants.HEIGHT / 8).padBottom(9).left()
 				.height(font.getCapHeight());
@@ -104,10 +103,10 @@ public class OptionsDialog extends Dialog {
 		getContentTable().add(tiltControlLabel).padBottom(54).left().height(font.getCapHeight())
 				.width(tiltControlLabel.getWidth());
 		getContentTable().row();
-		getContentTable().debug();
 
 		pack();
-
+		
+		
 		xStage.addActor(tap);
 		xStage.addActor(tilt);
 
@@ -116,10 +115,8 @@ public class OptionsDialog extends Dialog {
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
 		super.draw(batch, parentAlpha);
-		x.draw(batch, parentAlpha);
 		tap.draw(batch, parentAlpha);
 		tilt.draw(batch, parentAlpha);
-// Table.drawDebug(gs.hudStage);
 	}
 
 	@Override
@@ -130,9 +127,6 @@ public class OptionsDialog extends Dialog {
 				+ tapControlLabel.getY());
 		tilt.setPosition(getX() + tiltControlLabel.getX() + tiltControlLabel.getWidth() + 10,
 				getY() + tiltControlLabel.getY());
-
-		x.setPosition(getX() + panel.getWidth() - x.getWidth() / 5 * 4,
-				getY() + panel.getHeight() - x.getHeight() / 5 * 4);
 
 		xStage.act(delta);
 

@@ -99,7 +99,7 @@ public class MenuScreen extends AbstractScreen {
 
 		stage.getActors().removeValue(table, false);
 		stage.addActor(table);
-	
+		
 
 		HudTable hudTable = new HudTable(getSkin(), this);
 		hudStage.addActor(hudTable);
@@ -112,7 +112,7 @@ public class MenuScreen extends AbstractScreen {
 
 		InputMultiplexer multiplexer = new InputMultiplexer(hudTable.optionsDialog.xStage,
 				hudStage, stage);
-
+		
 		Gdx.input.setInputProcessor(multiplexer);
 
 		coinsDialog = new CoinsDialog("", getSkin(), hudStage);
@@ -129,7 +129,8 @@ public class MenuScreen extends AbstractScreen {
 		hudStage.draw();
 		hudStage.act(delta);
 
-		Table.drawDebug(hudStage);
+		
+		
 	}
 
 }

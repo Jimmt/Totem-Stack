@@ -176,7 +176,7 @@ public class GameScreen extends AbstractScreen {
 				stage.getCamera().position.y / Constants.SCALE, 0);
 
 // Table.drawDebug(hudStage);
-		hudTable.debug();
+//		hudTable.debug();
 		hudTable.act(delta);
 
 		hudStage.draw();

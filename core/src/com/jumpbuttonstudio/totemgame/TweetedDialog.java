@@ -1,6 +1,7 @@
 package com.jumpbuttonstudio.totemgame;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
@@ -10,14 +11,14 @@ import com.badlogic.gdx.scenes.scene2d.ui.ImageButton.ImageButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.utils.Align;
 
 public class TweetedDialog extends Dialog {
 
 	public TweetedDialog(String text, Skin skin) {
 		super("", skin);
 
-		setBackground(new Image(new Texture(Gdx.files.internal("ui/shop/window01.png"))).getDrawable());
+		setBackground(new Image(new Texture(Gdx.files.internal("ui/shop/window01.png")))
+				.getDrawable());
 		setWidth(new Image(new Texture(Gdx.files.internal("ui/shop/window01.png"))).getWidth());
 		setHeight(new Image(new Texture(Gdx.files.internal("ui/shop/window01.png"))).getHeight());
 
@@ -29,10 +30,11 @@ public class TweetedDialog extends Dialog {
 		label.setAlignment(Align.center);
 
 		getContentTable().add(label).width(getWidth());
-		
+
 		ImageButtonStyle buttonStyle = new ImageButtonStyle();
 		buttonStyle.up = new Image(new Texture(Gdx.files.internal("login/ok.png"))).getDrawable();
-		buttonStyle.down = new Image(new Texture(Gdx.files.internal("login/ok_pressed.png"))).getDrawable();
+		buttonStyle.down = new Image(new Texture(Gdx.files.internal("login/ok_pressed.png")))
+				.getDrawable();
 		ImageButton ok = new ImageButton(buttonStyle);
 		button(ok).padBottom(30f);
 	}
