@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.jumpbuttonstudios.totemgame.android"
+    
     android:launchMode="singleTop"
     android:versionCode="1"
     android:versionName="1.0" >
@@ -30,20 +31,6 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity android:name="com.boom.videoboom.VideoActivity" >
-        </activity>
-        <activity android:name="com.boom.videoboom.VideoListActivity" >
-        </activity>
-        <activity android:name="com.boom.videoboom.VideoPrerollActivity" >
-        </activity>
-        <activity android:name="com.boom.videoboom.VideoPrerollNYTActivity" >
-        </activity>
-        <activity android:name="com.boom.videoboom.VideoActivityNYT" >
-        </activity>
-        <activity
-            android:name=".ButtonActivity"
-            android:label="@string/title_activity_button" >
         </activity>
     </application>
 
