@@ -26,7 +26,6 @@ public class BuyCoinsDialog extends Dialog {
 		final int[] jbsNumbers = { 500, 1750, 4000 };
 		int[] dollarNumbers = { 1, 3, 7 };
 
-		// lots of inefficient redundancy used to be here!
 		Image window01 = new Image(Icons.getTex("ui/shop/window01.png"));
 		setBackground(window01.getDrawable());
 		setWidth(window01.getWidth());
@@ -48,7 +47,7 @@ public class BuyCoinsDialog extends Dialog {
 
 				for (int i = 0; i < imageButtons.size; i++) {
 					if (imageButtons.get(i).isChecked()) {
-						TotemGame.iab.buyCoins(jbsNumbers[i]);
+						TotemGame.services.buyCoins(jbsNumbers[i]);
 					}
 				}
 			}
@@ -59,8 +58,6 @@ public class BuyCoinsDialog extends Dialog {
 
 		ButtonGroup group = new ButtonGroup();
 
-		// Loading the same textures within a loop without cache = pointless
-// lag!
 		for (int i = 0; i < 3; i++) {
 			ImageButtonStyle style = new ImageButtonStyle();
 			style.up = new Image(Icons.getTex("ui/shop/unselected.png")).getDrawable();

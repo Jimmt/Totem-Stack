@@ -18,6 +18,8 @@ public class MenuScreen extends AbstractScreen {
 	ImageButtonStyle logoutStyle, loginStyle;
 	Table table;
 	CoinsDialog coinsDialog;
+	CoinLabel coinsLabel;
+	HudTable hudTable;
 
 	public MenuScreen(TotemGame game) {
 		super(game);
@@ -95,11 +97,27 @@ public class MenuScreen extends AbstractScreen {
 			}
 
 		});
+		loginButton.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				TotemGame.soundManager.play("button");
+
+				if (loginButton.getStyle().equals(loginStyle)) {
+					TotemGame.services.signIn();
+					loginButton.setStyle(logoutStyle);
+				} else {
+					TotemGame.services.signOut();
+					loginButton.setStyle(loginStyle);
+				}
+
+			}
+
+		});
 
 		stage.getActors().removeValue(table, false);
 		stage.addActor(table);
 
-		HudTable hudTable = new HudTable(getSkin(), this);
+		hudTable = new HudTable(getSkin(), this);
 		hudStage.addActor(hudTable);
 
 		table.add(highscoresButton).width(highscoresButton.getWidth())
@@ -108,24 +126,30 @@ public class MenuScreen extends AbstractScreen {
 		table.add(loginButton).width(loginButton.getWidth()).height(loginButton.getHeight())
 				.padTop(startButton.getHeight() / 2);
 
-		InputMultiplexer multiplexer = new InputMultiplexer(hudTable.optionsDialog.xStage,
-				hudStage, stage);
+		InputMultiplexer multiplexer = new InputMultiplexer(hudStage, stage);
 
 		Gdx.input.setInputProcessor(multiplexer);
 
-		coinsDialog = new CoinsDialog("", getSkin(), hudStage);
-		hudStage.addActor(coinsDialog);
-
-		coinsDialog.setY(hudTable.header.getY() - coinsDialog.getHeight());
-		coinsDialog.setModal(false);
+		coinsLabel = new CoinLabel(skin, hudStage);
+		hudStage.addActor(coinsLabel);
+		hudStage.addActor(coinsLabel.coinButton);
+		
+// coinsDialog = new CoinsDialog("", getSkin(), hudStage);
+// hudStage.addActor(coinsDialog);
+//
+// coinsDialog.setY(hudTable.header.getY() - coinsDialog.getHeight());
+// coinsDialog.setModal(false);
 	}
 
 	@Override
 	public void render(float delta) {
 		super.render(delta);
-
+		
 		hudStage.draw();
 		hudStage.act(delta);
+//		hudStage.setDebugAll(true);
+		
+		coinsLabel.setPosition(0, hudTable.header.getY() - coinsLabel.getHeight());
 
 	}
 

@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package com.jumpbuttonstudios.totemgame.android.util;
+package com.jumpbuttonstudio.totemgame.android.util;
 
 import java.util.ArrayList;
 import java.util.HashMap;

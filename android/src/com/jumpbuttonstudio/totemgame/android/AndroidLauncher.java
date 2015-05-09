@@ -1,21 +1,23 @@
-package com.jumpbuttonstudios.totemgame.android;
+package com.jumpbuttonstudio.totemgame.android;
 
 import android.os.Bundle;
 import android.util.Log;
 
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
+import com.google.example.games.basegameutils.GameHelper;
 import com.jumpbuttonstudio.totemgame.GamePrefs;
 import com.jumpbuttonstudio.totemgame.IabInterface;
 import com.jumpbuttonstudio.totemgame.TotemGame;
-import com.jumpbuttonstudios.totemgame.android.util.IabHelper;
-import com.jumpbuttonstudios.totemgame.android.util.IabResult;
-import com.jumpbuttonstudios.totemgame.android.util.Purchase;
+import com.jumpbuttonstudio.totemgame.android.util.IabHelper;
+import com.jumpbuttonstudio.totemgame.android.util.IabResult;
+import com.jumpbuttonstudio.totemgame.android.util.Purchase;
 
 public class AndroidLauncher extends AndroidApplication implements IabInterface {
-	IabHelper mHelper;
-	boolean test;
-	TotemGame game;
+	private IabHelper mHelper;
+	private GameHelper helper;
+	private TotemGame game;
+	private AndroidServices services;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -38,8 +40,13 @@ public class AndroidLauncher extends AndroidApplication implements IabInterface 
 			}
 
 		});
+		helper = new GameHelper(this, GameHelper.CLIENT_GAMES);
 
-		game = new TotemGame((com.jumpbuttonstudio.totemgame.IabInterface) this);
+		services = new AndroidServices(helper, this);
+		helper.setup(services);
+		helper.enableDebugLog(true);
+		
+		game = new TotemGame(services);
 		AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
 		initialize(game, config);
 	}
@@ -59,8 +66,6 @@ public class AndroidLauncher extends AndroidApplication implements IabInterface 
 
 					@Override
 					public void onIabPurchaseFinished(IabResult result, Purchase info) {
-						test = true;
-
 						if (info.getSku().equals(SKU_REMOVE_ADS)) {
 
 							Log.d("IAB", info.getSku());
@@ -93,7 +98,6 @@ public class AndroidLauncher extends AndroidApplication implements IabInterface 
 
 						@Override
 						public void onIabPurchaseFinished(IabResult result, Purchase info) {
-							test = true;
 							Log.d("IAB", info.getSku()); // info is null
 							Log.d("IAB", "Buying " + amount + " coins");
 							GamePrefs.putInteger("coins", GamePrefs.prefs.getInteger("coins")
@@ -109,7 +113,6 @@ public class AndroidLauncher extends AndroidApplication implements IabInterface 
 
 						@Override
 						public void onIabPurchaseFinished(IabResult result, Purchase info) {
-							test = true;
 							Log.d("IAB", info.getSku()); // info is null
 							Log.d("IAB", "Buying " + amount + " coins");
 							GamePrefs.putInteger("coins", GamePrefs.prefs.getInteger("coins")
@@ -125,7 +128,6 @@ public class AndroidLauncher extends AndroidApplication implements IabInterface 
 
 						@Override
 						public void onIabPurchaseFinished(IabResult result, Purchase info) {
-							test = true;
 							Log.d("IAB", info.getSku()); // info is null
 							Log.d("IAB", "Buying " + amount + " coins");
 							GamePrefs.putInteger("coins", GamePrefs.prefs.getInteger("coins")

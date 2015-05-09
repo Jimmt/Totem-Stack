@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package com.jumpbuttonstudios.totemgame.android.util;
+package com.jumpbuttonstudio.totemgame.android.util;
 
 import android.app.Activity;
 import android.app.PendingIntent;

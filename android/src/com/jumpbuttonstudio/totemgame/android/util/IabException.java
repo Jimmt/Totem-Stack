@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package com.jumpbuttonstudios.totemgame.android.util;
+package com.jumpbuttonstudio.totemgame.android.util;
 
 /**
  * Exception thrown when something went wrong with in-app billing.

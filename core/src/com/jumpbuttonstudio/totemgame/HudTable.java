@@ -152,7 +152,8 @@ public class HudTable extends Table {
 		}
 
 		score = new Label("", style);
-		score.setPosition(Constants.WIDTH / 2 - 18, Constants.HEIGHT - 44);
+		score.setPosition(Constants.WIDTH / 2 - score.getWidth() / 2,
+				Constants.HEIGHT - score.getHeight() / 2);
 		game.hudStage.addActor(score);
 
 		optionsDialog = new OptionsDialog("", game.getSkin(), game);
@@ -318,6 +319,9 @@ public class HudTable extends Table {
 	public void act(float delta) {
 		super.act(delta);
 
+		score.setPosition(Constants.WIDTH / 2 - score.getPrefWidth() / 2,
+				header.getY() + header.getHeight() * 26f/90f + score.getPrefHeight() / 2 + 1);
+
 		for (int i = 0; i < drapes.length; i++) {
 			drapes[i].setCount(GamePrefs.prefs.getInteger(powerups[i] + "Uses"));
 		}
@@ -335,9 +339,9 @@ public class HudTable extends Table {
 			}
 		}
 
-		if (score.getText().length() > 1) {
-			score.setX(Constants.WIDTH / 2 - score.getPrefWidth() / 2);
-		}
+// if (score.getText().length() > 1) {
+// score.setX(Constants.WIDTH / 2 - score.getPrefWidth() / 2);
+// }
 
 	}
 }

@@ -1,4 +1,4 @@
-package com.jumpbuttonstudios.totemgame.desktop;
+package com.jumpbuttonstudio.totemgame.desktop;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;

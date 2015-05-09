@@ -55,7 +55,7 @@ public class CoinLabel extends Actor {
 			public void clicked(InputEvent event, float x, float y) {
 				super.clicked(event, x, y);
 				TotemGame.soundManager.play("button");
-
+				dialog.setVisible(true);
 			}
 		});
 
@@ -70,21 +70,22 @@ public class CoinLabel extends Actor {
 		}
 		dialog.setVisible(false);
 	}
+	
+	@Override
+	public float getHeight(){
+		return coinImage.getHeight();
+	}
+
+	@Override
+	public void act(float delta) {
+		super.act(delta);
+//		coinButton.act(delta);
+	}
 
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
 		super.draw(batch, parentAlpha);
 
-		if (Gdx.input.getX() > getX() + coinButton.getX()
-				&& Gdx.input.getX() < getX() + coinButton.getX() + coinButton.getWidth()) {
-			if (Constants.HEIGHT - Gdx.input.getY() > coinButton.getY()
-					&& Constants.HEIGHT - Gdx.input.getY() < coinButton.getY()
-							+ coinButton.getHeight()) {
-				if (Gdx.input.isButtonPressed(Buttons.LEFT)) {
-					dialog.setVisible(true);
-				}
-			}
-		}
 		coins.setText(" " + String.valueOf(GamePrefs.prefs.getInteger("coins")));
 		coins.setPosition(getX() + coinImage.getWidth() - 20, getY() + coinImage.getHeight() / 2
 				- coins.getHeight() / 2 - 3);
@@ -94,7 +95,7 @@ public class CoinLabel extends Actor {
 
 		coins.draw(batch, parentAlpha);
 		coinImage.draw(batch, parentAlpha);
-		coinButton.draw(batch, parentAlpha);
+//		coinButton.draw(batch, parentAlpha);
 	}
 
 }
