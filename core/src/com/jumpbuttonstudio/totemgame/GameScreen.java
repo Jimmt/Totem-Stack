@@ -26,7 +26,12 @@ public class GameScreen extends AbstractScreen {
 
 	public GameScreen(TotemGame game) {
 		super(game);
-	
+
+		if (GamePrefs.prefs.getBoolean("bgMusic")) {
+			TotemGame.soundManager.stopMusic();
+			TotemGame.soundManager.loopMusic("game", 1f);
+		}
+
 		particleStage = new Stage();
 		FitViewport viewport1 = new FitViewport(Constants.SCLWIDTH, Constants.SCLHEIGHT, camera);
 		stage.setViewport(viewport1);
@@ -36,7 +41,6 @@ public class GameScreen extends AbstractScreen {
 		hudTable.setTransform(true);
 		hudTable.setFillParent(true);
 		hudStage.addActor(hudTable);
-		
 
 		background = new Background(stage, world);
 
@@ -156,8 +160,8 @@ public class GameScreen extends AbstractScreen {
 			gameOver();
 
 		}
-		
-		if(Gdx.input.isKeyPressed(Keys.Q) && !gameOver){
+
+		if (Gdx.input.isKeyPressed(Keys.Q) && !gameOver) {
 			gameOver();
 		}
 
@@ -176,7 +180,7 @@ public class GameScreen extends AbstractScreen {
 				stage.getCamera().position.y / Constants.SCALE, 0);
 
 // Table.drawDebug(hudStage);
-//		hudTable.debug();
+// hudTable.debug();
 		hudTable.act(delta);
 
 		hudStage.draw();

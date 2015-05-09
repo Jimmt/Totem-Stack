@@ -34,16 +34,17 @@ public class MenuScreen extends AbstractScreen {
 // } catch (IOException e) {
 // e.printStackTrace();
 // }
-		TotemGame.soundManager.setPlayMusic(GamePrefs.prefs.getBoolean("bgMusic"));
-		TotemGame.soundManager.setPlayEffects(GamePrefs.prefs.getBoolean("soundEffects"));
-		TotemGame.soundManager.loopMusic("menu", 1f);
+		if (GamePrefs.prefs.getBoolean("bgMusic")) {
+			TotemGame.soundManager.stopMusic();
+			TotemGame.soundManager.setPlayEffects(GamePrefs.prefs.getBoolean("soundEffects"));
+			TotemGame.soundManager.loopMusic("menu", 1f);
+		}
 
 		logoutDialog = new LogoutDialog("", getSkin());
 
-		
 		table = super.getTable();
 		table.setFillParent(true);
-		
+
 		Image background = new Image(Icons.getTex("bg/net.png"));
 		background.setSize(Constants.WIDTH, Constants.HEIGHT);
 		table.setBackground(background.getDrawable());
@@ -95,11 +96,8 @@ public class MenuScreen extends AbstractScreen {
 
 		});
 
-		
-
 		stage.getActors().removeValue(table, false);
 		stage.addActor(table);
-		
 
 		HudTable hudTable = new HudTable(getSkin(), this);
 		hudStage.addActor(hudTable);
@@ -112,7 +110,7 @@ public class MenuScreen extends AbstractScreen {
 
 		InputMultiplexer multiplexer = new InputMultiplexer(hudTable.optionsDialog.xStage,
 				hudStage, stage);
-		
+
 		Gdx.input.setInputProcessor(multiplexer);
 
 		coinsDialog = new CoinsDialog("", getSkin(), hudStage);
@@ -129,8 +127,6 @@ public class MenuScreen extends AbstractScreen {
 		hudStage.draw();
 		hudStage.act(delta);
 
-		
-		
 	}
 
 }

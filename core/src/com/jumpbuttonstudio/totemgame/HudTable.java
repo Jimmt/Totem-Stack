@@ -14,11 +14,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 public class HudTable extends Table {
+	static boolean soundOn = true;
 	AbstractScreen game;
 	Label score;
 	ImageButton pause, sound, options, shop, home, leftButton, rightButton;
 	ImageButtonStyle soundOnStyle, soundOffStyle;
-	boolean soundOn = true;
 	Image header;
 
 	String[] paths = { "pause", "setting", "shop", "home" };
@@ -173,7 +173,7 @@ public class HudTable extends Table {
 		shopDialog.setVisible(false);
 
 		setupListeners();
-//		optionsDialog.debug();
+// optionsDialog.debug();
 	}
 
 	@Override
@@ -258,7 +258,11 @@ public class HudTable extends Table {
 			}
 
 		});
-
+		if (TotemGame.soundManager.getMasterPlay() && TotemGame.soundManager.getPlay()) {
+			sound.setStyle(soundOnStyle);
+		} else {
+			sound.setStyle(soundOffStyle);
+		}
 		sound.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) { // sound
@@ -266,10 +270,15 @@ public class HudTable extends Table {
 
 				if (soundOn) {
 					sound.setStyle(soundOffStyle);
-					TotemGame.soundManager.setMasterPlay(false);
+					if (GamePrefs.prefs.getBoolean("bgMusic")) {
+						TotemGame.soundManager.stopMusic();
+						TotemGame.soundManager.setPlayMusic(false);
+					}
 				} else {
 					sound.setStyle(soundOnStyle);
-					TotemGame.soundManager.setMasterPlay(true);
+					if (GamePrefs.prefs.getBoolean("bgMusic")) {
+						TotemGame.soundManager.setPlayMusic(true);
+					}
 				}
 				soundOn = !soundOn;
 			}

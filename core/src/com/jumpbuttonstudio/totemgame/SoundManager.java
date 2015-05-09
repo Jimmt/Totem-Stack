@@ -5,6 +5,8 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.ObjectMap;
+import com.badlogic.gdx.utils.ObjectMap.Entries;
+import com.badlogic.gdx.utils.ObjectMap.Entry;
 
 public class SoundManager {
 	ObjectMap<String, Sound> sounds;
@@ -70,8 +72,8 @@ public class SoundManager {
 		this.playMusic = playMusic;
 
 		if (playMusic == false) {
-			((Music) musics.get("game")).stop();
-			((Music) musics.get("menu")).stop();
+			((Music) musics.get("game")).pause();
+			((Music) musics.get("menu")).pause();
 		} else {
 			if (menuScreen) {
 				((Music) musics.get("menu")).play();
@@ -81,8 +83,24 @@ public class SoundManager {
 			}
 		}
 	}
+	
+	public boolean getPlay(){
+		return playMusic;
+	}
+	
+	public boolean getMasterPlay(){
+		return masterPlay;
+	}
 
 	public void setMasterPlay(boolean masterPlay) {
 		this.masterPlay = masterPlay;
 	}
+	
+	public void stopMusic(){
+		Entries<String, Music> entries = musics.entries();
+		while (entries.hasNext()) {
+			entries.next().value.pause();
+		}
+	}
+	
 }
