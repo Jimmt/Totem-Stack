@@ -1,5 +1,6 @@
 package com.jumpbuttonstudio.totemgame.android;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -57,6 +58,12 @@ public class AndroidLauncher extends AndroidApplication implements IabInterface 
 		if (mHelper != null)
 			mHelper.dispose();
 		mHelper = null;
+	}
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		helper.onActivityResult(requestCode, resultCode, data);
 	}
 
 	@Override

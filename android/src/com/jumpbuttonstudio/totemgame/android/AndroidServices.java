@@ -5,7 +5,7 @@ import com.google.android.gms.games.Games;
 import com.google.example.games.basegameutils.GameHelper;
 import com.google.example.games.basegameutils.GameHelper.GameHelperListener;
 import com.jumpbuttonstudio.totemgame.IGoogleServices;
-import com.jumpbuttonstudios.totemgame.android.R;
+import com.jumpbuttonstudio.totemgame.android.R;
 
 public class AndroidServices implements GameHelperListener, ActionResolver, IGoogleServices {
 	public AndroidLauncher launcher;

@@ -17,7 +17,6 @@ public class MenuScreen extends AbstractScreen {
 	LogoutDialog logoutDialog;
 	ImageButtonStyle logoutStyle, loginStyle;
 	Table table;
-	CoinsDialog coinsDialog;
 	CoinLabel coinsLabel;
 	HudTable hudTable;
 
@@ -94,6 +93,9 @@ public class MenuScreen extends AbstractScreen {
 			public void clicked(InputEvent event, float x, float y) {
 // game.setScreen(new HighScoresScreen(game, null, null));
 				TotemGame.soundManager.play("button");
+				if (TotemGame.services.getSignedIn()) {
+					TotemGame.services.getLeaderboards();
+				}
 			}
 
 		});
@@ -102,12 +104,10 @@ public class MenuScreen extends AbstractScreen {
 			public void clicked(InputEvent event, float x, float y) {
 				TotemGame.soundManager.play("button");
 
-				if (loginButton.getStyle().equals(loginStyle)) {
-					TotemGame.services.signIn();
-					loginButton.setStyle(logoutStyle);
-				} else {
+				if (TotemGame.services.getSignedIn()) {
 					TotemGame.services.signOut();
-					loginButton.setStyle(loginStyle);
+				} else {
+					TotemGame.services.signIn();
 				}
 
 			}
@@ -133,23 +133,25 @@ public class MenuScreen extends AbstractScreen {
 		coinsLabel = new CoinLabel(skin, hudStage);
 		hudStage.addActor(coinsLabel);
 		hudStage.addActor(coinsLabel.coinButton);
-		
-// coinsDialog = new CoinsDialog("", getSkin(), hudStage);
-// hudStage.addActor(coinsDialog);
-//
-// coinsDialog.setY(hudTable.header.getY() - coinsDialog.getHeight());
-// coinsDialog.setModal(false);
 	}
 
 	@Override
 	public void render(float delta) {
 		super.render(delta);
-		
+
 		hudStage.draw();
 		hudStage.act(delta);
-//		hudStage.setDebugAll(true);
-		
+// hudStage.setDebugAll(true);
+
 		coinsLabel.setPosition(0, hudTable.header.getY() - coinsLabel.getHeight());
+
+		
+		if (TotemGame.services.getSignedIn()) {
+
+			loginButton.setStyle(logoutStyle);
+		} else {
+			loginButton.setStyle(loginStyle);
+		}
 
 	}
 

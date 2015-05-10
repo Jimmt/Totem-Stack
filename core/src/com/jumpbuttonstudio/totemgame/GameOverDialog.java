@@ -1,6 +1,5 @@
 package com.jumpbuttonstudio.totemgame;
 
-
 import java.io.IOException;
 
 import twitter4j.TwitterException;
@@ -45,6 +44,14 @@ public class GameOverDialog extends Dialog {
 		super("", skin);
 
 		this.submittedScore = submittedScore;
+
+		if (TotemGame.services.getSignedIn()) {
+			TotemGame.services.submitHighscore(score);
+		}
+		if (score >= GamePrefs.prefs.getInteger("bestScore")) {
+			GamePrefs.putInteger("bestScore", score);
+		}
+
 		this.skin = skin;
 
 		sr = new ShapeRenderer();
@@ -158,7 +165,9 @@ public class GameOverDialog extends Dialog {
 					@Override
 					public void clicked(InputEvent event, float x, float y) {
 						super.clicked(event, x, y);
-// game.setScreen(new HighScoresScreen(game, gs, dialog));
+						if(TotemGame.services.getSignedIn()){
+							TotemGame.services.submitHighscore(score);
+						}
 						TotemGame.soundManager.play("button");
 					}
 				});
@@ -211,10 +220,6 @@ public class GameOverDialog extends Dialog {
 						TotemGame.soundManager.play("button");
 					}
 				});
-
-		if (score >= GamePrefs.prefs.getInteger("bestScore")) {
-			GamePrefs.putInteger("bestScore", score);
-		}
 
 	}
 
