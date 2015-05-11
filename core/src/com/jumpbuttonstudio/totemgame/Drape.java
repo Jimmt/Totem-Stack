@@ -27,7 +27,7 @@ public class Drape extends ImageButton {
 		powerup.setSize(powerup.getWidth() / 2, powerup.getHeight() / 2);
 		
 		font = new BitmapFont(Gdx.files.internal("ui/shop/numbers.fnt"));
-		font.getData().setScale(0.75f);
+//		font.getData().setScale(0.75f);
 		
 		LabelStyle style = new LabelStyle();
 		style.font = font;

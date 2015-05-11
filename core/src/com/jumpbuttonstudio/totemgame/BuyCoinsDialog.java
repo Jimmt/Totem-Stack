@@ -43,13 +43,14 @@ public class BuyCoinsDialog extends Dialog {
 		buyButton.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				TotemGame.soundManager.play("button");
+				TotemGame.soundManager.play("buy");
 
 				for (int i = 0; i < imageButtons.size; i++) {
 					if (imageButtons.get(i).isChecked()) {
 						TotemGame.services.buyCoins(jbsNumbers[i]);
+						TotemGame.soundManager.play("buy");
 					}
-				}
+				} 
 			}
 
 		});
@@ -95,7 +96,6 @@ public class BuyCoinsDialog extends Dialog {
 		x.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				TotemGame.soundManager.play("button");
 				setVisible(false);
 			}
 

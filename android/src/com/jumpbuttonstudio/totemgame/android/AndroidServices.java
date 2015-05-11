@@ -149,7 +149,7 @@ public class AndroidServices implements GameHelperListener, ActionResolver, IGoo
 
 	@Override
 	public void buyCoins(int amount) {
-		
+		launcher.buyCoins(amount);
 		
 	}
 

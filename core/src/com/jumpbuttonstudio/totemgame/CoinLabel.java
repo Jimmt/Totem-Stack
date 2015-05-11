@@ -37,7 +37,7 @@ public class CoinLabel extends Actor {
 		Image background = new Image(bgTex);
 		labelStyle.background = background.getDrawable();
 
-		coins = new Label(" 420", labelStyle);
+		coins = new Label(" ", labelStyle);
 		coins.setWidth(bgTex.getWidth());
 		coins.setHeight(bgTex.getHeight());
 

@@ -13,10 +13,11 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 public class TotemGame extends Game {
 	public static SoundManager soundManager;
 	public static IGoogleServices services;
+	public static boolean DEBUG = true;
 
 	String[] paths = {};
-	
-	public TotemGame(IGoogleServices services){
+
+	public TotemGame(IGoogleServices services) {
 		this.services = services;
 	}
 
@@ -43,7 +44,13 @@ public class TotemGame extends Game {
 		GamePrefs.initialize();
 		Icons.loadIcons();
 
-		setScreen(new MenuScreen(this));
+//		DEBUG = false;
+
+		if (DEBUG) {
+			setScreen(new SplashScreen(this));
+		} else {
+			setScreen(new MenuScreen(this));
+		}
 	}
 
 	@Override

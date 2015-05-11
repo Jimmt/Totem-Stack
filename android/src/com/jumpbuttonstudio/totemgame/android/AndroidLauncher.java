@@ -24,7 +24,7 @@ public class AndroidLauncher extends AndroidApplication implements IabInterface 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		String base64EncodedPublicKey = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAzPPYdyceSscXvMRBLYug9+V1SUJ9pVMfUjU4K1yNLK0i5e/lW16BOWivcXo/OjfrmGTI6mwYFRAw16rcwbZyWRce/NLpCBiEk3aBHDaWPjmQgO1oPNUKi2XKuYYnHEUV70AVxaOYdpzi/LNwJYaoRqL+ho6F5sEeL0dfS2EhaNpX1zOrTSvI+Rz+mlpeOnTEr2aNyCOjIMhXtYdxgxtr1dJoATf6xcqFfMJ8enL+9BMP9Af+zyHrmxJvCX7BuAXR4E2fSlR3VD6zHSU1p9uAL4VkXk4LiX7esMy6qmzuYsQNVl7X3DjsVd1/hDvT1VsEPGcr+WdrKkxlIrq+WECoOwIDAQAB";
+		String base64EncodedPublicKey = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAun/GajJbONdrpBzIITyxFcvyfVIkuBZAwK7rUDtvizr5HfcTN4AB4W7Chigr3n3vMaq6LBiwLS5xAZ+4TwGtmykR6S2e2aNNhVb8RL7alI7npV9PYLxclWnmq/SWI6uAvxZ0H2szOD1jOxaWPdBLbr6Uf9WGXVRORFPfboKh26/pG4LW2lgF0sL51y1rhjGn032nvQiFJWV1ZeHoi1UoWxC05Sf4flzkCoHBQDneRrvnPoFfBAg/pRl92E+A3vlNA57NWimRkfWNtbWM8EqMHgjWBBW4uNGZ7fzE4ROjBYeWNzxSRaB22/WJaCbQTsJiYUD/2G8l2ixReAWMpvp1CwIDAQAB";
 
 		// compute your public key and store it in base64EncodedPublicKey
 		mHelper = new IabHelper(this, base64EncodedPublicKey);
@@ -46,7 +46,7 @@ public class AndroidLauncher extends AndroidApplication implements IabInterface 
 		services = new AndroidServices(helper, this);
 		helper.setup(services);
 		helper.enableDebugLog(true);
-		
+
 		game = new TotemGame(services);
 		AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
 		initialize(game, config);
@@ -58,8 +58,11 @@ public class AndroidLauncher extends AndroidApplication implements IabInterface 
 		if (mHelper != null)
 			mHelper.dispose();
 		mHelper = null;
+
+		android.os.Process.killProcess(android.os.Process.myPid());
 	}
-	
+
+
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
@@ -86,19 +89,18 @@ public class AndroidLauncher extends AndroidApplication implements IabInterface 
 	@Override
 	public void buyCoins(final int amount) {
 
-		
-//		mHelper.launchPurchaseFlow(this, SKU_TEST, RC_REQUEST,
-//				new IabHelper.OnIabPurchaseFinishedListener() {
+// mHelper.launchPurchaseFlow(this, SKU_TEST, RC_REQUEST,
+// new IabHelper.OnIabPurchaseFinishedListener() {
 //
-//					@Override
-//					public void onIabPurchaseFinished(IabResult result, Purchase info) {
-//						test = true;
-//						Log.d("IAB", info.getSku()); // info is null
-//						Log.d("IAB", info.getItemType());
+// @Override
+// public void onIabPurchaseFinished(IabResult result, Purchase info) {
+// test = true;
+// Log.d("IAB", info.getSku()); // info is null
+// Log.d("IAB", info.getItemType());
 //
-//					}
-//				}, "HANDLE_PAYLOADS");
-				
+// }
+// }, "HANDLE_PAYLOADS");
+
 		if (amount == 500) {
 			mHelper.launchPurchaseFlow(this, SKU_BUY_COINS_500, RC_REQUEST,
 					new IabHelper.OnIabPurchaseFinishedListener() {
@@ -113,7 +115,7 @@ public class AndroidLauncher extends AndroidApplication implements IabInterface 
 						}
 					}, "HANDLE_PAYLOADS");
 		}
-		
+
 		if (amount == 1750) {
 			mHelper.launchPurchaseFlow(this, SKU_BUY_COINS_1750, RC_REQUEST,
 					new IabHelper.OnIabPurchaseFinishedListener() {
@@ -128,7 +130,7 @@ public class AndroidLauncher extends AndroidApplication implements IabInterface 
 						}
 					}, "HANDLE_PAYLOADS");
 		}
-		
+
 		if (amount == 4000) {
 			mHelper.launchPurchaseFlow(this, SKU_BUY_COINS_4000, RC_REQUEST,
 					new IabHelper.OnIabPurchaseFinishedListener() {

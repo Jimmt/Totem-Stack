@@ -1,5 +1,6 @@
 package com.jumpbuttonstudio.totemgame;
 
+import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.Texture;
@@ -145,12 +146,13 @@ public class MenuScreen extends AbstractScreen {
 
 		coinsLabel.setPosition(0, hudTable.header.getY() - coinsLabel.getHeight());
 
-		
-		if (TotemGame.services.getSignedIn()) {
+		if (Gdx.app.getType() == ApplicationType.Android) {
+			if (TotemGame.services.getSignedIn()) {
 
-			loginButton.setStyle(logoutStyle);
-		} else {
-			loginButton.setStyle(loginStyle);
+				loginButton.setStyle(logoutStyle);
+			} else {
+				loginButton.setStyle(loginStyle);
+			}
 		}
 
 	}
