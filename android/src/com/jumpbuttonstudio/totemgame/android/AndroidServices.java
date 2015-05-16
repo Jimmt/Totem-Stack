@@ -119,26 +119,31 @@ public class AndroidServices implements GameHelperListener, ActionResolver, IGoo
 		getAchievementsGPGS();
 
 	}
+	
+	@Override
+	public boolean getDisplayAds(){
+		return launcher.getDisplayAds();
+	}
 
 	@Override
 	public void showOrLoadInterstitial() {
-//		try {
-//			launcher.runOnUiThread(new Runnable() {
-//				public void run() {
-//					if (launcher.interstitialAd.isLoaded()) {
-//						launcher.interstitialAd.show();
-//// Toast.makeText(launcher.getApplicationContext(), "Showing Interstitial",
-//// Toast.LENGTH_SHORT).show();
-//					} else {
-//						AdRequest interstitialRequest = new AdRequest.Builder().build();
-//						launcher.interstitialAd.loadAd(interstitialRequest);
-//// Toast.makeText(launcher.getApplicationContext(), "Loading Interstitial",
-//// Toast.LENGTH_SHORT).show();
-//					}
-//				}
-//			});
-//		} catch (Exception e) {
-//		}
+		try {
+			launcher.runOnUiThread(new Runnable() {
+				public void run() {
+					if (launcher.interstitialAd.isLoaded()) {
+						launcher.interstitialAd.show();
+// Toast.makeText(launcher.getApplicationContext(), "Showing Interstitial",
+// Toast.LENGTH_SHORT).show();
+					} else {
+						AdRequest interstitialRequest = new AdRequest.Builder().build();
+						launcher.interstitialAd.loadAd(interstitialRequest);
+// Toast.makeText(launcher.getApplicationContext(), "Loading Interstitial",
+// Toast.LENGTH_SHORT).show();
+					}
+				}
+			});
+		} catch (Exception e) {
+		}
 	}
 
 	@Override

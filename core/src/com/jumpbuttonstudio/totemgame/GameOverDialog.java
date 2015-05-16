@@ -3,6 +3,7 @@ package com.jumpbuttonstudio.totemgame;
 import java.io.IOException;
 
 import twitter4j.TwitterException;
+
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
@@ -50,6 +51,10 @@ public class GameOverDialog extends Dialog {
 		}
 		if (score >= GamePrefs.prefs.getInteger("bestScore")) {
 			GamePrefs.putInteger("bestScore", score);
+		}
+		TotemGame.deaths++;
+		if(TotemGame.deaths % 5 == 0){
+			TotemGame.services.showOrLoadInterstitial();
 		}
 
 		this.skin = skin;
@@ -107,6 +112,8 @@ public class GameOverDialog extends Dialog {
 			public void clicked(InputEvent event, float x, float y) {
 				super.clicked(event, x, y);
 				TotemGame.soundManager.play("button");
+				TotemGame.services.removeAds();
+				
 			}
 		});
 

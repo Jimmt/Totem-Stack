@@ -19,5 +19,7 @@ public interface IGoogleServices {
 	
 	public void removeAds();
 	
+	public boolean getDisplayAds();
+	
 	public void buyCoins(int amount);
 }

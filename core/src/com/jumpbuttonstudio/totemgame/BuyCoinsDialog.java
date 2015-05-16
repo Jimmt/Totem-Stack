@@ -1,6 +1,14 @@
 package com.jumpbuttonstudio.totemgame;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.pay.Offer;
+import com.badlogic.gdx.pay.OfferType;
+import com.badlogic.gdx.pay.PurchaseManager;
+import com.badlogic.gdx.pay.PurchaseManagerConfig;
+import com.badlogic.gdx.pay.PurchaseObserver;
+import com.badlogic.gdx.pay.PurchaseSystem;
+import com.badlogic.gdx.pay.Transaction;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.ButtonGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
@@ -10,6 +18,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.ImageButton.ImageButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.GdxRuntimeException;
 
 public class BuyCoinsDialog extends Dialog {
 	ImageButton x;
@@ -50,7 +59,7 @@ public class BuyCoinsDialog extends Dialog {
 						TotemGame.services.buyCoins(jbsNumbers[i]);
 						TotemGame.soundManager.play("buy");
 					}
-				} 
+				}
 			}
 
 		});

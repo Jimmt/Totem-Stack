@@ -14,6 +14,7 @@ public class TotemGame extends Game {
 	public static SoundManager soundManager;
 	public static IGoogleServices services;
 	public static boolean DEBUG = true;
+	public static int deaths = 0;
 
 	String[] paths = {};
 
@@ -43,6 +44,8 @@ public class TotemGame extends Game {
 
 		GamePrefs.initialize();
 		Icons.loadIcons();
+		
+		
 
 //		DEBUG = false;
 
