@@ -31,7 +31,7 @@ public class GameContactListener implements ContactListener {
 	boolean green = true, yellow;
 	Sprite iceSprite1, iceSprite2;
 	float lastChangeTime = 999f, changeCap = .5f;
-	int perfectLandings, streakCount, perfectStreakCount;
+	int perfectLandings, streakCount, perfectStreakCount, achievementStreak;
 
 	/**
 	 * Impressive Streak!: is when the player gets a score of +2 or higher
@@ -179,11 +179,11 @@ public class GameContactListener implements ContactListener {
 
 			if (((Totem) b).equals(game.spawner.currentTotem)) {
 				createTotem();
-				
-				if(game.spawner.pointChecker.checkingFirst){
+
+				if (game.spawner.pointChecker.checkingFirst) {
 					game.gameOver();
 				}
-				
+
 				if (!groundTotems.contains((Totem) b, false)) {
 					groundTotems.add((Totem) b);
 				}
@@ -392,6 +392,9 @@ public class GameContactListener implements ContactListener {
 	public int getPlacePoints(Totem current, Totem bottom) {
 		float distance = Math.abs(current.body.getPosition().x - bottom.body.getPosition().x);
 
+		int temp = perfectStreakCount;
+		perfectStreakCount = 0;
+
 		if (distance <= 10f * Constants.SCALE) {
 
 			streakCount++;
@@ -401,7 +404,15 @@ public class GameContactListener implements ContactListener {
 				TotemGame.soundManager.play("perfectland");
 
 				perfectLandings++;
-				perfectStreakCount++;
+				perfectStreakCount = temp + 1;
+
+				
+				if (perfectStreakCount >= 5) {
+					if (TotemGame.services.getSignedIn()) {
+						TotemGame.services.unlockAchievement(Constants.ACHIEVEMENT_ON_FIRE);
+					}
+				}
+				achievementStreak++;
 
 				if (perfectLandings == 10) {
 					if (game.stage.getActors().contains(perfectTotal, false)) {

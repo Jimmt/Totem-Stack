@@ -165,6 +165,17 @@ public class GameScreen extends AbstractScreen {
 			gameOver();
 		}
 
+		if (score >= 20) {
+			if (TotemGame.services.getSignedIn()) {
+				TotemGame.services.unlockAchievement(Constants.ACHIEVEMENT_BEGINNER);
+
+				if (score >= 100) {
+					TotemGame.services.unlockAchievement(Constants.ACHIEVEMENT_ELITE);
+
+				}
+			}
+		}
+
 		if (gameOver) {
 			if (!stage.getActors().contains(black, false)) {
 				stage.addActor(black);

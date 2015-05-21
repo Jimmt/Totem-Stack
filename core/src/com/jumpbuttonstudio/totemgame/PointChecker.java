@@ -65,14 +65,14 @@ public class PointChecker extends Actor {
 				Icons.normalPoints[0].addAction(Actions.sequence(Actions.alpha(1, 0.5f), Actions.alpha(0, 0.5f)));
 				checkingFirst = false;
 				game.score += 1;
-			} 
+			} else
 			if (twoPointLeft.overlaps(totemRect) || twoPointRight.overlaps(totemRect)) {
 				stage.addActor(Icons.getImage("ui/gameplay/+2.png"));
 				Icons.normalPoints[1].setPosition(scoreX, scoreY);
 				Icons.normalPoints[1].addAction(Actions.sequence(Actions.alpha(1, 0.5f), Actions.alpha(0, 0.5f)));
 				checkingFirst = false;
 				game.score += 2;
-			}
+			} else
 			if (threePoint.overlaps(totemRect)) {
 				stage.addActor(Icons.getImage("ui/gameplay/+3.png"));
 				Icons.normalPoints[2].setPosition(scoreX, scoreY);

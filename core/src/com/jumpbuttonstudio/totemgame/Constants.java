@@ -8,4 +8,10 @@ public class Constants {
 	public static float SCALE = 1/100f;
 	public static float SCLWIDTH = WIDTH * SCALE;
 	public static float SCLHEIGHT = HEIGHT * SCALE;
+	public static String ACHIEVEMENT_BEGINNER = "";
+	public static String ACHIEVEMENT_ON_FIRE = "";
+	public static String ACHIEVEMENT_HIGH_FLYING = "";
+	public static String ACHIEVEMENT_IMPRESSIVELY_BAD = "";
+	public static String ACHIEVEMENT_ELITE = "";
+	
 }

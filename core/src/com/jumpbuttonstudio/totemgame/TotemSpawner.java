@@ -92,8 +92,6 @@ public class TotemSpawner extends Actor {
 
 	@Override
 	public void act(float delta) {
-		
-		
 
 		rain.effect.setPosition(0, game.camera.position.y / Constants.SCALE + Constants.HEIGHT / 2);
 		lightning.effect.setPosition(game.camera.position.x / Constants.SCALE,
@@ -117,6 +115,12 @@ public class TotemSpawner extends Actor {
 				lightningCap = MathUtils.random(3) + 5f;
 			} else {
 				nextLightningTime += delta;
+			}
+		}
+
+		if (zone == Zone.STARS) {
+			if (TotemGame.services.getSignedIn()) {
+				TotemGame.services.unlockAchievement(Constants.ACHIEVEMENT_HIGH_FLYING);
 			}
 		}
 
@@ -250,8 +254,8 @@ public class TotemSpawner extends Actor {
 					} else if (TimeUtils.millis() > nextGoldSpawn && totems.size > 3) {
 						nextGoldSpawn += TimeUtils.millis() + MathUtils.random(90000);
 
-						t = new GoldTotem(0.5f * Constants.SCLWIDTH, spawnY + 0.5f, totemScale, game.world,
-								game.particleStage);
+						t = new GoldTotem(0.5f * Constants.SCLWIDTH, spawnY + 0.5f, totemScale,
+								game.world, game.particleStage);
 					} else {
 // t = new GoldTotem(0.5f * Constants.SCLWIDTH, spawnY, game.world,
 // game.particleStage);
@@ -268,8 +272,8 @@ public class TotemSpawner extends Actor {
 // t = new Totem(0.5f * Constants.SCLWIDTH, spawnY, game.world);
 // }
 						t = new Totem(MathUtils.random(Constants.SCLWIDTH / 2 - randomMagnitude,
-								Constants.SCLWIDTH / 2 + randomMagnitude), spawnY + 0.5f, totemScale,
-								game.world);
+								Constants.SCLWIDTH / 2 + randomMagnitude), spawnY + 0.5f,
+								totemScale, game.world);
 
 					}
 					totems.add(t);

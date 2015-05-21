@@ -45,6 +45,12 @@ public class GameOverDialog extends Dialog {
 		super("", skin);
 
 		this.submittedScore = submittedScore;
+		
+		if(score == 0){
+			if(TotemGame.services.getSignedIn()){
+				TotemGame.services.unlockAchievement(Constants.ACHIEVEMENT_IMPRESSIVELY_BAD);
+			}
+		}
 
 		if (TotemGame.services.getSignedIn()) {
 			TotemGame.services.submitHighscore(score);
@@ -53,7 +59,7 @@ public class GameOverDialog extends Dialog {
 			GamePrefs.putInteger("bestScore", score);
 		}
 		TotemGame.deaths++;
-		if(TotemGame.deaths % 5 == 0){
+		if (TotemGame.deaths % 5 == 0) {
 			TotemGame.services.showOrLoadInterstitial();
 		}
 
@@ -113,7 +119,7 @@ public class GameOverDialog extends Dialog {
 				super.clicked(event, x, y);
 				TotemGame.soundManager.play("button");
 				TotemGame.services.removeAds();
-				
+
 			}
 		});
 
@@ -172,7 +178,7 @@ public class GameOverDialog extends Dialog {
 					@Override
 					public void clicked(InputEvent event, float x, float y) {
 						super.clicked(event, x, y);
-						if(TotemGame.services.getSignedIn()){
+						if (TotemGame.services.getSignedIn()) {
 							TotemGame.services.submitHighscore(score);
 						}
 						TotemGame.soundManager.play("button");
@@ -182,7 +188,11 @@ public class GameOverDialog extends Dialog {
 					@Override
 					public void clicked(InputEvent event, float x, float y) {
 						super.clicked(event, x, y);
-
+						if (TotemGame.services.getSignedIn()) {
+							TotemGame.services.getAchievements();
+						} else {
+							TotemGame.services.signIn();
+						}
 						TotemGame.soundManager.play("button");
 					}
 				});
