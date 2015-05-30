@@ -7,6 +7,7 @@ import twitter4j.TwitterException;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -46,22 +47,24 @@ public class GameOverDialog extends Dialog {
 
 		this.submittedScore = submittedScore;
 
-		if (score == 0) {
-			if (TotemGame.services.getSignedIn()) {
-				TotemGame.services.unlockAchievement(Constants.ACHIEVEMENT_IMPRESSIVELY_BAD);
+		if (Gdx.app.getType() == ApplicationType.Android) {
+			if (score == 0) {
+				if (TotemGame.services.getSignedIn()) {
+					TotemGame.services.unlockAchievement(Constants.ACHIEVEMENT_IMPRESSIVELY_BAD);
+				}
 			}
-		}
 
-		if (TotemGame.services.getSignedIn()) {
-			TotemGame.services.submitHighscore(score);
-		}
-		if (score >= GamePrefs.prefs.getInteger("bestScore")) {
-			GamePrefs.putInteger("bestScore", score);
-		}
-		TotemGame.deaths++;
-		if (TotemGame.deaths % 5 == 0) {
-			if (TotemGame.services.getDisplayAds()) {
-				TotemGame.services.showOrLoadInterstitial();
+			if (TotemGame.services.getSignedIn()) {
+				TotemGame.services.submitHighscore(score);
+			}
+			if (score >= GamePrefs.prefs.getInteger("bestScore")) {
+				GamePrefs.putInteger("bestScore", score);
+			}
+			TotemGame.deaths++;
+			if (TotemGame.deaths % 5 == 0) {
+				if (TotemGame.services.getDisplayAds()) {
+					TotemGame.services.showOrLoadInterstitial();
+				}
 			}
 		}
 
@@ -108,7 +111,7 @@ public class GameOverDialog extends Dialog {
 		gameOver = new Image(Icons.getTex("gameover/gameover.png"));
 		gameOver.setPosition(Constants.WIDTH / 2 - gameOver.getWidth() / 2, Constants.HEIGHT);
 		gameOver.setScaling(Scaling.fill);
-		getContentTable().add(gameOver);
+		getContentTable().add(gameOver).colspan(imageButtons.size);
 		getContentTable().row();
 
 		ImageButtonStyle removeAdStyle = new ImageButtonStyle();
@@ -150,17 +153,19 @@ public class GameOverDialog extends Dialog {
 		bestScoreLabel.setAlignment(Align.center);
 
 		getContentTable().add(scoreLabel).width(yourScore.getWidth()).height(yourScore.getHeight())
-				.fill().center();
+				.fill().center().colspan(imageButtons.size);
 		getContentTable().row();
 		getContentTable().add(bestScoreLabel).width(bestScore.getWidth())
-				.height(bestScore.getHeight()).fill().center();
+				.height(bestScore.getHeight()).fill().center().colspan(imageButtons.size);
+		
+		getContentTable().row();
 
 		for (int i = 0; i < imageButtons.size; i++) {
-			getButtonTable().add(imageButtons.get(i)).width(imageButtons.get(i).getWidth())
+			getContentTable().add(imageButtons.get(i)).width(imageButtons.get(i).getWidth())
 					.height(imageButtons.get(i).getHeight());
 		}
-		getButtonTable().row();
-		getButtonTable().add(removeAds).colspan(5);
+		getContentTable().row();
+		getContentTable().add(removeAds).colspan(5);
 
 		scoreLabel.setPosition(100, getY());
 
