@@ -21,13 +21,13 @@ public class PinDialog extends Dialog {
 	public PinDialog(final String score, final Skin skin, final GameScreen gs) {
 		super("", skin);
 
-		setBackground(new Image(new Texture(Gdx.files.internal("ui/shop/window01.png"))).getDrawable());
-		setWidth(new Image(new Texture(Gdx.files.internal("ui/shop/window01.png"))).getWidth());
-		setHeight(new Image(new Texture(Gdx.files.internal("ui/shop/window01.png"))).getHeight());
+		setBackground(new Image(Icons.getTex("ui/shop/window01.png")).getDrawable());
+		setWidth(new Image(Icons.getTex("ui/shop/window01.png")).getWidth());
+		setHeight(new Image(Icons.getTex("ui/shop/window01.png")).getHeight());
 
 		ImageButtonStyle buttonStyle = new ImageButtonStyle();
-		buttonStyle.up = new Image(new Texture(Gdx.files.internal("login/ok.png"))).getDrawable();
-		buttonStyle.down = new Image(new Texture(Gdx.files.internal("login/ok_pressed.png"))).getDrawable();
+		buttonStyle.up = new Image(Icons.getTex("login/ok.png")).getDrawable();
+		buttonStyle.down = new Image(Icons.getTex("login/ok_pressed.png")).getDrawable();
 
 		BitmapFont font = new BitmapFont(Gdx.files.internal("ui/highscore/font.fnt"));
 
@@ -39,13 +39,13 @@ public class PinDialog extends Dialog {
 		TextFieldStyle textStyle = new TextFieldStyle();
 		textStyle.font = font;
 		textStyle.fontColor = Color.WHITE;
-		textStyle.background = new Image(new Texture(Gdx.files.internal("ui/gameover/textfield.png"))).getDrawable();
+		textStyle.background = new Image(Icons.getTex("ui/gameover/textfield.png")).getDrawable();
 		final TextField input = new TextField("", textStyle);
 
 		getContentTable().add(label);
 		getContentTable().row();
-		getContentTable().add(input).width(new Image(new Texture(Gdx.files.internal("ui/gameover/textfield.png"))).getWidth())
-				.height(new Image(new Texture(Gdx.files.internal("ui/gameover/textfield.png"))).getHeight());
+		getContentTable().add(input).width(new Image(Icons.getTex("ui/gameover/textfield.png")).getWidth())
+				.height(new Image(Icons.getTex("ui/gameover/textfield.png")).getHeight());
 
 		ImageButton ok = new ImageButton(buttonStyle);
 		ok.addListener(new ClickListener() {
@@ -77,5 +77,4 @@ public class PinDialog extends Dialog {
 
 		button(ok).padBottom(30f);
 	}
-
 }

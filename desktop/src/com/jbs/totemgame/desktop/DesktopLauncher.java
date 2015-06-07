@@ -2,6 +2,7 @@ package com.jbs.totemgame.desktop;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
+import com.jbs.totemgame.DesktopGoogleServices;
 import com.jbs.totemgame.TotemGame;
 
 public class DesktopLauncher {
@@ -11,6 +12,6 @@ public class DesktopLauncher {
 		config.width = 540;
 		config.height = 960;
 
-		new LwjglApplication(new TotemGame(null), config);
+		new LwjglApplication(new TotemGame(new DesktopGoogleServices()), config);
 	}
 }   

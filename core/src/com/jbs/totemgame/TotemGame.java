@@ -46,6 +46,8 @@ public class TotemGame extends Game {
 		Icons.loadIcons();
 		
 		
+		
+		
 
 //		DEBUG = false;
 

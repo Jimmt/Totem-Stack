@@ -20,7 +20,7 @@ public class ShopDialog extends Dialog {
 	Array<Image> images = new Array<Image>();
 	Array<ImageButton> upgradeButtons = new Array<ImageButton>();
 	boolean positionSet, changed;
-	Image text = new Image(new Texture(Gdx.files.internal("ui/shop/retryinfo.png"))), black;
+	Image text = new Image(Icons.getTex("ui/shop/retryinfo.png")), black;
 	ImageButton backButton, buyCoinButton;
 	Skin skin;
 	GameScreen gs;
@@ -38,7 +38,7 @@ public class ShopDialog extends Dialog {
 
 		text.setScale(1);
 
-		Image panel = new Image(new Texture(Gdx.files.internal("shop/boardNew1.png")));
+		Image panel = new Image(Icons.getTex("shop/boardNew1.png"));
 		setBackground(panel.getDrawable());
 		setSize(panel.getWidth(), panel.getHeight());
 
@@ -46,16 +46,16 @@ public class ShopDialog extends Dialog {
 		final String[] buttonNames = { "retry", "freeze", "slow", "wind" };
 
 		ImageButtonStyle buyCoinStyle = new ImageButtonStyle();
-		buyCoinStyle.up = new Image(new Texture(Gdx.files.internal("ui/shop/buyjbs.png")))
+		buyCoinStyle.up = new Image(Icons.getTex("ui/shop/buyjbs.png"))
 				.getDrawable();
-		buyCoinStyle.down = new Image(new Texture(Gdx.files.internal("ui/shop/buyjbs_pressed.png")))
+		buyCoinStyle.down = new Image(Icons.getTex("ui/shop/buyjbs_pressed.png"))
 				.getDrawable();
 		buyCoinButton = new ImageButton(buyCoinStyle);
 
 		ImageButtonStyle backStyle = new ImageButtonStyle();
-		backStyle.up = new Image(new Texture(Gdx.files.internal("ui/highscore/back.png")))
+		backStyle.up = new Image(Icons.getTex("ui/highscore/back.png"))
 				.getDrawable();
-		backStyle.down = new Image(new Texture(Gdx.files.internal("ui/highscore/back_pressed.png")))
+		backStyle.down = new Image(Icons.getTex("ui/highscore/back_pressed.png"))
 				.getDrawable();
 		backButton = new ImageButton(backStyle);
 
@@ -65,17 +65,17 @@ public class ShopDialog extends Dialog {
 
 		CoinLabel coinLabel = new CoinLabel(skin, null);
 
-		getContentTable().add(new Image(new Texture(Gdx.files.internal("blank.png")))).expand()
+		getContentTable().add(new Image(Icons.getTex("blank.png"))).expand()
 				.bottom().left().colspan(4).padBottom(coinLabel.coins.getHeight());
 
 		getContentTable().row();
 
 		for (int i = 0; i < buttonNames.length; i++) {
 			ImageButtonStyle style = new ImageButtonStyle();
-			style.up = new Image(new Texture(Gdx.files.internal("ui/shop/" + buttonNames[i]
-					+ "Button.png"))).getDrawable();
-			style.checked = new Image(new Texture(Gdx.files.internal("ui/shop/" + buttonNames[i]
-					+ "Selected.png"))).getDrawable();
+			style.up = new Image(Icons.getTex("ui/shop/" + buttonNames[i]
+					+ "Button.png")).getDrawable();
+			style.checked = new Image(Icons.getTex("ui/shop/" + buttonNames[i]
+					+ "Selected.png")).getDrawable();
 
 			ImageButton button = new ImageButton(style);
 
@@ -105,9 +105,9 @@ public class ShopDialog extends Dialog {
 
 		for (int i = 0; i < 4; i++) {
 			ImageButtonStyle ibs = new ImageButtonStyle();
-			ibs.up = new Image(new Texture(Gdx.files.internal("shop/button_normal.png")))
+			ibs.up = new Image(Icons.getTex("shop/button_normal.png"))
 					.getDrawable();
-			ibs.down = new Image(new Texture(Gdx.files.internal("shop/button_pressed.png")))
+			ibs.down = new Image(Icons.getTex("shop/button_pressed.png"))
 					.getDrawable();
 
 			ImageButton button = new ImageButton(ibs);
@@ -140,13 +140,13 @@ public class ShopDialog extends Dialog {
 
 		for (int i = 0; i < coinNumbers.length; i++) {
 
-			Image img = new Image(new Texture(Gdx.files.internal("shop/paper.png")));
+			Image img = new Image(Icons.getTex("shop/paper.png"));
 			images.add(img);
 
 		}
 		getContentTable().row();
 		Group textGroup = new Group();
-		black = new Image(new Texture(Gdx.files.internal("shop/textbg.png")));
+		black = new Image(Icons.getTex("shop/textbg.png"));
 		black.setSize(text.getWidth() + 37 * 2, text.getHeight() + 17 * 2);
 		black.setPosition(-37, -17);
 		textGroup.addActor(black);

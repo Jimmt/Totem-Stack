@@ -17,10 +17,9 @@ public class TweetedDialog extends Dialog {
 	public TweetedDialog(String text, Skin skin) {
 		super("", skin);
 
-		setBackground(new Image(new Texture(Gdx.files.internal("ui/shop/window01.png")))
-				.getDrawable());
-		setWidth(new Image(new Texture(Gdx.files.internal("ui/shop/window01.png"))).getWidth());
-		setHeight(new Image(new Texture(Gdx.files.internal("ui/shop/window01.png"))).getHeight());
+		setBackground(new Image(Icons.getTex("ui/shop/window01.png")).getDrawable());
+		setWidth(new Image(Icons.getTex("ui/shop/window01.png")).getWidth());
+		setHeight(new Image(Icons.getTex("ui/shop/window01.png")).getHeight());
 
 		LabelStyle lStyle = new LabelStyle();
 		lStyle.font = new BitmapFont(Gdx.files.internal("ui/highscore/font.fnt"));
@@ -32,9 +31,8 @@ public class TweetedDialog extends Dialog {
 		getContentTable().add(label).width(getWidth());
 
 		ImageButtonStyle buttonStyle = new ImageButtonStyle();
-		buttonStyle.up = new Image(new Texture(Gdx.files.internal("login/ok.png"))).getDrawable();
-		buttonStyle.down = new Image(new Texture(Gdx.files.internal("login/ok_pressed.png")))
-				.getDrawable();
+		buttonStyle.up = new Image(Icons.getTex("login/ok.png")).getDrawable();
+		buttonStyle.down = new Image(Icons.getTex("login/ok_pressed.png")).getDrawable();
 		ImageButton ok = new ImageButton(buttonStyle);
 		button(ok).padBottom(30f);
 	}

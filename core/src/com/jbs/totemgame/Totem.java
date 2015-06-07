@@ -1,7 +1,6 @@
 package com.jbs.totemgame;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
@@ -27,7 +26,7 @@ public class Totem extends Box2DActor {
 		
 		random = MathUtils.random(3);
 
-		parachute = new Image(new Texture(Gdx.files.internal("totem/parachute.png")));
+		parachute = new Image(Icons.getTex("totem/parachute.png"));
 		parachute.setScale(Constants.SCALE);
 		parachute.setSize(parachute.getWidth() * scale, parachute.getHeight() * scale);
 		freeze = Icons.returnImage("totem/ice/freeze.png");

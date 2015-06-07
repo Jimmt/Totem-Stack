@@ -48,7 +48,7 @@ public class TotemSpawner extends Actor {
 		cloudSpawnCap = MathUtils.random(zone.getCloudFrequency() * 1000);
 
 		stars = new Array<Image>();
-		Image star = new Image(new Texture(Gdx.files.internal("bg/stars.png")));
+		Image star = new Image(Icons.getTex("bg/stars.png"));
 		star.setSize(Constants.WIDTH, Constants.HEIGHT);
 		star.setPosition(0, Zone.STARS.getY());
 		stars.add(star);
@@ -97,7 +97,7 @@ public class TotemSpawner extends Actor {
 		lightning.effect.setPosition(game.camera.position.x / Constants.SCALE,
 				game.camera.position.y / Constants.SCALE);
 
-		if (zone == Zone.RAIN) {
+		if (zone == Zone.RAIN || zone == Zone.STARS) {
 
 			if (!rainPlaying) {
 				TotemGame.soundManager.loop("rain");
@@ -118,6 +118,7 @@ public class TotemSpawner extends Actor {
 			}
 		}
 
+		System.out.println(zone);
 		if (zone == Zone.STARS) {
 			if (TotemGame.services.getSignedIn()) {
 				TotemGame.services.unlockAchievement(Constants.ACHIEVEMENT_HIGH_FLYING);
@@ -129,7 +130,7 @@ public class TotemSpawner extends Actor {
 			if ((stars.get(stars.size - 1).getY() + 8.00f) < game.camera.position.y
 					+ Constants.SCLHEIGHT / 2) {
 
-				Image star = new Image(new Texture(Gdx.files.internal("bg/stars.png")));
+				Image star = new Image(Icons.getTex("bg/stars.png"));
 				star.setSize(Constants.SCLWIDTH, Constants.SCLHEIGHT);
 				star.setPosition(0, (stars.get(stars.size - 1).getY()) + 8.00f);
 				stars.add(star);
@@ -139,7 +140,7 @@ public class TotemSpawner extends Actor {
 
 		if (!game.gameOver) {
 			for (int i = 0; i < Zone.getArray().length; i++) {
-				if (game.camera.position.y + Constants.SCLHEIGHT / 2 > Zone.getArray()[i].getY()) {
+				if (game.camera.position.y + game.camera.viewportHeight / 2 > Zone.getArray()[i].getY()) {
 					zone = Zone.getArray()[i];
 					cloudSpawnCap = (long) zone.getCloudFrequency();
 
@@ -271,8 +272,12 @@ public class TotemSpawner extends Actor {
 //
 // t = new Totem(0.5f * Constants.SCLWIDTH, spawnY, game.world);
 // }
-						t = new Totem(MathUtils.random(Constants.SCLWIDTH / 2 - randomMagnitude,
-								Constants.SCLWIDTH / 2 + randomMagnitude), spawnY + 0.5f,
+
+						/**
+						 * MathUtils.random(Constants.SCLWIDTH / 2 - randomMagnitude,
+								Constants.SCLWIDTH / 2 + randomMagnitude)
+						 */
+						t = new Totem(0.5f * Constants.SCLWIDTH, spawnY + 0.5f,
 								totemScale, game.world);
 
 					}
@@ -299,8 +304,10 @@ public class TotemSpawner extends Actor {
 
 			if (!game.gameOver) {
 				if (totems.size > 3) {
-					game.camera.position.y += (totems.get(totems.size - 1 - 3).getY() + 5f - game.camera.position.y)
+					game.camera.position.y += (totems.get(totems.size - 1 - 3).getY() + 6f - game.camera.position.y)
 							* lerp;
+				} else {
+					game.camera.position.y = game.camera.viewportHeight / 2;
 				}
 			}
 

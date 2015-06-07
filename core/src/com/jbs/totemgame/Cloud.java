@@ -11,7 +11,7 @@ public class Cloud extends Image {
 	float influence;
 
 	public Cloud(float height, float influence) {
-		super(new Texture(Gdx.files.internal("bg/Clouds0" + MathUtils.random(3) + ".png")));
+		super(Icons.getTex("bg/Clouds0" + MathUtils.random(3) + ".png"));
 
 		this.influence = influence;
 

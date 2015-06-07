@@ -47,8 +47,7 @@ public class OptionsDialog extends Dialog {
 		setBackground(panel.getDrawable());
 
 		CheckBoxStyle checkBoxStyle = new CheckBoxStyle();
-		checkBoxStyle.checkboxOn = new Image(new Texture(
-				Gdx.files.internal("ui/options/checkbg.png"))).getDrawable();
+		checkBoxStyle.checkboxOn = new Image(Icons.getTex("ui/options/checkbg.png")).getDrawable();
 		checkBoxStyle.checkboxOff = new Image(Icons.getTex("ui/options/xbg.png")).getDrawable();
 		checkBoxStyle.font = font;
 

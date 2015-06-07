@@ -16,7 +16,7 @@ public class Background {
 		sky = new Image(Icons.getTex("bg/skygradient.png"));
 		sky.setScale(Constants.SCALE);
 		stage.addActor(sky);
-		sky.setHeight(740 + Zone.RAIN.getY() / Constants.SCALE);
+		sky.setHeight(Zone.RAIN.getY() / Constants.SCALE);
 		sky.setWidth(Constants.WIDTH);	
 		
 		mountains = new Image(Icons.getTex("bg/mountain.png"));

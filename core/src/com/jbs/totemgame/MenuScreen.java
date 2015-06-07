@@ -38,12 +38,11 @@ public class MenuScreen extends AbstractScreen {
 // }
 		if (GamePrefs.prefs.getBoolean("bgMusic")) {
 			TotemGame.soundManager.stopMusic();
-			TotemGame.soundManager.setPlayEffects(GamePrefs.prefs.getBoolean("soundEffects"));
 			TotemGame.soundManager.loopMusic("menu", 1f);
 		}
+		TotemGame.soundManager.setPlayEffects(GamePrefs.prefs.getBoolean("soundEffects"));
 
 		logoutDialog = new LogoutDialog("", getSkin());
-
 		table = super.getTable();
 		table.setFillParent(true);
 

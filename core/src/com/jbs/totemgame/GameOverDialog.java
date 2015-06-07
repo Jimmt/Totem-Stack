@@ -141,7 +141,7 @@ public class GameOverDialog extends Dialog {
 		scoreLabel.setHeight(yourScore.getHeight());
 		scoreLabel.setAlignment(Align.center);
 
-		bestScore = new Image(new Texture(Gdx.files.internal("gameover/bestScoreBox.png")));
+		bestScore = new Image(Icons.getTex("gameover/bestScoreBox.png"));
 		LabelStyle style1 = new LabelStyle();
 		style1.font = font;
 		style1.fontColor = Color.WHITE;

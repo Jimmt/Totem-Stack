@@ -17,17 +17,15 @@ public class PauseDialog extends Dialog {
 		super("", skin);
 
 		setTransform(true);
-		
-		Image window = new Image(new Texture(Gdx.files.internal("ui/paused/resumewindow.png")));
-		Image blank = new Image(new Texture(Gdx.files.internal("blank.png")));
+
+		Image window = new Image(Icons.getTex("ui/paused/resumewindow.png"));
+		Image blank = new Image(Icons.getTex("blank.png"));
 		background(blank.getDrawable());
 		setSize(window.getWidth(), 300);
 
 		ImageButtonStyle removeAdStyle = new ImageButtonStyle();
-		removeAdStyle.up = new Image(new Texture(Gdx.files.internal("ui/paused/removead.png")))
-				.getDrawable();
-		removeAdStyle.down = new Image(new Texture(Gdx.files.internal("ui/paused/removead.png")))
-				.getDrawable();
+		removeAdStyle.up = new Image(Icons.getTex("ui/paused/removead.png")).getDrawable();
+		removeAdStyle.down = new Image(Icons.getTex("ui/paused/removead.png")).getDrawable();
 		ImageButton removeAds = new ImageButton(removeAdStyle);
 		removeAds.addListener(new ClickListener() {
 			@Override
@@ -37,12 +35,10 @@ public class PauseDialog extends Dialog {
 				TotemGame.services.removeAds();
 			}
 		});
-		
+
 		ImageButtonStyle style = new ImageButtonStyle();
-		style.up = new Image(new Texture(Gdx.files.internal("ui/paused/resumebutton.png")))
-				.getDrawable();
-		style.down = new Image(new Texture(Gdx.files.internal("ui/paused/resume_pressed.png")))
-				.getDrawable();
+		style.up = new Image(Icons.getTex("ui/paused/resumebutton.png")).getDrawable();
+		style.down = new Image(Icons.getTex("ui/paused/resume_pressed.png")).getDrawable();
 		ImageButton resume = new ImageButton(style);
 		resume.addListener(new ClickListener() {
 			public void clicked(InputEvent event, float x, float y) {
@@ -51,11 +47,12 @@ public class PauseDialog extends Dialog {
 				setVisible(false);
 			}
 		});
-		
+
 		Group group = new Group();
 		group.addActor(window);
 		group.addActor(resume);
-		resume.setPosition(window.getWidth() / 2 - resume.getWidth() / 2, window.getHeight() / 2 - resume.getHeight() / 2);
+		resume.setPosition(window.getWidth() / 2 - resume.getWidth() / 2, window.getHeight() / 2
+				- resume.getHeight() / 2);
 
 		getContentTable().add(group).width(window.getWidth()).height(window.getHeight());
 		getContentTable().row();

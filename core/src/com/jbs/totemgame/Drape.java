@@ -19,11 +19,11 @@ public class Drape extends ImageButton {
 	Label text;
 
 	public Drape(String path) {
-		super(new Image(new Texture(Gdx.files.internal("drape.png"))).getDrawable());
+		super(new Image(Icons.getTex("drape.png")).getDrawable());
 		
 		type = path;
 		
-		powerup = new Image(new Texture("ui/shop/" + path + ".png"));
+		powerup = new Image(Icons.getTex("ui/shop/" + path + ".png"));
 		powerup.setSize(powerup.getWidth() / 2, powerup.getHeight() / 2);
 		
 		font = new BitmapFont(Gdx.files.internal("ui/shop/numbers.fnt"));

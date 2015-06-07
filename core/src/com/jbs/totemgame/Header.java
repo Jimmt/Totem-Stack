@@ -23,8 +23,8 @@ public class Header extends Actor {
 		this.avatar = avatar;
 		this.username = username;
 
-		border = new Image(new Texture(Gdx.files.internal("login/avatar.png")));
-		background = new Image(new Texture(Gdx.files.internal("login/welcomeback.png")));
+		border = new Image(Icons.getTex("login/avatar.png"));
+		background = new Image(Icons.getTex("login/welcomeback.png"));
 		avatar.setSize(avatar.getWidth() * 0.5f, avatar.getHeight() * 0.5f);
 		avatar.setPosition(10 + 15, Constants.HEIGHT - avatar.getHeight() - 10 - 5);
 		border.setScale(1.0f);

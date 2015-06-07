@@ -19,12 +19,12 @@ public class ErrorDialog extends Dialog {
 		
 		
 
-		Image panel = new Image(new Texture(Gdx.files.internal("login/wrong.png")));
+		Image panel = new Image(Icons.getTex("login/wrong.png"));
 		setBackground(panel.getDrawable());
 
 		ImageButtonStyle buttonStyle = new ImageButtonStyle();
-		buttonStyle.up = new Image(new Texture(Gdx.files.internal("login/ok.png"))).getDrawable();
-		buttonStyle.down = new Image(new Texture(Gdx.files.internal("login/ok_pressed.png"))).getDrawable();
+		buttonStyle.up = new Image(Icons.getTex("login/ok.png")).getDrawable();
+		buttonStyle.down = new Image(Icons.getTex("login/ok_pressed.png")).getDrawable();
 
 		ImageButton ok = new ImageButton(buttonStyle);
 		ok.addListener(new ClickListener() {

@@ -1,7 +1,7 @@
 package com.jbs.totemgame;
 
 public enum Zone {
-	LOWER(0, -1), UPPER(7, 15), STARS(20, 10), RAIN(30, 5);
+	LOWER(0, -1), UPPER(Constants.SCLHEIGHT, 15), STARS(Constants.SCLHEIGHT * 2, 10), RAIN(Constants.SCLHEIGHT * 3, 5);
 
 	private float y;
 	private float cloudFreq;
