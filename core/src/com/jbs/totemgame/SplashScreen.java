@@ -22,7 +22,7 @@ public class SplashScreen extends AbstractScreen {
 		};
 
 		splashImage = new Image(Icons.getTex("ui/JBSLogo.png"));
-		splashImage.setSize(Constants.WIDTH, Constants.HEIGHT);
+		splashImage.setSize(Constants.HUD_WIDTH, Constants.HUD_HEIGHT);
 		splashImage.setScaling(Scaling.fit);
 		
 		hudStage.addActor(splashImage);
@@ -36,6 +36,7 @@ public class SplashScreen extends AbstractScreen {
 		super.render(delta);
 		
 		hudStage.draw();
+		hudStage.act(delta);
 	}
 
 }

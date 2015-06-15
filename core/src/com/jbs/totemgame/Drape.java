@@ -19,7 +19,7 @@ public class Drape extends ImageButton {
 	Label text;
 
 	public Drape(String path) {
-		super(new Image(Icons.getTex("drape.png")).getDrawable());
+		super(new Image(Icons.getTex("ui/top/itembanner.png")).getDrawable());
 		
 		type = path;
 		

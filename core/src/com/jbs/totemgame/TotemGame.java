@@ -49,9 +49,9 @@ public class TotemGame extends Game {
 		
 		
 
-//		DEBUG = false;
+		DEBUG = false;
 
-		if (DEBUG) {
+		if (!DEBUG) {
 			setScreen(new SplashScreen(this));
 		} else {
 			setScreen(new MenuScreen(this));

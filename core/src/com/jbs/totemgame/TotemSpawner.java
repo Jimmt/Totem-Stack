@@ -118,7 +118,6 @@ public class TotemSpawner extends Actor {
 			}
 		}
 
-		System.out.println(zone);
 		if (zone == Zone.STARS) {
 			if (TotemGame.services.getSignedIn()) {
 				TotemGame.services.unlockAchievement(Constants.ACHIEVEMENT_HIGH_FLYING);

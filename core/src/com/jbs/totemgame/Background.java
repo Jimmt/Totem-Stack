@@ -11,32 +11,47 @@ public class Background {
 	Ground ground;
 	Image rocks, mountains, sky;
 
-	public Background(Stage stage, World world) {
-		
+	public Background(Stage stage, World world, boolean scaled) {
+
+		float scale;
+
+		if (scaled) {
+			scale = Constants.SCALE;
+		} else {
+			scale = 1;
+		}
+
 		sky = new Image(Icons.getTex("bg/skygradient.png"));
-		sky.setScale(Constants.SCALE);
+		sky.setScale(scale);
 		stage.addActor(sky);
-		sky.setHeight(Zone.RAIN.getY() / Constants.SCALE);
-		sky.setWidth(Constants.WIDTH);	
-		
+		sky.setHeight(Zone.RAIN.getY() * 100);
+		sky.setWidth(Constants.WIDTH);
+
 		mountains = new Image(Icons.getTex("bg/mountain.png"));
-		mountains.setScale(Constants.SCALE);
+		mountains.setScale(scale);
 		mountains.setWidth(Constants.WIDTH);
-		
+
 		stage.addActor(mountains);
 		rocks = new Image(Icons.getTex("bg/bigrock.png"));
-		rocks.setScale(Constants.SCALE);
-		rocks.setY(230f * Constants.SCALE);
+		rocks.setScale(scale);
+		rocks.setY(230f * scale);
 		rocks.setWidth(Constants.WIDTH);
-		mountains.setY(rocks.getY() + 256f * Constants.SCALE);
+		mountains.setY(rocks.getY() + 256f * scale);
 		stage.addActor(rocks);
 
-		ground = new Ground("bg/ground.png", world);
-		
-		ground.bodyDef.type = BodyType.StaticBody;
-		ground.body.setTransform(ground.getWidth() / 2, ground.boxHeight / 2, 0);
-		stage.addActor(ground);
-		ground.setWidth(Constants.SCLWIDTH);
+		if (scaled) {
+			ground = new Ground("bg/ground.png", world);
+
+			ground.bodyDef.type = BodyType.StaticBody;
+			ground.body.setTransform(ground.getWidth() / 2, ground.boxHeight / 2, 0);
+			stage.addActor(ground);
+			ground.setWidth(Constants.SCLWIDTH);
+		} else {
+			Image ground = new Image(Icons.getTex("bg/ground.png"));
+			ground.setY(0);
+			stage.addActor(ground);
+			ground.setWidth(Constants.WIDTH);
+		}
 
 	}
 }

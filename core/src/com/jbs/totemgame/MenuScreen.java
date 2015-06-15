@@ -10,16 +10,19 @@ import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton.ImageButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 
 public class MenuScreen extends AbstractScreen {
 	ImageButton startButton, highscoresButton, loginButton, achievementsButton;
 	Texture tex;
 	Image tmp;
+	Background background;
 	LogoutDialog logoutDialog;
 	ImageButtonStyle logoutStyle, loginStyle;
 	Table table;
 	CoinLabel coinsLabel;
 	HudTable hudTable;
+	
 
 	public MenuScreen(TotemGame game) {
 		super(game);
@@ -46,9 +49,11 @@ public class MenuScreen extends AbstractScreen {
 		table = super.getTable();
 		table.setFillParent(true);
 
-		Image background = new Image(Icons.getTex("bg/net.png"));
-		background.setSize(Constants.WIDTH, Constants.HEIGHT);
-		table.setBackground(background.getDrawable());
+		background = new Background(stage, world, false);
+		
+		FitViewport viewport1 = new FitViewport(Constants.WIDTH, Constants.HEIGHT, camera);
+		stage.setViewport(viewport1);
+		viewport1.update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
 
 		ImageButtonStyle startStyle = new ImageButtonStyle();
 		tmp = new Image(tex = Icons.getTex("login/start.png"));
@@ -142,10 +147,10 @@ public class MenuScreen extends AbstractScreen {
 		hudStage.addActor(hudTable);
 
 		table.add(highscoresButton).width(highscoresButton.getWidth())
-				.height(highscoresButton.getHeight()).padTop(startButton.getHeight() / 2);
-		table.add(startButton).width(startButton.getWidth()).height(startButton.getHeight());
+				.height(highscoresButton.getHeight()).padTop(startButton.getHeight() / 2 + startButton.getHeight() / 2);
+		table.add(startButton).width(startButton.getWidth()).height(startButton.getHeight()).padTop(startButton.getHeight() / 2);
 		table.add(loginButton).width(loginButton.getWidth()).height(loginButton.getHeight())
-				.padTop(startButton.getHeight() / 2);
+				.padTop(startButton.getHeight() / 2 + startButton.getHeight() / 2);
 		table.row();
 		table.add(achievementsButton).width(achievementsButton.getWidth())
 				.height(achievementsButton.getHeight()).colspan(3);
@@ -157,6 +162,7 @@ public class MenuScreen extends AbstractScreen {
 		coinsLabel = new CoinLabel(skin, hudStage);
 		hudStage.addActor(coinsLabel);
 		hudStage.addActor(coinsLabel.coinButton);
+		
 
 		if (Gdx.app.getType() == ApplicationType.Android) {
 			TotemGame.services.signIn();
@@ -172,7 +178,7 @@ public class MenuScreen extends AbstractScreen {
 // hudStage.setDebugAll(true);
 // stage.setDebugAll(true);
 
-		coinsLabel.setPosition(0, hudTable.header.getY() - coinsLabel.getHeight());
+		coinsLabel.setPosition(0, hudTable.header.getY() - 113f - coinsLabel.getHeight()); //drape height
 
 		if (Gdx.app.getType() == ApplicationType.Android) {
 			if (TotemGame.services.getSignedIn()) {

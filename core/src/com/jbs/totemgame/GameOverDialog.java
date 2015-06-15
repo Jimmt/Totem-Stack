@@ -87,8 +87,11 @@ public class GameOverDialog extends Dialog {
 		this.score = score;
 
 		String[] paths = { "ui/gameover/replay.png", "ui/gameover/highscores.png",
-				"ui/gameover/achievements.png", "ui/gameover/twitter.png",
-				"ui/gameover/facebook.png" };
+				"ui/gameover/achievements.png" }; 
+		/*
+		 * , "ui/gameover/twitter.png",
+				"ui/gameover/facebook.png"
+		 */
 
 		for (int i = 0; i < paths.length; i++) {
 			ImageButtonStyle style = new ImageButtonStyle();
@@ -186,7 +189,9 @@ public class GameOverDialog extends Dialog {
 					public void clicked(InputEvent event, float x, float y) {
 						super.clicked(event, x, y);
 						if (TotemGame.services.getSignedIn()) {
-							TotemGame.services.submitHighscore(score);
+							TotemGame.services.getLeaderboards();
+						} else {
+							TotemGame.services.signIn();
 						}
 						TotemGame.soundManager.play("button");
 					}
@@ -203,47 +208,47 @@ public class GameOverDialog extends Dialog {
 						TotemGame.soundManager.play("button");
 					}
 				});
-		imageButtons.get(3).addListener(new ClickListener() { // twitter
-					@Override
-					public void clicked(InputEvent event, float x, float y) {
-						super.clicked(event, x, y);
-						TotemGame.soundManager.play("button");
-
-						if (!TwitterUtil.loggedIn) {
-							try {
-								TwitterUtil.init();
-								TwitterUtil.openURL();
-							} catch (TwitterException e) {
-								e.printStackTrace();
-							} catch (IOException e) {
-								e.printStackTrace();
-							}
-
-							PinDialog pinDialog = new PinDialog(String.valueOf(score), skin, gs);
-							gs.hudStage.addActor(pinDialog);
-							pinDialog.setPosition(Constants.WIDTH / 2 - pinDialog.getWidth() / 2,
-									Constants.HEIGHT / 2 - pinDialog.getHeight() / 2);
-
-						} else {
-							TwitterUtil.postFinal("I just scored " + score
-									+ " points in Totem Stack!");
-							TweetedDialog tweeted = new TweetedDialog(
-									"Your tweet has been posted!", skin);
-							gs.hudStage.addActor(tweeted);
-							tweeted.setPosition(Constants.WIDTH / 2 - tweeted.getWidth() / 2,
-									Constants.HEIGHT / 2 - tweeted.getHeight() / 2);
-						}
-
-					}
-				});
-		imageButtons.get(4).addListener(new ClickListener() { // facebook
-					@Override
-					public void clicked(InputEvent event, float x, float y) {
-						super.clicked(event, x, y);
-
-						TotemGame.soundManager.play("button");
-					}
-				});
+//		imageButtons.get(3).addListener(new ClickListener() { // twitter
+//					@Override
+//					public void clicked(InputEvent event, float x, float y) {
+//						super.clicked(event, x, y);
+//						TotemGame.soundManager.play("button");
+//
+//						if (!TwitterUtil.loggedIn) {
+//							try {
+//								TwitterUtil.init();
+//								TwitterUtil.openURL();
+//							} catch (TwitterException e) {
+//								e.printStackTrace();
+//							} catch (IOException e) {
+//								e.printStackTrace();
+//							}
+//
+//							PinDialog pinDialog = new PinDialog(String.valueOf(score), skin, gs);
+//							gs.hudStage.addActor(pinDialog);
+//							pinDialog.setPosition(Constants.WIDTH / 2 - pinDialog.getWidth() / 2,
+//									Constants.HEIGHT / 2 - pinDialog.getHeight() / 2);
+//
+//						} else {
+//							TwitterUtil.postFinal("I just scored " + score
+//									+ " points in Totem Stack!");
+//							TweetedDialog tweeted = new TweetedDialog(
+//									"Your tweet has been posted!", skin);
+//							gs.hudStage.addActor(tweeted);
+//							tweeted.setPosition(Constants.WIDTH / 2 - tweeted.getWidth() / 2,
+//									Constants.HEIGHT / 2 - tweeted.getHeight() / 2);
+//						}
+//
+//					}
+//				});
+//		imageButtons.get(4).addListener(new ClickListener() { // facebook
+//					@Override
+//					public void clicked(InputEvent event, float x, float y) {
+//						super.clicked(event, x, y);
+//
+//						TotemGame.soundManager.play("button");
+//					}
+//				});
 
 	}
 

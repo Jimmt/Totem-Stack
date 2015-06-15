@@ -1,8 +1,9 @@
 package com.jbs.totemgame;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
@@ -12,23 +13,25 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Align;
 
 public class HudTable extends Table {
 	static boolean soundOn = true;
 	AbstractScreen game;
 	Label score;
-	ImageButton pause, sound, options, shop, home, leftButton, rightButton;
+	ImageButton jbs, pause, sound, options, shop, home, leftButton, rightButton;
 	ImageButtonStyle soundOnStyle, soundOffStyle;
 	Image header;
 
-	String[] paths = { "pause", "setting", "shop", "home" };
-	ImageButton[] buttons = { pause, options, shop, home };
+	boolean pauseDisplayed = true;
+	String[] paths = { "jbsbutton", "settings", "shop", "home", "pause" };
+	ImageButton[] buttons = { jbs, options, shop, home, pause };
 	String[] powerups = { "retry", "freeze", "slow", "wind" };
 
 	OptionsDialog optionsDialog;
 	ShopDialog shopDialog;
 	Drape[] drapes = new Drape[4];
-	Table left, right;
+	Table drapesLeft, drapesRight;
 
 	public HudTable(Skin skin, final AbstractScreen game) {
 		super(skin);
@@ -38,57 +41,86 @@ public class HudTable extends Table {
 
 		this.game = game;
 
-		LabelStyle style = new LabelStyle();
-		style.font = new BitmapFont(Gdx.files.internal("ui/top/scoreFont.fnt"));
-
 		header = new Image(Icons.getTex("ui/top/header.png"));
-		header.setWidth(Constants.WIDTH);
-		header.setY(Constants.HEIGHT - header.getHeight());
+		header.setWidth(Constants.HUD_WIDTH);
+		header.setY(Constants.HUD_HEIGHT - header.getHeight());
 
 		game.hudStage.addActor(header);
 
 		for (int i = 0; i < buttons.length; i++) {
 			ImageButtonStyle ibstyle = new ImageButtonStyle();
 			ibstyle.imageUp = new Image(Icons.getTex("ui/top/" + paths[i] + ".png")).getDrawable();
-			ibstyle.imageDown = new Image(Icons.getTex("ui/top/" + paths[i] + "_pressed.png"))
-					.getDrawable();
+
+			if (paths[i].equals("pause")) {
+				ibstyle.imageChecked = new Image(Icons.getTex("ui/top/play.png")).getDrawable();
+			}
+
+// ibstyle.imageDown = new Image(Icons.getTex("ui/top/" + paths[i] +
+// "_pressed.png"))
+// .getDrawable();
 			buttons[i] = new ImageButton(ibstyle);
 
 		}
 
 		soundOnStyle = new ImageButtonStyle();
-		soundOnStyle.up = new Image(Icons.getTex("ui/top/soundon.png")).getDrawable();
-		soundOnStyle.down = new Image(Icons.getTex("ui/top/soundon_pressed.png")).getDrawable();
+		soundOnStyle.imageUp = new Image(Icons.getTex("ui/top/soundon.png")).getDrawable();
 
 		sound = new ImageButton(soundOnStyle);
 
 		soundOffStyle = new ImageButtonStyle();
-		soundOffStyle.up = new Image(Icons.getTex("ui/top/soundoff.png")).getDrawable();
-		soundOffStyle.down = new Image(Icons.getTex("ui/top/soundoff_pressed.png")).getDrawable();
+		soundOffStyle.imageUp = new Image(Icons.getTex("ui/top/soundoff.png")).getDrawable();
 
-		left = new Table();
-		right = new Table();
+		drapesLeft = new Table();
+		drapesRight = new Table();
+
+		this.setDebug(true);
+
+		Table innerLeft = new Table();
+		Table innerRight = new Table();
 
 		for (int i = 0; i < buttons.length; i++) {
-			if (i == 1) {
-				left.add(sound).padLeft(4f).padTop(4f).width(sound.getWidth())
-						.height(sound.getHeight());
+
+			if (i < 3) {
+				innerLeft.add(buttons[i]).padLeft(4f).padTop(4f).width(buttons[i].getWidth())
+						.height(header.getHeight() - 10);
+			} else {
+				innerRight.add(buttons[i]).padLeft(4f).padTop(4f).width(buttons[i].getWidth())
+						.height(header.getHeight() - 10);
 			}
-			left.add(buttons[i]).padLeft(4f).padTop(4f).width(buttons[i].getWidth())
-					.height(buttons[i].getHeight());
+
 		}
+		innerRight.add(sound).padLeft(4f).padTop(4f).width(sound.getWidth())
+				.height(header.getHeight() - 10).right();
+
+		LabelStyle style = new LabelStyle();
+		style.font = new BitmapFont(Gdx.files.internal("ui/top/scoreFont.fnt"));
+		score = new Label("", style);
+		Image box = new Image(Icons.getTex("ui/top/box.png"));
+		Group group = new Group();
+		group.addActor(box);
+		box.setPosition(-box.getWidth() / 2, header.getHeight() / 2 - box.getHeight() / 2);
+
+		Table buttons = new Table();
+		Table top = new Table();
+		buttons.add(innerLeft).expand().left().top();
+		buttons.add(box);
+		buttons.add(innerRight).expand().right().top();
+		top.add(buttons).expandX().top().colspan(2);
 
 		for (int i = 0; i < 4; i++) {
 			Drape d = new Drape(powerups[i]);
 			drapes[i] = d;
-			right.add(d).padLeft(1f);
+			if (i < 2) {
+				drapesLeft.add(d);
+			} else {
+				drapesRight.add(d);
+			}
 		}
 
-		add(left).expand().left().top();
-
-		add(right).expand().right().top();
-
-// add(right);
+		top.row();
+		top.add(drapesLeft).left();
+		top.add(drapesRight).right();
+		add(top).expand().top();
 
 		if (game instanceof GameScreen) {
 
@@ -144,22 +176,17 @@ public class HudTable extends Table {
 
 			});
 
-			rightButton.setPosition(Constants.WIDTH - rightButton.getWidth(), 0);
+			rightButton.setPosition(Constants.HUD_WIDTH - rightButton.getWidth(), 0);
 			game.hudStage.addActor(leftButton);
 			game.hudStage.addActor(rightButton);
 			leftButton.setVisible(false);
 			rightButton.setVisible(false);
 		}
 
-		score = new Label("", style);
-		score.setPosition(Constants.WIDTH / 2 - score.getWidth() / 2,
-				Constants.HEIGHT - score.getHeight() / 2);
-		game.hudStage.addActor(score);
-
 		optionsDialog = new OptionsDialog("", game.getSkin(), game);
 		game.hudStage.addActor(optionsDialog);
-		optionsDialog.setPosition(Constants.WIDTH / 2 - optionsDialog.getWidth() / 2,
-				Constants.HEIGHT / 2 - optionsDialog.getHeight() / 2);
+		optionsDialog.setPosition(Constants.HUD_WIDTH / 2 - optionsDialog.getWidth() / 2,
+				Constants.HUD_HEIGHT / 2 - optionsDialog.getHeight() / 2);
 		optionsDialog.setVisible(false);
 
 		if (game instanceof GameScreen) {
@@ -169,8 +196,8 @@ public class HudTable extends Table {
 		}
 
 		game.hudStage.addActor(shopDialog);
-		shopDialog.setPosition(Constants.WIDTH / 2 - shopDialog.getWidth() / 2, Constants.HEIGHT
-				/ 2 - shopDialog.getHeight() / 2);
+		shopDialog.setPosition(Constants.HUD_WIDTH / 2 - shopDialog.getWidth() / 2,
+				Constants.HUD_HEIGHT / 2 - shopDialog.getHeight() / 2);
 		shopDialog.setVisible(false);
 
 		setupListeners();
@@ -250,12 +277,12 @@ public class HudTable extends Table {
 			}
 
 		});
-		buttons[0].addListener(new ClickListener() {
+
+		buttons[4].addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) { // pause
 				TotemGame.soundManager.play("button");
 				game.pause(true);
-
 			}
 
 		});
@@ -285,6 +312,15 @@ public class HudTable extends Table {
 			}
 
 		});
+		buttons[0].addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) { // jbs
+				TotemGame.soundManager.play("button");
+				Gdx.net.openURI("https://www.jumpbuttonstudio.com/");
+
+			}
+
+		});
 		buttons[1].addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) { // options
@@ -300,7 +336,7 @@ public class HudTable extends Table {
 			public void clicked(InputEvent event, float x, float y) { // shop
 				TotemGame.soundManager.play("button");
 				game.pause(false);
-				shopDialog.setWidth(Constants.WIDTH);
+				shopDialog.setWidth(Constants.HUD_WIDTH);
 				shopDialog.setVisible(true);
 			}
 
@@ -316,11 +352,19 @@ public class HudTable extends Table {
 	}
 
 	@Override
+	public void draw(Batch batch, float parentAlpha) {
+		super.draw(batch, parentAlpha);
+
+		score.draw(batch, parentAlpha);
+	}
+
+	@Override
 	public void act(float delta) {
 		super.act(delta);
 
-		score.setPosition(Constants.WIDTH / 2 - score.getPrefWidth() / 2,
-				header.getY() + header.getHeight() * 26f/90f + score.getPrefHeight() / 2 + 1);
+		score.setPosition(Constants.HUD_WIDTH / 2 - score.getPrefWidth() / 2, header.getY()
+				+ header.getHeight() / 2);
+		score.act(delta);
 
 		for (int i = 0; i < drapes.length; i++) {
 			drapes[i].setCount(GamePrefs.prefs.getInteger(powerups[i] + "Uses"));
@@ -340,7 +384,7 @@ public class HudTable extends Table {
 		}
 
 // if (score.getText().length() > 1) {
-// score.setX(Constants.WIDTH / 2 - score.getPrefWidth() / 2);
+// score.setX(Constants.HUD_WIDTH / 2 - score.getPrefWidth() / 2);
 // }
 
 	}

@@ -42,7 +42,7 @@ public class GameScreen extends AbstractScreen {
 		hudTable.setFillParent(true);
 		hudStage.addActor(hudTable);
 
-		background = new Background(stage, world);
+		background = new Background(stage, world, true);
 
 		contactListener = new GameContactListener(this);
 		world.setContactListener(contactListener);
@@ -171,7 +171,6 @@ public class GameScreen extends AbstractScreen {
 
 				if (score >= 100) {
 					TotemGame.services.unlockAchievement(Constants.ACHIEVEMENT_ELITE);
-
 				}
 			}
 		}

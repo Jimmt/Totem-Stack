@@ -13,7 +13,6 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
@@ -27,7 +26,7 @@ public class AbstractScreen implements Screen {
 	protected Skin skin;
 	protected Stage hudStage;
 	protected Image black;
-	protected StretchViewport viewport;
+	protected FitViewport viewport;
 	protected StretchViewport hudViewport;
 	protected TotemGameComparator comparator;
 	protected static InputMultiplexer multiplexer;
@@ -45,8 +44,8 @@ public class AbstractScreen implements Screen {
 		debugRenderer = new Box2DDebugRenderer();
 		world = new World(new Vector2(0, -4f), false);
 
-		viewport = new StretchViewport(Constants.SCLWIDTH, Constants.SCLHEIGHT);
-		hudViewport = new StretchViewport(Constants.WIDTH, Constants.HEIGHT);
+		viewport = new FitViewport(Constants.SCLWIDTH, Constants.SCLHEIGHT);
+		hudViewport = new StretchViewport(Constants.HUD_WIDTH, Constants.HUD_HEIGHT);
 		stage = new Stage();
 		hudStage = new Stage(hudViewport);
 
@@ -57,6 +56,7 @@ public class AbstractScreen implements Screen {
 		black = new Image(Icons.getTex("black.png"));
 		black.setSize(Constants.WIDTH, Constants.HEIGHT);
 		black.setColor(black.getColor().r, black.getColor().g, black.getColor().b, 0.65f);
+		stage.addActor(black);
 
 		pauseDialog = new PauseDialog(getSkin(), this);
 		pauseDialog.show(hudStage);
@@ -81,10 +81,11 @@ public class AbstractScreen implements Screen {
 						: 0));
 
 		stage.act(delta);
-		hudStage.act(delta);
+//		hudStage.act(delta);
 		stage.draw();
-		hudStage.draw();
+//		hudStage.draw();
 		
+
 
 // stage.getActors().sort(comparator);
 
@@ -149,10 +150,7 @@ public class AbstractScreen implements Screen {
 		black.setVisible(paused);
 		black.setPosition(camera.position.x - Constants.WIDTH / 2, camera.position.y
 				- Constants.HEIGHT / 2);
-		if (!stage.getActors().contains(black, false)) {
-			stage.getActors().removeValue(black, false);
-		}
-		stage.addActor(black);
+		black.toFront();
 
 		if (showDialog) {
 			pauseDialog.setVisible(true);
