@@ -23,11 +23,11 @@ public class SplashScreen extends AbstractScreen {
 
 		splashImage = new Image(Icons.getTex("ui/JBSLogo.png"));
 		splashImage.setSize(Constants.HUD_WIDTH, Constants.HUD_HEIGHT);
-		splashImage.setScaling(Scaling.fit);
+		splashImage.setScaling(Scaling.stretch);
 		
 		hudStage.addActor(splashImage);
 		splashImage.setColor(1, 1, 1, 0);
-		splashImage.addAction(Actions.sequence(Actions.fadeIn(0.6f), Actions.delay(0.7f),
+		splashImage.addAction(Actions.sequence(Actions.fadeIn(0.0f), Actions.delay(1.0f),
 				Actions.fadeOut(0.3f), switchScreenAction));
 	}
 	

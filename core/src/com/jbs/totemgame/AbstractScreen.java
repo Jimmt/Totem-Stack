@@ -81,7 +81,7 @@ public class AbstractScreen implements Screen {
 						: 0));
 
 		stage.act(delta);
-//		hudStage.act(delta);
+		hudStage.act(delta);
 		stage.draw();
 //		hudStage.draw();
 		

@@ -23,7 +23,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.ImageButton.ImageButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Scaling;
@@ -37,9 +36,10 @@ public class GameOverDialog extends Dialog {
 	Label bestScoreLabel, scoreLabel;
 	Image label;
 	float x, y, ratio;
-	Image yourScore, bestScore, gameOver;
+	Image yourScore, bestScore;
 	Skin skin;
 	boolean moved, submittedScore;
+	GameOverSign gameOverSign;
 
 	public GameOverDialog(int score, Skin skin, GameScreen gs, TotemGame game,
 			boolean submittedScore) {
@@ -87,10 +87,10 @@ public class GameOverDialog extends Dialog {
 		this.score = score;
 
 		String[] paths = { "ui/gameover/replay.png", "ui/gameover/highscores.png",
-				"ui/gameover/achievements.png" }; 
+				"ui/gameover/achievements.png" };
 		/*
 		 * , "ui/gameover/twitter.png",
-				"ui/gameover/facebook.png"
+		 * "ui/gameover/facebook.png"
 		 */
 
 		for (int i = 0; i < paths.length; i++) {
@@ -108,13 +108,15 @@ public class GameOverDialog extends Dialog {
 		Image panel = new Image(Icons.getTex("gameover/window.png"));
 		setBackground(panel.getDrawable());
 
-		panel.setSize(Constants.WIDTH, Constants.HEIGHT - 80);
+		panel.setSize(Constants.HUD_WIDTH, Constants.HUD_HEIGHT - gs.hudTable.header.getHeight()
+				+ 15);
 		setSize(panel.getWidth(), panel.getHeight());
 
-		gameOver = new Image(Icons.getTex("gameover/gameover.png"));
-		gameOver.setPosition(Constants.WIDTH / 2 - gameOver.getWidth() / 2, Constants.HEIGHT);
-		gameOver.setScaling(Scaling.fill);
-		getContentTable().add(gameOver).colspan(imageButtons.size);
+		gameOverSign = new GameOverSign(panel);
+		gameOverSign.setPosition(Constants.HUD_WIDTH / 2 - gameOverSign.getWidth() / 2,
+				Constants.HUD_HEIGHT);
+		gameOverSign.setScaling(Scaling.fit);
+		getContentTable().add(gameOverSign).colspan(imageButtons.size);
 		getContentTable().row();
 
 		ImageButtonStyle removeAdStyle = new ImageButtonStyle();
@@ -160,7 +162,7 @@ public class GameOverDialog extends Dialog {
 		getContentTable().row();
 		getContentTable().add(bestScoreLabel).width(bestScore.getWidth())
 				.height(bestScore.getHeight()).fill().center().colspan(imageButtons.size);
-		
+
 		getContentTable().row();
 
 		for (int i = 0; i < imageButtons.size; i++) {
@@ -208,47 +210,47 @@ public class GameOverDialog extends Dialog {
 						TotemGame.soundManager.play("button");
 					}
 				});
-//		imageButtons.get(3).addListener(new ClickListener() { // twitter
-//					@Override
-//					public void clicked(InputEvent event, float x, float y) {
-//						super.clicked(event, x, y);
-//						TotemGame.soundManager.play("button");
+// imageButtons.get(3).addListener(new ClickListener() { // twitter
+// @Override
+// public void clicked(InputEvent event, float x, float y) {
+// super.clicked(event, x, y);
+// TotemGame.soundManager.play("button");
 //
-//						if (!TwitterUtil.loggedIn) {
-//							try {
-//								TwitterUtil.init();
-//								TwitterUtil.openURL();
-//							} catch (TwitterException e) {
-//								e.printStackTrace();
-//							} catch (IOException e) {
-//								e.printStackTrace();
-//							}
+// if (!TwitterUtil.loggedIn) {
+// try {
+// TwitterUtil.init();
+// TwitterUtil.openURL();
+// } catch (TwitterException e) {
+// e.printStackTrace();
+// } catch (IOException e) {
+// e.printStackTrace();
+// }
 //
-//							PinDialog pinDialog = new PinDialog(String.valueOf(score), skin, gs);
-//							gs.hudStage.addActor(pinDialog);
-//							pinDialog.setPosition(Constants.WIDTH / 2 - pinDialog.getWidth() / 2,
-//									Constants.HEIGHT / 2 - pinDialog.getHeight() / 2);
+// PinDialog pinDialog = new PinDialog(String.valueOf(score), skin, gs);
+// gs.hudStage.addActor(pinDialog);
+// pinDialog.setPosition(Constants.WIDTH / 2 - pinDialog.getWidth() / 2,
+// Constants.HEIGHT / 2 - pinDialog.getHeight() / 2);
 //
-//						} else {
-//							TwitterUtil.postFinal("I just scored " + score
-//									+ " points in Totem Stack!");
-//							TweetedDialog tweeted = new TweetedDialog(
-//									"Your tweet has been posted!", skin);
-//							gs.hudStage.addActor(tweeted);
-//							tweeted.setPosition(Constants.WIDTH / 2 - tweeted.getWidth() / 2,
-//									Constants.HEIGHT / 2 - tweeted.getHeight() / 2);
-//						}
+// } else {
+// TwitterUtil.postFinal("I just scored " + score
+// + " points in Totem Stack!");
+// TweetedDialog tweeted = new TweetedDialog(
+// "Your tweet has been posted!", skin);
+// gs.hudStage.addActor(tweeted);
+// tweeted.setPosition(Constants.WIDTH / 2 - tweeted.getWidth() / 2,
+// Constants.HEIGHT / 2 - tweeted.getHeight() / 2);
+// }
 //
-//					}
-//				});
-//		imageButtons.get(4).addListener(new ClickListener() { // facebook
-//					@Override
-//					public void clicked(InputEvent event, float x, float y) {
-//						super.clicked(event, x, y);
+// }
+// });
+// imageButtons.get(4).addListener(new ClickListener() { // facebook
+// @Override
+// public void clicked(InputEvent event, float x, float y) {
+// super.clicked(event, x, y);
 //
-//						TotemGame.soundManager.play("button");
-//					}
-//				});
+// TotemGame.soundManager.play("button");
+// }
+// });
 
 	}
 
@@ -273,9 +275,15 @@ public class GameOverDialog extends Dialog {
 		if (!moved) {
 // if (getActions().size == 0) {
 			moved = true;
-			gameOver.addAction(Actions.sequence(Actions.moveBy(0, gameOver.getHeight() * 3),
-					Actions.delay(1.35f), Actions.moveBy(0, -gameOver.getHeight() * 3, 0.25f)));
+			float origX = gameOverSign.getX();
+			float origY = gameOverSign.getY();
+			gameOverSign.addAction(Actions.sequence(Actions.moveTo(gameOverSign.getX(), gs.hudTable.header.getY()),
+					Actions.delay(1.35f), Actions.moveTo(gameOverSign.getX(), origY, 0.25f))); 
 // }
+		}
+
+		if (getActions().size == 0) {
+			gs.hudTable.toFront();
 		}
 
 	}

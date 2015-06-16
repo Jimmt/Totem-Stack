@@ -77,14 +77,14 @@ public class GameScreen extends AbstractScreen {
 
 			GameOverDialog god = new GameOverDialog(score, getSkin(), this, game, false);
 			god.setKeepWithinStage(false);
-			god.setPosition(Constants.WIDTH / 2 - god.getWidth() / 2, Constants.HEIGHT);
+			god.setPosition(Constants.HUD_WIDTH / 2 - god.getWidth() / 2, Constants.HUD_HEIGHT);
 			hudStage.addActor(god);
 
 			PowIn pi = new PowIn(2);
 			PowOut po = new PowOut(2);
-			god.addAction(Actions.sequence(Actions.moveBy(0, -Constants.HEIGHT, 0.75f, pi),
-					Actions.moveBy(0, Constants.HEIGHT / 8, 0.3f, po),
-					Actions.moveBy(0, -Constants.HEIGHT / 8, 0.3f, pi)));
+			god.addAction(Actions.sequence(Actions.moveBy(0, -Constants.HUD_HEIGHT, 0.75f, pi),
+					Actions.moveBy(0, Constants.HUD_HEIGHT / 8, 0.3f, po),
+					Actions.moveBy(0, -Constants.HUD_HEIGHT / 8, 0.3f, pi)));
 
 			gameOver = true;
 
@@ -191,7 +191,7 @@ public class GameScreen extends AbstractScreen {
 
 // Table.drawDebug(hudStage);
 // hudTable.debug();
-		hudTable.act(delta);
+//		hudTable.act(delta);
 
 		hudStage.draw();
 

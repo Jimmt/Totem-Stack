@@ -118,8 +118,8 @@ public class HudTable extends Table {
 		}
 
 		top.row();
-		top.add(drapesLeft).left();
-		top.add(drapesRight).right();
+		top.add(drapesLeft).height(drapes[0].getHeight() - 10).left();
+		top.add(drapesRight).height(drapes[0].getHeight() - 10).right();
 		add(top).expand().top();
 
 		if (game instanceof GameScreen) {
