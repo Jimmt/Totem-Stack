@@ -24,7 +24,7 @@ public class Drape extends ImageButton {
 		type = path;
 		
 		powerup = new Image(Icons.getTex("ui/shop/" + path + ".png"));
-		powerup.setSize(powerup.getWidth() / 2, powerup.getHeight() / 2);
+		powerup.setSize(powerup.getWidth() * 0.9f, powerup.getHeight() * 0.9f);
 		
 		font = new BitmapFont(Gdx.files.internal("ui/shop/numbers.fnt"));
 //		font.getData().setScale(0.75f);

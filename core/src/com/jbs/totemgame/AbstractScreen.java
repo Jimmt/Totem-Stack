@@ -148,8 +148,8 @@ public class AbstractScreen implements Screen {
 	public void pause(boolean showDialog) {
 		paused = !paused;
 		black.setVisible(paused);
-		black.setPosition(camera.position.x - Constants.WIDTH / 2, camera.position.y
-				- Constants.HEIGHT / 2);
+		black.setPosition(camera.position.x - Constants.HUD_WIDTH / 2, camera.position.y
+				- Constants.HUD_HEIGHT / 2);
 		black.toFront();
 
 		if (showDialog) {

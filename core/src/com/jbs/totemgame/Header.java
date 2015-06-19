@@ -36,8 +36,8 @@ public class Header extends Actor {
 
 		LabelStyle style = new LabelStyle(font, Color.WHITE);
 		text = new Label("Welcome back, " + username, style);
-		text.setPosition(Constants.WIDTH / 2 - text.getWidth() / 2,
-				Constants.HEIGHT - (130 - text.getHeight()) / 2 - text.getHeight());
+		text.setPosition(Constants.HUD_WIDTH / 2 - text.getWidth() / 2,
+				Constants.HUD_HEIGHT - (130 - text.getHeight()) / 2 - text.getHeight());
 	}
 
 	@Override

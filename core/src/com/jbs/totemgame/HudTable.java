@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton.ImageButtonStyle;
@@ -24,7 +25,7 @@ public class HudTable extends Table {
 	ImageButtonStyle soundOnStyle, soundOffStyle;
 	Image header;
 
-	boolean pauseDisplayed = true;
+	boolean pauseDisplayed = true, moved;
 	String[] paths = { "jbsbutton", "settings", "shop", "home", "pause" };
 	ImageButton[] buttons = { jbs, options, shop, home, pause };
 	String[] powerups = { "retry", "freeze", "slow", "wind" };
@@ -82,15 +83,15 @@ public class HudTable extends Table {
 
 			if (i < 3) {
 				innerLeft.add(buttons[i]).padLeft(4f).padTop(4f).width(buttons[i].getWidth())
-						.height(header.getHeight() - 10);
+						.height(header.getHeight() - 13);
 			} else {
 				innerRight.add(buttons[i]).padLeft(4f).padTop(4f).width(buttons[i].getWidth())
-						.height(header.getHeight() - 10);
+						.height(header.getHeight() - 13);
 			}
 
 		}
 		innerRight.add(sound).padLeft(4f).padTop(4f).width(sound.getWidth())
-				.height(header.getHeight() - 10).right();
+				.height(header.getHeight() - 13).right();
 
 		LabelStyle style = new LabelStyle();
 		style.font = new BitmapFont(Gdx.files.internal("ui/top/scoreFont.fnt"));
@@ -279,7 +280,7 @@ public class HudTable extends Table {
 			}
 
 		});
-		
+
 		buttons[4].addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) { // pause

@@ -47,7 +47,7 @@ public class CoinLabel extends Actor {
 		coinImage = new Image(coinTex);
 		coinImage.setScale(1);
 
-		ImageButtonStyle coinButtonStyle = new ImageButtonStyle();
+		ImageButtonStyle coinButtonStyle = new ImageButtonStyle(	);
 		coinButtonStyle.up = new Image(Icons.getTex("shop/add.png")).getDrawable();
 		coinButtonStyle.down = new Image(Icons.getTex("shop/add_pressed.png")).getDrawable();
 
