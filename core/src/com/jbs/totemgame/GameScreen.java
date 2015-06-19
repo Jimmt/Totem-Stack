@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Interpolation.PowIn;
 import com.badlogic.gdx.math.Interpolation.PowOut;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -31,6 +32,8 @@ public class GameScreen extends AbstractScreen {
 			TotemGame.soundManager.stopMusic();
 			TotemGame.soundManager.loopMusic("game", 1f);
 		}
+		
+		
 
 		particleStage = new Stage();
 		FitViewport viewport1 = new FitViewport(Constants.SCLWIDTH, Constants.SCLHEIGHT, camera);
@@ -38,6 +41,7 @@ public class GameScreen extends AbstractScreen {
 		viewport1.update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
 		particles = new Array<ParticleEffect>();
 		hudTable = new HudTable(getSkin(), this);
+		hudTable.buttons[4].setTouchable(Touchable.enabled);
 		hudTable.setTransform(true);
 		hudTable.setFillParent(true);
 		hudStage.addActor(hudTable);
@@ -74,6 +78,8 @@ public class GameScreen extends AbstractScreen {
 					((IceTotem) spawner.totems.get(i)).unfreeze();
 				}
 			}
+			
+			hudTable.buttons[4].setTouchable(Touchable.disabled);
 
 			GameOverDialog god = new GameOverDialog(score, getSkin(), this, game, false);
 			god.setKeepWithinStage(false);

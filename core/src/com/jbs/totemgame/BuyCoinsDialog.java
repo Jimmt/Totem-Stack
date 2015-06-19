@@ -27,6 +27,7 @@ public class BuyCoinsDialog extends Dialog {
 	Image[] coinImages = new Image[3];
 	Image[] dollarImages = new Image[3];
 	ImageButton buyButton;
+	Image black;
 
 	public BuyCoinsDialog(Skin skin) {
 		super("", skin);
@@ -106,9 +107,15 @@ public class BuyCoinsDialog extends Dialog {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 				setVisible(false);
+				black.setVisible(false);
 			}
 
 		});
+
+		black = new Image(Icons.getTex("black.png"));
+		black.setSize(Constants.HUD_WIDTH, Constants.HUD_HEIGHT);
+		black.setColor(black.getColor().r, black.getColor().g, black.getColor().b, 0.65f);
+		black.setVisible(false);
 
 	}
 
@@ -118,6 +125,11 @@ public class BuyCoinsDialog extends Dialog {
 
 	public float getCenterY(ImageButton ibutton, Image image) {
 		return getY() + ibutton.getY() + ibutton.getHeight() / 2 - image.getHeight() / 2;
+	}
+
+	@Override
+	public void act(float delta) {
+		super.act(delta);
 	}
 
 	@Override

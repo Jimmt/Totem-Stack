@@ -33,7 +33,7 @@ public class SoundManager {
 
 	public void play(String name) {
 		if (playEffects && masterPlay)
-			((Sound) sounds.get(name)).play();
+			((Sound) sounds.get(name)).play(0.5f);
 	}
 
 	public void play(String name, float volume) {

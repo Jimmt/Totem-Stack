@@ -167,7 +167,7 @@ public class ShopDialog extends Dialog {
 				TotemGame.soundManager.play("button");
 
 				BuyCoinsDialog bcd = new BuyCoinsDialog(skin);
-				bcd.setPosition(Constants.WIDTH / 2 - bcd.getWidth() / 2, Constants.HEIGHT / 2
+				bcd.setPosition(Constants.HUD_WIDTH / 2 - bcd.getWidth() / 2, Constants.HUD_HEIGHT / 2
 						- bcd.getHeight() / 2);
 				getStage().addActor(bcd);
 

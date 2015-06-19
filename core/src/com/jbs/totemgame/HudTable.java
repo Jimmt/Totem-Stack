@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton.ImageButtonStyle;
@@ -52,7 +53,8 @@ public class HudTable extends Table {
 			ibstyle.imageUp = new Image(Icons.getTex("ui/top/" + paths[i] + ".png")).getDrawable();
 
 			if (paths[i].equals("pause")) {
-				ibstyle.imageChecked = new Image(Icons.getTex("ui/top/play.png")).getDrawable();
+// ibstyle.imageChecked = new
+// Image(Icons.getTex("ui/top/play.png")).getDrawable();
 			}
 
 // ibstyle.imageDown = new Image(Icons.getTex("ui/top/" + paths[i] +
@@ -72,8 +74,6 @@ public class HudTable extends Table {
 
 		drapesLeft = new Table();
 		drapesRight = new Table();
-
-		this.setDebug(true);
 
 		Table innerLeft = new Table();
 		Table innerRight = new Table();
@@ -194,6 +194,9 @@ public class HudTable extends Table {
 		} else {
 			shopDialog = new ShopDialog("", game.getSkin(), null, game);
 		}
+		if (game instanceof MenuScreen) {
+			this.buttons[4].setTouchable(Touchable.disabled);
+		}
 
 		game.hudStage.addActor(shopDialog);
 		shopDialog.setPosition(Constants.HUD_WIDTH / 2 - shopDialog.getWidth() / 2,
@@ -201,7 +204,6 @@ public class HudTable extends Table {
 		shopDialog.setVisible(false);
 
 		setupListeners();
-// optionsDialog.debug();
 	}
 
 	@Override
@@ -277,7 +279,7 @@ public class HudTable extends Table {
 			}
 
 		});
-
+		
 		buttons[4].addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) { // pause
@@ -299,14 +301,18 @@ public class HudTable extends Table {
 				if (soundOn) {
 					sound.setStyle(soundOffStyle);
 					if (GamePrefs.prefs.getBoolean("bgMusic")) {
+						TotemGame.soundManager.setPlayEffects(false);
 						TotemGame.soundManager.stopMusic();
-						TotemGame.soundManager.setPlayMusic(false);
+
 					}
+					TotemGame.soundManager.setMasterPlay(false);
 				} else {
+
 					sound.setStyle(soundOnStyle);
 					if (GamePrefs.prefs.getBoolean("bgMusic")) {
 						TotemGame.soundManager.setPlayMusic(true);
 					}
+					TotemGame.soundManager.setMasterPlay(true);
 				}
 				soundOn = !soundOn;
 			}

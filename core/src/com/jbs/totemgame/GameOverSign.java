@@ -7,7 +7,6 @@ import com.badlogic.gdx.utils.Array;
 public class GameOverSign extends Image {
 	Array<Image> chains = new Array<Image>();
 	Image panel;
-	boolean startGen;
 
 	public GameOverSign(Image panel) {
 		super(Icons.getTex("gameover/gameover.png"));
@@ -23,21 +22,12 @@ public class GameOverSign extends Image {
 	@Override
 	public void act(float delta) {
 		super.act(delta);
-
-		for (Image image : chains) {
-			image.act(delta);
-		}
-
 		for (int i = 0; i < chains.size; i++) {
 			chains.get(i).setPosition(panel.getX() + getX(),
 					panel.getY() + getY() + getHeight() + i * chains.get(0).getHeight());
+			chains.get(i).act(delta);
 		}
-
-		if (!startGen) {
-			if (getY() + getHeight() < panel.getY() + panel.getHeight()) {
-				startGen = true;
-			}
-		}
+		
 
 		if (chains.get(chains.size - 1).getY() + chains.get(0).getHeight() < panel.getY()
 						+ panel.getHeight()) {

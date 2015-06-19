@@ -27,8 +27,8 @@ public class SplashScreen extends AbstractScreen {
 		
 		hudStage.addActor(splashImage);
 		splashImage.setColor(1, 1, 1, 0);
-		splashImage.addAction(Actions.sequence(Actions.fadeIn(0.0f), Actions.delay(1.0f),
-				Actions.fadeOut(0.3f), switchScreenAction));
+		splashImage.addAction(Actions.sequence(Actions.fadeIn(0.0f), Actions.delay(3.0f),
+				Actions.fadeOut(0.5f), switchScreenAction));
 	}
 	
 	@Override

@@ -16,6 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Align;
 
 public class CoinLabel extends Actor {
 	Label coins;
@@ -38,6 +39,7 @@ public class CoinLabel extends Actor {
 		labelStyle.background = background.getDrawable();
 
 		coins = new Label(" ", labelStyle);
+		coins.setAlignment(Align.center);
 		coins.setWidth(bgTex.getWidth());
 		coins.setHeight(bgTex.getHeight());
 
@@ -56,16 +58,18 @@ public class CoinLabel extends Actor {
 				super.clicked(event, x, y);
 				TotemGame.soundManager.play("button");
 				dialog.setVisible(true);
+				dialog.black.setVisible(true);
 			}
 		});
 
 		this.skin = skin;
 
 		dialog = new BuyCoinsDialog(skin);
-		dialog.setPosition(Constants.WIDTH / 2 - dialog.getWidth() / 2, Constants.HEIGHT / 2
+		dialog.setPosition(Constants.HUD_WIDTH / 2 - dialog.getWidth() / 2, Constants.HUD_HEIGHT / 2
 				- dialog.getHeight() / 2);
 
 		if (hudStage != null) {
+			hudStage.addActor(dialog.black);
 			hudStage.addActor(dialog);
 		}
 		dialog.setVisible(false);
@@ -86,8 +90,8 @@ public class CoinLabel extends Actor {
 	public void draw(Batch batch, float parentAlpha) {
 		super.draw(batch, parentAlpha);
 
-		coins.setText(" " + String.valueOf(GamePrefs.prefs.getInteger("coins")));
-		coins.setPosition(getX() + coinImage.getWidth() - 20, getY() + coinImage.getHeight() / 2
+		coins.setText(String.valueOf(GamePrefs.prefs.getInteger("coins")));
+		coins.setPosition(getX() + coinImage.getWidth() - 40, getY() + coinImage.getHeight() / 2
 				- coins.getHeight() / 2 - 3);
 		coinImage.setPosition(getX(), getY());
 		coinButton.setPosition(getX() + coinImage.getWidth() - coinButton.getWidth(), getY()

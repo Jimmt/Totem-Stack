@@ -54,7 +54,7 @@ public class AbstractScreen implements Screen {
 		Gdx.input.setInputProcessor(multiplexer);
 
 		black = new Image(Icons.getTex("black.png"));
-		black.setSize(Constants.WIDTH, Constants.HEIGHT);
+		black.setSize(Constants.HUD_WIDTH, Constants.HUD_HEIGHT);
 		black.setColor(black.getColor().r, black.getColor().g, black.getColor().b, 0.65f);
 		stage.addActor(black);
 
