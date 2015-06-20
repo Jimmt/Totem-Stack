@@ -17,7 +17,6 @@ public class MenuScreen extends AbstractScreen {
 	Texture tex;
 	Image tmp;
 	Background background;
-	LogoutDialog logoutDialog;
 	ImageButtonStyle logoutStyle, loginStyle;
 	Table table;
 	CoinLabel coinsLabel;
@@ -45,7 +44,6 @@ public class MenuScreen extends AbstractScreen {
 		}
 		TotemGame.soundManager.setPlayEffects(GamePrefs.prefs.getBoolean("soundEffects"));
 
-		logoutDialog = new LogoutDialog("", getSkin());
 		table = super.getTable();
 		table.setFillParent(true);
 

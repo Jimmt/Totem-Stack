@@ -10,8 +10,8 @@ max: 10000
 - Emission - 
 lowMin: 0.0
 lowMax: 0.0
-highMin: 3000.0
-highMax: 3000.0
+highMin: 500.0
+highMax: 500.0
 relative: false
 scalingCount: 1
 scaling0: 1.0
@@ -20,8 +20,8 @@ timeline0: 0.0
 - Life - 
 lowMin: 0.0
 lowMax: 0.0
-highMin: 3000.0
-highMax: 3000.0
+highMin: 1500.0
+highMax: 1500.0
 relative: false
 scalingCount: 2
 scaling0: 1.0
@@ -69,8 +69,8 @@ timeline0: 0.0
 - Scale - 
 lowMin: 0.0
 lowMax: 0.0
-highMin: 6.0
-highMax: 6.0
+highMin: 8.0
+highMax: 8.0
 relative: false
 scalingCount: 1
 scaling0: 1.0
@@ -156,5 +156,6 @@ continuous: true
 aligned: false
 additive: true
 behind: false
+premultipliedAlpha: false
 - Image Path -
-C:\Users\Austin\repos\totem-game\android\assets\effects\particle.png
+particle.png

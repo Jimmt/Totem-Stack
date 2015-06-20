@@ -272,11 +272,11 @@ public class TotemSpawner extends Actor {
 // t = new Totem(0.5f * Constants.SCLWIDTH, spawnY, game.world);
 // }
 
-						/**
-						 * MathUtils.random(Constants.SCLWIDTH / 2 - randomMagnitude,
-								Constants.SCLWIDTH / 2 + randomMagnitude)
+						/**0.5f * Constants.SCLWIDTH
+						 * 
 						 */
-						t = new Totem(0.5f * Constants.SCLWIDTH, spawnY + 0.5f,
+						t = new Totem(MathUtils.random(Constants.SCLWIDTH / 2 - randomMagnitude,
+								Constants.SCLWIDTH / 2 + randomMagnitude), spawnY + 0.5f,
 								totemScale, game.world);
 
 					}
