@@ -11,12 +11,7 @@ import android.widget.RelativeLayout;
 
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
-import com.badlogic.gdx.scenes.scene2d.ui.List;
-import com.google.android.gms.ads.AdListener;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdSize;
-import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.InterstitialAd;
+import com.chartboost.sdk.*;
 import com.google.example.games.basegameutils.GameHelper;
 import com.jbs.totemgame.GamePrefs;
 import com.jbs.totemgame.IabInterface;
@@ -32,12 +27,6 @@ public class AndroidLauncher extends AndroidApplication implements IabInterface 
 	private GameHelper helper;
 	private TotemGame game;
 	private AndroidServices services;
-	private final String BANNER_ID = "ca-app-pub-8823077351295808/1547261578";
-	private final String INTERSTITIAL_ID = "ca-app-pub-8823077351295808/4500727979";
-	public InterstitialAd interstitialAd;
-	protected AdView adView, admobView;
-	protected View gameView;
-	private RelativeLayout layout;
 	private boolean displayAds;
 
 	@Override
@@ -76,45 +65,15 @@ public class AndroidLauncher extends AndroidApplication implements IabInterface 
 		game = new TotemGame(services);
 		AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
 
-		// initialize(new PuckSlide(services), config);
+		initialize(new TotemGame(services), config);
 
-		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-				WindowManager.LayoutParams.FLAG_FULLSCREEN);
-		getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
-
-		layout = new RelativeLayout(this);
-		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
-				RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
-		layout.setLayoutParams(params);
-
-		admobView = createAdView();
-		layout.addView(admobView);
-		View gameView = createGameView(config);
-		layout.addView(gameView);
-
-		setContentView(layout);
-		startAdvertising(admobView);
-
-		interstitialAd = new InterstitialAd(this);
-
-		interstitialAd.setAdUnitId(INTERSTITIAL_ID);
-		interstitialAd.setAdListener(new AdListener() {
-			@Override
-			public void onAdLoaded() {
-				// Toast.makeText(getApplicationContext(),
-// "Finished Loading Interstitial",
-				// Toast.LENGTH_SHORT).show();
-			}
-
-			@Override
-			public void onAdClosed() {
-				// Toast.makeText(getApplicationContext(),
-// "Closed Interstitial",
-				// Toast.LENGTH_SHORT)
-				// .show();
-			}
-		});
-
+		Chartboost.startWithAppId(this, "5590cc5e0d6025324b7ef59f",
+				"06ec96442df74a540ef7befeae06fd37f2dd5c06");
+		Chartboost.setImpressionsUseActivities(true);
+		Chartboost.onCreate(this);
+		
+//		Chartboost.cacheInterstitial(CBLocation.LOCATION_DEFAULT);
+//		Chartboost.showInterstitial(CBLocation.LOCATION_DEFAULT);
 	}
 
 	IabHelper.QueryInventoryFinishedListener mGotInventoryListener = new IabHelper.QueryInventoryFinishedListener() {
@@ -143,42 +102,40 @@ public class AndroidLauncher extends AndroidApplication implements IabInterface 
 			Purchase purchase = inventory.getPurchase("remove_ads");
 			displayAds = !(purchase != null);
 			Log.d("IAB", displayAds ? "Displaying ads" : "Not displaying ads");
-
-			if (!displayAds) {
-				layout.removeView(admobView);
-			}
 		}
 	};
 
-	private AdView createAdView() {
-		adView = new AdView(this);
-		adView.setAdSize(AdSize.SMART_BANNER);
-		adView.setAdUnitId(BANNER_ID);
-		adView.setId(12345); // this is an arbitrary id, allows for relative
-// positioning in createGameView()
-		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
-				LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
-		params.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE);
-		params.addRule(RelativeLayout.CENTER_HORIZONTAL, RelativeLayout.TRUE);
-		adView.setLayoutParams(params);
-		adView.setBackgroundColor(Color.BLACK);
-		return adView;
+	@Override
+	public void onStart() {
+		super.onStart();
+		Chartboost.onStart(this);
 	}
 
-	private View createGameView(AndroidApplicationConfiguration cfg) {
-		gameView = initializeForView(new TotemGame(services), cfg);
-		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
-				LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
-		params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
-		params.addRule(RelativeLayout.CENTER_HORIZONTAL, RelativeLayout.TRUE);
-		params.addRule(RelativeLayout.BELOW, adView.getId());
-		gameView.setLayoutParams(params);
-		return gameView;
+	@Override
+	public void onResume() {
+		super.onResume();
+		Chartboost.onResume(this);
 	}
-
-	private void startAdvertising(AdView adView) {
-		AdRequest adRequest = new AdRequest.Builder().build();
-		adView.loadAd(adRequest);
+	
+	@Override
+	public void onPause() {
+	    super.onPause();
+	    Chartboost.onPause(this);
+	}
+	        
+	@Override
+	public void onStop() {
+	    super.onStop();
+	    Chartboost.onStop(this);
+	}
+	
+	@Override
+	public void onBackPressed() {
+	    // If an interstitial is on screen, close it.
+	    if (Chartboost.onBackPressed())
+	        return;
+	    else
+	        super.onBackPressed();
 	}
 
 	@Override
@@ -187,7 +144,7 @@ public class AndroidLauncher extends AndroidApplication implements IabInterface 
 		if (mHelper != null)
 			mHelper.dispose();
 		mHelper = null;
-
+		Chartboost.onDestroy(this);
 		android.os.Process.killProcess(android.os.Process.myPid());
 	}
 
@@ -217,7 +174,7 @@ public class AndroidLauncher extends AndroidApplication implements IabInterface 
 				new IabHelper.OnIabPurchaseFinishedListener() {
 
 					@Override
-					public void onIabPurchaseFinished(IabResult result, Purchase purchase) { 
+					public void onIabPurchaseFinished(IabResult result, Purchase purchase) {
 						// if we were disposed of in the meantime, quit.
 						if (mHelper == null) {
 							Log.d("IAB", "mHelper is null");
@@ -232,7 +189,7 @@ public class AndroidLauncher extends AndroidApplication implements IabInterface 
 						runOnUiThread(new Runnable() {
 							@Override
 							public void run() {
-								layout.removeView(adView);
+								displayAds = false;
 							}
 						});
 						TotemGame.soundManager.play("buy");

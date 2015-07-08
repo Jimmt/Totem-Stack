@@ -59,11 +59,7 @@ public class GameOverDialog extends Dialog {
 			}
 			
 			TotemGame.deaths++;
-			if (TotemGame.deaths % 5 == 0) {
-				if (TotemGame.services.getDisplayAds()) {
-					TotemGame.services.showOrLoadInterstitial();
-				}
-			}
+			
 		}
 		
 		
@@ -175,6 +171,13 @@ public class GameOverDialog extends Dialog {
 		
 		if (score >= GamePrefs.prefs.getInteger("bestScore")) {
 			GamePrefs.putInteger("bestScore", score);
+		}
+		if(Gdx.app.getType() == ApplicationType.Android){
+			if (TotemGame.deaths % 3 == 0) {
+				if (TotemGame.services.getDisplayAds()) {
+					TotemGame.services.showOrLoadInterstitial();
+				}
+			}
 		}
 
 

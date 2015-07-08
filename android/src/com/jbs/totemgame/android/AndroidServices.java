@@ -1,11 +1,11 @@
 package com.jbs.totemgame.android;
 
-import com.google.android.gms.ads.AdRequest;
+import com.chartboost.sdk.CBLocation;
+import com.chartboost.sdk.Chartboost;
 import com.google.android.gms.games.Games;
 import com.google.example.games.basegameutils.GameHelper;
 import com.google.example.games.basegameutils.GameHelper.GameHelperListener;
 import com.jbs.totemgame.IGoogleServices;
-import com.jbs.totemgame.android.R;
 
 public class AndroidServices implements GameHelperListener, ActionResolver, IGoogleServices {
 	public AndroidLauncher launcher;
@@ -127,23 +127,8 @@ public class AndroidServices implements GameHelperListener, ActionResolver, IGoo
 
 	@Override
 	public void showOrLoadInterstitial() {
-		try {
-			launcher.runOnUiThread(new Runnable() {
-				public void run() {
-					if (launcher.interstitialAd.isLoaded()) {
-						launcher.interstitialAd.show();
-// Toast.makeText(launcher.getApplicationContext(), "Showing Interstitial",
-// Toast.LENGTH_SHORT).show();
-					} else {
-						AdRequest interstitialRequest = new AdRequest.Builder().build();
-						launcher.interstitialAd.loadAd(interstitialRequest);
-// Toast.makeText(launcher.getApplicationContext(), "Loading Interstitial",
-// Toast.LENGTH_SHORT).show();
-					}
-				}
-			});
-		} catch (Exception e) {
-		}
+		Chartboost.cacheInterstitial(CBLocation.LOCATION_DEFAULT);
+		Chartboost.showInterstitial(CBLocation.LOCATION_DEFAULT);
 	}
 
 	@Override
