@@ -46,17 +46,13 @@ public class ShopDialog extends Dialog {
 		final String[] buttonNames = { "retry", "freeze", "slow", "wind" };
 
 		ImageButtonStyle buyCoinStyle = new ImageButtonStyle();
-		buyCoinStyle.up = new Image(Icons.getTex("ui/shop/buyjbs.png"))
-				.getDrawable();
-		buyCoinStyle.down = new Image(Icons.getTex("ui/shop/buyjbs_pressed.png"))
-				.getDrawable();
+		buyCoinStyle.up = new Image(Icons.getTex("ui/shop/buyjbs.png")).getDrawable();
+		buyCoinStyle.down = new Image(Icons.getTex("ui/shop/buyjbs_pressed.png")).getDrawable();
 		buyCoinButton = new ImageButton(buyCoinStyle);
 
 		ImageButtonStyle backStyle = new ImageButtonStyle();
-		backStyle.up = new Image(Icons.getTex("ui/highscore/back.png"))
-				.getDrawable();
-		backStyle.down = new Image(Icons.getTex("ui/highscore/back_pressed.png"))
-				.getDrawable();
+		backStyle.up = new Image(Icons.getTex("ui/highscore/back.png")).getDrawable();
+		backStyle.down = new Image(Icons.getTex("ui/highscore/back_pressed.png")).getDrawable();
 		backButton = new ImageButton(backStyle);
 
 		setupListeners();
@@ -65,17 +61,17 @@ public class ShopDialog extends Dialog {
 
 		CoinLabel coinLabel = new CoinLabel(skin, null);
 
-		getContentTable().add(new Image(Icons.getTex("blank.png"))).expand()
-				.bottom().left().colspan(4).padBottom(coinLabel.coins.getHeight());
+		getContentTable().add(new Image(Icons.getTex("blank.png"))).expand().bottom().left()
+				.colspan(4).padBottom(coinLabel.coins.getHeight());
 
 		getContentTable().row();
 
 		for (int i = 0; i < buttonNames.length; i++) {
 			ImageButtonStyle style = new ImageButtonStyle();
-			style.up = new Image(Icons.getTex("ui/shop/" + buttonNames[i]
-					+ "Button.png")).getDrawable();
-			style.checked = new Image(Icons.getTex("ui/shop/" + buttonNames[i]
-					+ "Selected.png")).getDrawable();
+			style.up = new Image(Icons.getTex("ui/shop/" + buttonNames[i] + "Button.png"))
+					.getDrawable();
+			style.checked = new Image(Icons.getTex("ui/shop/" + buttonNames[i] + "Selected.png"))
+					.getDrawable();
 
 			ImageButton button = new ImageButton(style);
 
@@ -105,10 +101,8 @@ public class ShopDialog extends Dialog {
 
 		for (int i = 0; i < 4; i++) {
 			ImageButtonStyle ibs = new ImageButtonStyle();
-			ibs.up = new Image(Icons.getTex("shop/button_normal.png"))
-					.getDrawable();
-			ibs.down = new Image(Icons.getTex("shop/button_pressed.png"))
-					.getDrawable();
+			ibs.up = new Image(Icons.getTex("shop/button_normal.png")).getDrawable();
+			ibs.down = new Image(Icons.getTex("shop/button_pressed.png")).getDrawable();
 
 			ImageButton button = new ImageButton(ibs);
 			final int index = i;
@@ -121,7 +115,8 @@ public class ShopDialog extends Dialog {
 					if (GamePrefs.prefs.getInteger("coins") >= coinNumbers[index]) {
 						GamePrefs.putInteger("coins", GamePrefs.prefs.getInteger("coins")
 								- coinNumbers[index]);
-						GamePrefs.putInteger(buttonNames[index] + "Uses", GamePrefs.prefs.getInteger(buttonNames[index] + "Uses") + 1);
+						GamePrefs.putInteger(buttonNames[index] + "Uses",
+								GamePrefs.prefs.getInteger(buttonNames[index] + "Uses") + 1);
 					}
 				}
 			});
@@ -139,7 +134,6 @@ public class ShopDialog extends Dialog {
 		}
 
 		for (int i = 0; i < coinNumbers.length; i++) {
-
 			Image img = new Image(Icons.getTex("shop/paper.png"));
 			images.add(img);
 
@@ -157,6 +151,9 @@ public class ShopDialog extends Dialog {
 		getContentTable().row();
 		getButtonTable().add(buyCoinButton).colspan(2).expandX().padRight(37);
 		getButtonTable().add(backButton).colspan(2).expandX().padLeft(37);
+		
+		pack();
+
 	}
 
 	public void setupListeners() {
@@ -167,8 +164,8 @@ public class ShopDialog extends Dialog {
 				TotemGame.soundManager.play("button");
 
 				BuyCoinsDialog bcd = new BuyCoinsDialog(skin);
-				bcd.setPosition(Constants.HUD_WIDTH / 2 - bcd.getWidth() / 2, Constants.HUD_HEIGHT / 2
-						- bcd.getHeight() / 2);
+				bcd.setPosition(Constants.HUD_WIDTH / 2 - bcd.getWidth() / 2, Constants.HUD_HEIGHT
+						/ 2 - bcd.getHeight() / 2);
 				getStage().addActor(bcd);
 
 			}
@@ -184,6 +181,11 @@ public class ShopDialog extends Dialog {
 
 			}
 		});
+	}
+
+	@Override
+	public void act(float delta) {
+		super.act(delta);
 	}
 
 	@Override
@@ -205,5 +207,7 @@ public class ShopDialog extends Dialog {
 // + 3f, getY() + getContentTable().getCell(upgradeButtons.get(i)).getActorY()
 // - getContentTable().getCell(upgradeButtons.get(i)).getActorHeight() / 4f);
 // }
+		
+		
 	}
 }

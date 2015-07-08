@@ -23,9 +23,9 @@ import com.badlogic.gdx.utils.GdxRuntimeException;
 public class BuyCoinsDialog extends Dialog {
 	ImageButton x;
 	Array<ImageButton> imageButtons = new Array<ImageButton>();
-	Image[] textImages = new Image[3];
-	Image[] coinImages = new Image[3];
-	Image[] dollarImages = new Image[3];
+	Image[] textImages = new Image[2];
+	Image[] coinImages = new Image[2];
+	Image[] dollarImages = new Image[2];
 	ImageButton buyButton;
 	Image black;
 
@@ -33,8 +33,8 @@ public class BuyCoinsDialog extends Dialog {
 		super("", skin);
 		setTransform(true);
 
-		final int[] jbsNumbers = { 500, 1750, 4000 };
-		int[] dollarNumbers = { 1, 3, 7 };
+		final int[] jbsNumbers = { 500, 1750};
+		int[] dollarNumbers = { 1, 3 };
 
 		Image window01 = new Image(Icons.getTex("ui/shop/window01.png"));
 		setBackground(window01.getDrawable());
@@ -53,7 +53,7 @@ public class BuyCoinsDialog extends Dialog {
 		buyButton.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				TotemGame.soundManager.play("buy");
+//				TotemGame.soundManager.play("buy");
 
 				for (int i = 0; i < imageButtons.size; i++) {
 					if (imageButtons.get(i).isChecked()) {
@@ -69,7 +69,7 @@ public class BuyCoinsDialog extends Dialog {
 
 		ButtonGroup group = new ButtonGroup();
 
-		for (int i = 0; i < 3; i++) {
+		for (int i = 0; i < 2; i++) {
 			ImageButtonStyle style = new ImageButtonStyle();
 			style.up = new Image(Icons.getTex("ui/shop/unselected.png")).getDrawable();
 			style.checked = new Image(Icons.getTex("ui/shop/selected.png")).getDrawable();
@@ -78,21 +78,21 @@ public class BuyCoinsDialog extends Dialog {
 			getContentTable().add(button).padLeft(8f);
 			imageButtons.add(button);
 		}
+//		getContentTable().setDebug(true);
 
-		getContentTable().add(x).expand().top().width(x.getWidth() / 10 * 8)
-				.height(x.getHeight() / 10 * 8).right();
+		getTitleTable().add(x).expand().width(x.getWidth())
+				.height(x.getHeight()).padTop(x.getHeight()).right();
 
-		getContentTable().row();
-		getContentTable().add(buyButton).colspan(4).padTop(30f).padBottom(15f);
+	
 
 		// TODO textures should probably be in an atlas
 		// 3 textures loaded 3 times from disk = 9 times lag
 		// for now caching works
-		for (int i = 0; i < 3; i++) {
+		for (int i = 0; i < 2; i++) {
 			Image img = new Image(Icons.getTex("ui/shop/jbscoin_000" + i + "_Layer-" + (3 - i)
 					+ ".png"));
 			img.setScale(1);
-			coinImages[3 - i - 1] = img;
+			coinImages[2 - i - 1] = img;
 
 			img = new Image(Icons.getTex("ui/shop/" + dollarNumbers[i] + "dollar.png"));
 			img.setScale(1);
@@ -102,6 +102,9 @@ public class BuyCoinsDialog extends Dialog {
 			img.setScale(1);
 			textImages[i] = img;
 		}
+		
+		getContentTable().row();
+		getContentTable().add(buyButton).colspan(4).padTop(textImages[0].getHeight() + 10f).padBottom(15f);
 
 		x.addListener(new ClickListener() {
 			@Override
@@ -116,6 +119,14 @@ public class BuyCoinsDialog extends Dialog {
 		black.setSize(Constants.HUD_WIDTH, Constants.HUD_HEIGHT);
 		black.setColor(black.getColor().r, black.getColor().g, black.getColor().b, 0.65f);
 		black.setVisible(false);
+		black.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				setVisible(false);
+				black.setVisible(false);
+			}
+
+		});
 
 	}
 
@@ -135,8 +146,9 @@ public class BuyCoinsDialog extends Dialog {
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
 		super.draw(batch, parentAlpha);
+		
 
-		for (int i = 0; i < 3; i++) {
+		for (int i = 0; i < 2; i++) {
 			ImageButton ibutton = imageButtons.get(i);
 			coinImages[i].setPosition(getCenterX(ibutton, coinImages[i]),
 					getCenterY(ibutton, coinImages[i]) - 3);
@@ -149,5 +161,6 @@ public class BuyCoinsDialog extends Dialog {
 			textImages[i].draw(batch, parentAlpha);
 			dollarImages[i].draw(batch, parentAlpha);
 		}
+		
 	}
 }

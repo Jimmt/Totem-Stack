@@ -58,7 +58,7 @@ public class DesktopGoogleServices implements IGoogleServices {
 
 	@Override
 	public void buyCoins(int amount) {
-		// TODO Auto-generated method stub
+		GamePrefs.prefs.putInteger("coins", GamePrefs.prefs.getInteger("coins") + amount);
 		
 	}
 

@@ -13,10 +13,10 @@ public class GamePrefs {
 			prefs.putBoolean("soundEffects", true);
 			prefs.putBoolean("tap", true);
 			prefs.putInteger("bestScore", 0);
-			prefs.putInteger("retryUses", 0);
-			prefs.putInteger("freezeUses", 0);
-			prefs.putInteger("slowUses", 0);
-			prefs.putInteger("windUses", 0);
+			prefs.putInteger("retryUses", 1);
+			prefs.putInteger("freezeUses", 1);
+			prefs.putInteger("slowUses", 1);
+			prefs.putInteger("windUses", 1);
 			
 			prefs.flush();
 		}

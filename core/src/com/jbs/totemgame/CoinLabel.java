@@ -20,7 +20,7 @@ import com.badlogic.gdx.utils.Align;
 
 public class CoinLabel extends Actor {
 	Label coins;
-	Image coinImage;
+	Image coinImage, labelBackground;
 	ImageButton coinButton;
 	Skin skin;
 	Stage hudStage;
@@ -35,13 +35,12 @@ public class CoinLabel extends Actor {
 		labelStyle.font = numbers;
 		labelStyle.fontColor = Color.WHITE;
 		Texture bgTex = Icons.getTex("shop/jbscoin.png");
-		Image background = new Image(bgTex);
-		labelStyle.background = background.getDrawable();
+		labelBackground = new Image(bgTex);
 
 		coins = new Label(" ", labelStyle);
 		coins.setAlignment(Align.center);
 		coins.setWidth(bgTex.getWidth());
-		coins.setHeight(bgTex.getHeight());
+		coins.setHeight(33f);
 
 		Texture coinTex = Icons.getTex("shop/coin.png");
 		coinImage = new Image(coinTex);
@@ -67,6 +66,7 @@ public class CoinLabel extends Actor {
 		dialog = new BuyCoinsDialog(skin);
 		dialog.setPosition(Constants.HUD_WIDTH / 2 - dialog.getWidth() / 2, Constants.HUD_HEIGHT / 2
 				- dialog.getHeight() / 2);
+		dialog.setModal(false);
 
 		if (hudStage != null) {
 			hudStage.addActor(dialog.black);
@@ -84,15 +84,18 @@ public class CoinLabel extends Actor {
 	public void act(float delta) {
 		super.act(delta);
 //		coinButton.act(delta);
+		
+		coins.act(delta);
 	}
 
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
 		super.draw(batch, parentAlpha);
 
+		labelBackground.setPosition(getX() + coinImage.getWidth() - 40, getY() + coinImage.getHeight() / 2 - labelBackground.getHeight() / 2);
+		labelBackground.draw(batch, parentAlpha);
 		coins.setText(String.valueOf(GamePrefs.prefs.getInteger("coins")));
-		coins.setPosition(getX() + coinImage.getWidth() - 40, getY() + coinImage.getHeight() / 2
-				- coins.getHeight() / 2 - 3);
+		coins.setPosition(getX() + coinImage.getWidth() - 40, labelBackground.getY() + labelBackground.getHeight() / 2 - coins.getHeight() / 2 + 8f);
 		coinImage.setPosition(getX(), getY());
 		coinButton.setPosition(getX() + coinImage.getWidth() - coinButton.getWidth(), getY()
 				- coinButton.getHeight() / 5);

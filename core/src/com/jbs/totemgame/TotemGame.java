@@ -1,14 +1,8 @@
 package com.jbs.totemgame;
 
-import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Net.HttpMethods;
-import com.badlogic.gdx.Net.HttpRequest;
-import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.Screen;
 
 public class TotemGame extends Game {
 	public static SoundManager soundManager;
@@ -66,7 +60,13 @@ public class TotemGame extends Game {
 	@Override
 	public void render() {
 		super.render();
-		soundManager.update((AbstractScreen) getScreen());
+		
+	}
+	
+	@Override
+	public void setScreen(Screen screen){
+		super.setScreen(screen);
+		soundManager.update((AbstractScreen) screen);
 	}
 
 	@Override

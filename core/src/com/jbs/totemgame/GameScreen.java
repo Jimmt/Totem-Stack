@@ -10,11 +10,13 @@ import com.badlogic.gdx.math.Interpolation.PowOut;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
 public class GameScreen extends AbstractScreen {
 	Background background;
+	GrassField grass;
 	TotemSpawner spawner;
 	GameContactListener contactListener;
 	ShapeRenderer sr;
@@ -24,6 +26,7 @@ public class GameScreen extends AbstractScreen {
 	Array<ParticleEffect> particles;
 	Stage particleStage;
 	Array<Totem> removeTotems = new Array<Totem>();
+	Image blackCover;
 
 	public GameScreen(TotemGame game) {
 		super(game);
@@ -32,8 +35,6 @@ public class GameScreen extends AbstractScreen {
 			TotemGame.soundManager.stopMusic();
 			TotemGame.soundManager.loopMusic("game", 1f);
 		}
-		
-		
 
 		particleStage = new Stage();
 		FitViewport viewport1 = new FitViewport(Constants.SCLWIDTH, Constants.SCLHEIGHT, camera);
@@ -63,7 +64,15 @@ public class GameScreen extends AbstractScreen {
 				hudStage, stage);
 
 		Gdx.input.setInputProcessor(multiplexer);
+		
+		grass = new GrassField(true);
+		
+		stage.addActor(grass);
 
+		blackCover = new Image(Icons.getTex("black.png"));
+		blackCover.setSize(Constants.SCLWIDTH, 255);
+		blackCover.setPosition(0, -255);
+		stage.addActor(blackCover);
 	}
 
 	@Override
@@ -78,7 +87,7 @@ public class GameScreen extends AbstractScreen {
 					((IceTotem) spawner.totems.get(i)).unfreeze();
 				}
 			}
-			
+
 			hudTable.buttons[4].setTouchable(Touchable.disabled);
 
 			GameOverDialog god = new GameOverDialog(score, getSkin(), this, game, false);
@@ -197,7 +206,7 @@ public class GameScreen extends AbstractScreen {
 
 // Table.drawDebug(hudStage);
 // hudTable.debug();
-//		hudTable.act(delta);
+// hudTable.act(delta);
 
 		hudStage.draw();
 

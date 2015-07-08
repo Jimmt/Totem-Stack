@@ -57,9 +57,7 @@ public class GameOverDialog extends Dialog {
 			if (TotemGame.services.getSignedIn()) {
 				TotemGame.services.submitHighscore(score);
 			}
-			if (score >= GamePrefs.prefs.getInteger("bestScore")) {
-				GamePrefs.putInteger("bestScore", score);
-			}
+			
 			TotemGame.deaths++;
 			if (TotemGame.deaths % 5 == 0) {
 				if (TotemGame.services.getDisplayAds()) {
@@ -67,7 +65,8 @@ public class GameOverDialog extends Dialog {
 				}
 			}
 		}
-
+		
+		
 		this.skin = skin;
 
 		sr = new ShapeRenderer();
@@ -173,6 +172,11 @@ public class GameOverDialog extends Dialog {
 		getContentTable().add(removeAds).colspan(5);
 
 		scoreLabel.setPosition(100, getY());
+		
+		if (score >= GamePrefs.prefs.getInteger("bestScore")) {
+			GamePrefs.putInteger("bestScore", score);
+		}
+
 
 	}
 

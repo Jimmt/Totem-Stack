@@ -17,6 +17,7 @@ public class MenuScreen extends AbstractScreen {
 	Texture tex;
 	Image tmp;
 	Background background;
+	GrassField grassField;
 	ImageButtonStyle logoutStyle, loginStyle;
 	Table table;
 	CoinLabel coinsLabel;
@@ -140,6 +141,9 @@ public class MenuScreen extends AbstractScreen {
 
 		stage.getActors().removeValue(table, false);
 		stage.addActor(table);
+		
+		grassField = new GrassField(false);
+		stage.addActor(grassField);
 
 		hudTable = new HudTable(getSkin(), this);
 		hudStage.addActor(hudTable);

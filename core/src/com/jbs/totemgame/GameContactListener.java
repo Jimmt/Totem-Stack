@@ -478,6 +478,8 @@ public class GameContactListener implements ContactListener {
 	public void createTotem() {
 		game.spawner.currentTotem = null;
 		game.spawner.newTotem();
+		game.grass.toFront();
+		game.blackCover.toFront();
 	}
 
 	@Override

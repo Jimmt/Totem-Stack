@@ -97,7 +97,7 @@ public class TotemSpawner extends Actor {
 		lightning.effect.setPosition(game.camera.position.x / Constants.SCALE,
 				game.camera.position.y / Constants.SCALE);
 
-		if (zone == Zone.RAIN || zone == Zone.STARS) {
+		if (zone == Zone.RAIN) {
 
 			if (!rainPlaying) {
 				TotemGame.soundManager.loop("rain");
@@ -252,7 +252,7 @@ public class TotemSpawner extends Actor {
 						freezeTotem = false;
 
 					} else if (TimeUtils.millis() > nextGoldSpawn && totems.size > 3) {
-						nextGoldSpawn += TimeUtils.millis() + MathUtils.random(90000);
+						nextGoldSpawn += TimeUtils.millis() + MathUtils.random(30000);
 
 						t = new GoldTotem(0.5f * Constants.SCLWIDTH, spawnY + 0.5f, totemScale,
 								game.world, game.particleStage);
@@ -306,7 +306,7 @@ public class TotemSpawner extends Actor {
 					game.camera.position.y += (totems.get(totems.size - 1 - 3).getY() + 6f - game.camera.position.y)
 							* lerp;
 				} else {
-					game.camera.position.y = game.camera.viewportHeight / 2;
+					game.camera.position.y = game.camera.viewportHeight / 2; 
 				}
 			}
 

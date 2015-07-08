@@ -127,8 +127,10 @@ public class HudTable extends Table {
 
 			// Table bottom = new Table(); // not used?
 			ImageButtonStyle ibs = new ImageButtonStyle();
-			ibs.imageUp = new Image(Icons.getTex("ui/gameplay/left.png")).getDrawable();
-			ibs.imageDown = new Image(Icons.getTex("ui/gameplay/leftclicked.png")).getDrawable();
+			Image leftUp = new Image(Icons.getTex("ui/gameplay/left.png"));
+			ibs.imageUp = leftUp.getDrawable();
+			Image leftDown =  new Image(Icons.getTex("ui/gameplay/leftclicked.png"));
+			ibs.imageDown = leftDown.getDrawable();
 			leftButton = new ImageButton(ibs);
 			leftButton.addListener(new ClickListener() {
 				@Override
@@ -150,7 +152,7 @@ public class HudTable extends Table {
 				}
 
 			});
-
+			
 			leftButton.setPosition(0, 0);
 
 			ImageButtonStyle ibs2 = new ImageButtonStyle();
@@ -176,7 +178,7 @@ public class HudTable extends Table {
 				}
 
 			});
-
+			
 			rightButton.setPosition(Constants.HUD_WIDTH - rightButton.getWidth(), 0);
 			game.hudStage.addActor(leftButton);
 			game.hudStage.addActor(rightButton);
@@ -196,10 +198,12 @@ public class HudTable extends Table {
 			shopDialog = new ShopDialog("", game.getSkin(), null, game);
 		}
 		if (game instanceof MenuScreen) {
+			this.buttons[3].setTouchable(Touchable.disabled);
 			this.buttons[4].setTouchable(Touchable.disabled);
 		}
 
 		game.hudStage.addActor(shopDialog);
+		shopDialog.show(game.hudStage);
 		shopDialog.setPosition(Constants.HUD_WIDTH / 2 - shopDialog.getWidth() / 2,
 				Constants.HUD_HEIGHT / 2 - shopDialog.getHeight() / 2);
 		shopDialog.setVisible(false);
@@ -311,6 +315,7 @@ public class HudTable extends Table {
 
 					sound.setStyle(soundOnStyle);
 					if (GamePrefs.prefs.getBoolean("bgMusic")) {
+						TotemGame.soundManager.setPlayEffects(true);
 						TotemGame.soundManager.setPlayMusic(true);
 					}
 					TotemGame.soundManager.setMasterPlay(true);
@@ -393,6 +398,8 @@ public class HudTable extends Table {
 // if (score.getText().length() > 1) {
 // score.setX(Constants.HUD_WIDTH / 2 - score.getPrefWidth() / 2);
 // }
+		
+
 
 	}
 }

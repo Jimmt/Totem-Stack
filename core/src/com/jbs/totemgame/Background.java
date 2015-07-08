@@ -52,6 +52,8 @@ public class Background {
 			stage.addActor(ground);
 			ground.setWidth(Constants.WIDTH);
 		}
+		
+		
 
 	}
 }

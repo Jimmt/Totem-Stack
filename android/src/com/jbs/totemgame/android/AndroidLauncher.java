@@ -1,9 +1,5 @@
 package com.jbs.totemgame.android;
 
-import java.util.ArrayList;
-
-import org.json.JSONException;
-
 import android.app.ActionBar.LayoutParams;
 import android.content.Intent;
 import android.graphics.Color;
@@ -221,7 +217,7 @@ public class AndroidLauncher extends AndroidApplication implements IabInterface 
 				new IabHelper.OnIabPurchaseFinishedListener() {
 
 					@Override
-					public void onIabPurchaseFinished(IabResult result, Purchase purchase) {
+					public void onIabPurchaseFinished(IabResult result, Purchase purchase) { 
 						// if we were disposed of in the meantime, quit.
 						if (mHelper == null) {
 							Log.d("IAB", "mHelper is null");
@@ -239,6 +235,7 @@ public class AndroidLauncher extends AndroidApplication implements IabInterface 
 								layout.removeView(adView);
 							}
 						});
+						TotemGame.soundManager.play("buy");
 						displayAds = false;
 
 					}
@@ -263,6 +260,7 @@ public class AndroidLauncher extends AndroidApplication implements IabInterface 
 
 				GamePrefs.putInteger("coins", GamePrefs.prefs.getInteger("coins") + amount);
 				Log.d("IAB", "Consumed");
+				TotemGame.soundManager.play("buy");
 			} else {
 				Log.d("IAB", "Consume not success");
 			}

@@ -78,7 +78,7 @@ public class OptionsDialog extends Dialog {
 		xStage = new Stage();
 		x = new ImageButton(buttonStyle);
 		getTitleTable().setSkin(skin);
-		getTitleTable().add(x).padTop(x.getHeight() / 2);
+		getTitleTable().add(x).padTop(x.getHeight());
 		setupListeners();
 
 		tap = new Image(Icons.getTex("ui/options/tap.png"));
@@ -121,6 +121,7 @@ public class OptionsDialog extends Dialog {
 	@Override
 	public void act(float delta) {
 		super.act(delta);
+		
 
 		tap.setPosition(getX() + tapControlLabel.getX() + tapControlLabel.getWidth() + 10, getY()
 				+ tapControlLabel.getY());
