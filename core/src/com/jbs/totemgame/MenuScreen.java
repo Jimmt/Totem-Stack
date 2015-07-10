@@ -166,7 +166,7 @@ public class MenuScreen extends AbstractScreen {
 		hudStage.addActor(coinsLabel.coinButton);
 		
 
-		if (Gdx.app.getType() == ApplicationType.Android) {
+		if (Gdx.app.getType() == ApplicationType.Android || Gdx.app.getType() == ApplicationType.iOS) {
 			TotemGame.services.signIn();
 		}
 	}
@@ -182,7 +182,7 @@ public class MenuScreen extends AbstractScreen {
 
 		coinsLabel.setPosition(0, hudTable.header.getY() - 113f - coinsLabel.getHeight()); //drape height
 
-		if (Gdx.app.getType() == ApplicationType.Android) {
+		if (Gdx.app.getType() == ApplicationType.Android || Gdx.app.getType() == ApplicationType.iOS) {
 			if (TotemGame.services.getSignedIn()) {
 
 				loginButton.setStyle(logoutStyle);

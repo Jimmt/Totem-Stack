@@ -47,7 +47,7 @@ public class GameOverDialog extends Dialog {
 
 		this.submittedScore = submittedScore;
 
-		if (Gdx.app.getType() == ApplicationType.Android) {
+		if (Gdx.app.getType() == ApplicationType.Android || Gdx.app.getType() == ApplicationType.iOS) {
 			if (score == 0) {
 				if (TotemGame.services.getSignedIn()) {
 					TotemGame.services.unlockAchievement(Constants.ACHIEVEMENT_IMPRESSIVELY_BAD);
@@ -172,7 +172,7 @@ public class GameOverDialog extends Dialog {
 		if (score >= GamePrefs.prefs.getInteger("bestScore")) {
 			GamePrefs.putInteger("bestScore", score);
 		}
-		if(Gdx.app.getType() == ApplicationType.Android){
+		if(Gdx.app.getType() == ApplicationType.Android || Gdx.app.getType() == ApplicationType.iOS){
 			if (TotemGame.deaths % 3 == 0) {
 				if (TotemGame.services.getDisplayAds()) {
 					TotemGame.services.showOrLoadInterstitial();
