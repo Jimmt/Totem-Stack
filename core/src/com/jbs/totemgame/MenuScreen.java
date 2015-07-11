@@ -184,7 +184,6 @@ public class MenuScreen extends AbstractScreen {
 
 		if (Gdx.app.getType() == ApplicationType.Android || Gdx.app.getType() == ApplicationType.iOS) {
 			if (TotemGame.services.getSignedIn()) {
-
 				loginButton.setStyle(logoutStyle);
 			} else {
 				loginButton.setStyle(loginStyle);
