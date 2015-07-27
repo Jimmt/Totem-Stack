@@ -44,7 +44,7 @@ public class MenuScreen extends AbstractScreen {
 			TotemGame.soundManager.loopMusic("menu", 1f);
 		}
 		TotemGame.soundManager.setPlayEffects(GamePrefs.prefs.getBoolean("soundEffects"));
-
+		
 		table = super.getTable();
 		table.setFillParent(true);
 
